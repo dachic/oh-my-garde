@@ -21,3 +21,10 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+# Restore .env (weird 🤔)
+!.env
+
+#system
+.DS_Store
+#end system
