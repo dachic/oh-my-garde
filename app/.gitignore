@@ -21,3 +21,14 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+# Restore .env (weird 🤔)
+!.env
+
+#system
+.DS_Store
+#end system
+
+###> assoconnect/mjml-bundle ###
+/templates/mjml/*.html.twig
+###< assoconnect/mjml-bundle ###
