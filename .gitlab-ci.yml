@@ -1,0 +1,102 @@
+stages:
+  - build
+  - test
+  - deploy
+
+image: kabaconde/docker-in-docker-ci:latest
+
+services:
+  - docker:19.03.1-dind
+
+variables:
+  IMAGE_TAG: ${CI_REGISTRY}/${CI_PROJECT_PATH}:latest
+
+before_script:
+  - docker --version
+  - docker-compose --version
+
+.init_project: &init_project |
+  cp .env.example .env
+  make copy-ci
+  make build
+
+.init_ssh: &init_ssh |
+  eval $(ssh-agent -s)
+  echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+.deploy_ssh: &deploy_ssh |
+  ssh -p $SSH_PORT $SSH_USER@$SSH_HOST bash -c "'
+    echo "SSH Login successfully"
+    echo "Browsing to project path..."
+    cd $PROJECT_PATH
+    git fetch --all
+    git checkout $CI_COMMIT_BRANCH
+    echo "Starting deployment $CI_DEPLOY_USER"
+    make deploy
+    exit
+  '"
+
+deps:build:
+  stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-deps
+    paths:
+      - app/public
+      - app/node_modules/
+      - app/vendor/
+      - app/var
+  script:
+    - *init_project
+    - make cinstall
+    - make yinstall
+    - make ydev
+    - make down
+  artifacts:
+    expire_in: 1 days
+    when: always
+    paths:
+      - app/public
+      - app/node_modules/
+      - app/vendor/
+      - app/var
+
+phpunit:test:
+  stage: test
+  dependencies:
+    - deps:build
+  script:
+    - *init_project
+    - make wait_db_to_ready
+    - make compile
+    - make migrate
+    - make cache-clear
+    - make test
+    - make down
+
+# staging:continuous:deploy:
+#   dependencies: []
+#   stage: deploy
+#   script:
+#     - *init_ssh
+#     - *deploy_ssh
+#   environment:
+#     name: staging
+#     url: $STAGING_URL
+#   except:
+#     - develop
+#     - master
+
+# staging:deploy:
+#   stage: deploy
+#   dependencies: []
+#   script:
+#     - *init_ssh
+#     - *deploy_ssh
+#   environment:
+#     name: staging
+#     url: $STAGING_URL
+#   only:
+#     - develop
