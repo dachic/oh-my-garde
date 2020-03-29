@@ -27,6 +27,7 @@ migrate:
 	docker-compose exec -T apache bin/console doctrine:migrations:migrate --no-interaction
 cache-clear:
 	docker-compose exec -T apache bin/console cache:clear
+	docker-compose exec -T apache php bin/console cache:warmup
 db-update:
 	docker-compose exec -T apache bin/console d:s:u --force
 deploy:
