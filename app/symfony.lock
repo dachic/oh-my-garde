@@ -123,8 +123,17 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "limenius/react-bundle": {
+        "version": "v5.0.3"
+    },
+    "limenius/react-renderer": {
+        "version": "v5.0.2"
+    },
     "monolog/monolog": {
         "version": "1.25.3"
+    },
+    "nacmartin/phpexecjs": {
+        "version": "v3.0.0"
     },
     "nikic/php-parser": {
         "version": "v4.3.0"

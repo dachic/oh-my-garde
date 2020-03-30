@@ -1,0 +1,1 @@
+import "./ServerRender/registration"

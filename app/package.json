@@ -1,5 +1,6 @@
 {
     "devDependencies": {
+        "@babel/preset-react": "^7.0.0",
         "@symfony/webpack-encore": "^0.28.2",
         "core-js": "^3.0.0",
         "regenerator-runtime": "^0.13.2",
@@ -10,7 +11,13 @@
     "scripts": {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "watch": "encore dev --watch --watch-poll",
+        "build": "encore production --progress",
+        "watch-server": "encore dev --config webpack.config.serverside.js --watch"
+    },
+    "dependencies": {
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-on-rails": "^11.3.0"
     }
 }

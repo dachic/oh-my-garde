@@ -47,7 +47,6 @@ phpunit:test:
     - make cinstall
     - make yinstall
     - make ydev
-    - make down
     - make compile
     - make migrate
     - make cache-clear
