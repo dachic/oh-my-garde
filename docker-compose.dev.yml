@@ -40,7 +40,7 @@ services:
             - 80
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.${PROJECT_NAME}_apache.rule=Host(`${DOMAIN_NAME}`)"
+            - "traefik.http.routers.${PROJECT_NAME}_apache.rule=Host(`api.${DOMAIN_NAME}`)"
             - "traefik.http.routers.${PROJECT_NAME}_apache.entrypoints=web"
 
     # phpMyAdmin

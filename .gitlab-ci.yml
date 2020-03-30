@@ -44,7 +44,6 @@ deps:build:
   script:
     - *init_project
     - make cinstall
-    - make ydev
     - make down
   cache:
     key: ${CI_COMMIT_REF_SLUG}-deps
