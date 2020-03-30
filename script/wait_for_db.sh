@@ -1,6 +1,6 @@
 #!/bin/sh
 
-while !(docker-compose logs mysql | grep "ready for connections") ; do
+while !(docker-compose logs postgres | grep "ready to accept connections") ; do
     sleep 3
     echo "Waiting for mysql ..."
 done

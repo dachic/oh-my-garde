@@ -21,8 +21,10 @@ RUN apt-get update -y && \
   #cron \
   libzip-dev \
   gnupg \
+  libpq-dev \
   && docker-php-ext-install \
-  pdo_mysql \
+  pdo \
+  pdo_pgsql \
   #sockets \
   opcache \
   intl \
