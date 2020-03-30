@@ -5,4 +5,4 @@ while !(docker-compose logs postgres | grep "ready to accept connections") ; do
     echo "Waiting for mysql ..."
 done
 
-echo "MySQL is now ready 🔥"
+echo "PostgreSQL is now ready 🔥"
