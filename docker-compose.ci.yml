@@ -6,7 +6,7 @@ services:
         image: kabaconde/symfony-apache
         container_name: ${PROJECT_NAME}-apache
         depends_on:
-            - mysql
+            - postgres
         volumes:
             - ./docker/apache/apache2.conf:/etc/apache2/conf-enabled/apache2.conf:ro
             - ./docker/php/php.ini:/usr/local/etc/php/php.ini
@@ -21,7 +21,3 @@ services:
             - POSTGRES_DB=${DB_DATABASE}
             - POSTGRES_USER=${DB_USERNAME}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
-        ports:
-            - target: 5432
-              published: 5432
-              protocol: tcp
