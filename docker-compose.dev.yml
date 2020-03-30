@@ -91,7 +91,7 @@ services:
             - 3000
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.${PROJECT_NAME}_node.rule=Host(`app.${DOMAIN_NAME}`)"
+            - "traefik.http.routers.${PROJECT_NAME}_node.rule=Host(`${DOMAIN_NAME}`)"
             - "traefik.http.services.${PROJECT_NAME}_node.loadbalancer.server.port=3000"
             - "traefik.http.routers.${PROJECT_NAME}_node.entrypoints=web"
         command: ["yarn", "start"]

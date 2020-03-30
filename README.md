@@ -17,10 +17,10 @@ make install env=dev
 Run client
 
 ```shell
-make rclient
+make ystart
 ```
 
 ## App base url
 
 - [Server](http://api.localhost)
-- [Client](http://app.localhost)
+- [Client](http://localhost)

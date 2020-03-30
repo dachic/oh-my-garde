@@ -8,11 +8,13 @@ bash:
 ywatch:
 	docker-compose exec -T apache yarn watch
 yinstall:
-	docker-compose exec -T apache yarn install
+	docker-compose run -T node yarn install
 ybuild:
 	docker-compose exec -T apache yarn build
 ydev:
 	docker-compose exec -T apache yarn dev
+ystart:
+	docker-compose run -T node yarn start
 build:
 	docker-compose up -d --build
 cinstall:
@@ -42,7 +44,5 @@ compile:
 	docker-compose exec -T apache bin/console mjml:compiler
 test:
 	docker-compose exec -T apache ./bin/phpunit
-rclient:
-	docker-compose run node yarn start
 wait_db_to_ready:
 	chmod +x ./script/wait_for_db.sh && ./script/wait_for_db.sh
