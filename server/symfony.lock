@@ -1,5 +1,25 @@
 {
+    "api-platform/core": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "a93061567140e386f107be75340ac2aee3f86cbf"
+        },
+        "files": [
+            "config/packages/api_platform.yaml",
+            "config/routes/api_platform.yaml",
+            "src/Entity/.gitignore"
+        ]
+    },
+    "fig/link-util": {
+        "version": "1.1.0"
+    },
     "php": {
         "version": "7.3"
+    },
+    "willdurand/negotiation": {
+        "version": "v2.3.1"
     }
 }
