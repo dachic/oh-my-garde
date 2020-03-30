@@ -32,3 +32,7 @@ yarn-error.log
 ###> assoconnect/mjml-bundle ###
 /templates/mjml/*.html.twig
 ###< assoconnect/mjml-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

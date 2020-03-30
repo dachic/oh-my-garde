@@ -44,5 +44,7 @@ compile:
 	docker-compose exec -T apache bin/console mjml:compiler
 test:
 	docker-compose exec -T apache ./bin/phpunit
+jwt:
+	chmod +x ./script/jwt.sh && ./script/jwt.sh
 wait_db_to_ready:
 	chmod +x ./script/wait_for_db.sh && ./script/wait_for_db.sh
