@@ -10,9 +10,6 @@
     <link rel="icon" href="{{asset('favicon.ico')}}">
 
     {% block title %}<title>Oh My Garde</title>{% endblock title %}
-    {% block stylesheets %}
-       {{ encore_entry_link_tags('app') }}
-    {% endblock %}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,9 +20,5 @@
 
   <body>
     {% block body %}{% endblock %}
-
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
   </body>
 </html>
