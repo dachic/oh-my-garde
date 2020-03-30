@@ -20,6 +20,19 @@ Run client
 make ystart
 ```
 
+Migrations 
+
+```shell
+docker-compose exec apache php bin/console m:m
+docker-compose exec apache php bin/console d:m:m
+```
+
+Load fixtures 
+
+```shell
+docker-compose exec apache php bin/console doctrine:fixtures:load
+```
+
 ## App base url
 
 - [Server - http://api.localhost](http://api.localhost)

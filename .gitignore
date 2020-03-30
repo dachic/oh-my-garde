@@ -7,3 +7,6 @@ docker/data
 docker-compose.yml
 .env
 ###< docker-compose
+
+.idea/
+.DS_Store
