@@ -41,19 +41,18 @@ before_script:
 
 deps:build:
   stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-deps
-    paths:
-      - app/public
-      - app/node_modules/
-      - app/vendor/
-      - app/var
   script:
     - *init_project
     - make cinstall
     - make yinstall
     - make ydev
     - make down
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-dependencies
+    paths:
+      - app/node_modules/
+      - app/vendor/
+      - app/var/
   artifacts:
     expire_in: 1 days
     when: always
@@ -61,8 +60,9 @@ deps:build:
       - app/public
       - app/node_modules/
       - app/vendor/
-      - app/var
+      - app/var/
 
+# important to clear cache before any operation with database
 phpunit:test:
   stage: test
   dependencies:
@@ -71,7 +71,7 @@ phpunit:test:
     - *init_project
     - make wait_db_to_ready
     - make compile
-    - make migrate
     - make cache-clear
+    - make migrate
     - make test
     - make down
