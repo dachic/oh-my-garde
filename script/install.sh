@@ -65,5 +65,8 @@ make assets-install
 echo -e "==> Clearing cache"
 make cache-clear
 
+echo -e "==> Installing node_modules"
+make yinstall
+
 echo -e "==> Installation done ✅"
 exit 0
