@@ -50,22 +50,10 @@ else
     make cinstall
 fi
 
-echo -e 'Install front dependencies'
-make yinstall
-
-echo -e 'Dumping your routes into the public'
-make route-sync
-
 if [ "$1" == "dev" ] || [ "$1" == "server" ]; then
-    echo -e 'Building front assets for development environment'
-    make ydev
 
     echo -e "==> Clearing cache for development"
     make cache-clear
-
-elif [ "$1" == "prod" ]; then
-    echo -e "==> Building front assets for production"
-    make ybuild
 fi
 
 echo -e "==> Running migrations"

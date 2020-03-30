@@ -42,5 +42,7 @@ compile:
 	docker-compose exec -T apache bin/console mjml:compiler
 test:
 	docker-compose exec -T apache ./bin/phpunit
+rclient:
+	docker-compose run node yarn start
 wait_db_to_ready:
 	chmod +x ./script/wait_for_db.sh && ./script/wait_for_db.sh

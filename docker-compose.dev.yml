@@ -3,7 +3,7 @@ version: "3.7"
 services:
     traefik:
         image: "traefik:v2.0.2"
-        container_name: "traefik"
+        container_name: "${PROJECT_NAME}-traefik"
         command:
             - "--log.level=DEBUG"
             - "--api.insecure=true"
@@ -35,13 +35,13 @@ services:
         volumes:
             - ./docker/apache/apache2.conf:/etc/apache2/conf-enabled/apache2.conf:ro
             - ./docker/php/php.ini:/usr/local/etc/php/php.ini
-            - ./app:/var/www/symfony:cached
+            - ./server:/var/www/symfony:cached
         expose:
             - 80
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.apache.rule=Host(`${DOMAIN_NAME}`)"
-            - "traefik.http.routers.apache.entrypoints=web"
+            - "traefik.http.routers.${PROJECT_NAME}_apache.rule=Host(`api.${DOMAIN_NAME}`)"
+            - "traefik.http.routers.${PROJECT_NAME}_apache.entrypoints=web"
 
     # phpMyAdmin
     phpmyadmin:
@@ -55,8 +55,8 @@ services:
             - 80
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.pma.rule=Host(`pma.${DOMAIN_NAME}`)"
-            - "traefik.http.routers.pma.entrypoints=web"
+            - "traefik.http.routers.${PROJECT_NAME}_pma.rule=Host(`pma.${DOMAIN_NAME}`)"
+            - "traefik.http.routers.${PROJECT_NAME}_pma.entrypoints=web"
         environment:
             PMA_HOST: mysql
 
@@ -79,6 +79,23 @@ services:
         ports:
             - "3306:3306"
 
+    node:
+        container_name: "${PROJECT_NAME}_node"
+        image: node:latest
+        working_dir: /home/app
+        volumes:
+            - ./client:/home/app:rw,cached
+        networks:
+            - proxy
+        expose:
+            - 3000
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.${PROJECT_NAME}_node.rule=Host(`app.${DOMAIN_NAME}`)"
+            - "traefik.http.services.${PROJECT_NAME}_node.loadbalancer.server.port=3000"
+            - "traefik.http.routers.${PROJECT_NAME}_node.entrypoints=web"
+        command: ["yarn", "start"]
+
     maildev:
         image: djfarrelly/maildev
         container_name: ${PROJECT_NAME}-maildev
@@ -86,9 +103,9 @@ services:
             - proxy
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.maildev.rule=Host(`maildev.${DOMAIN_NAME}`)"
-            - "traefik.http.services.maildev.loadbalancer.server.port=80"
-            - "traefik.http.routers.maildev.entrypoints=web"
+            - "traefik.http.routers.${PROJECT_NAME}_maildev.rule=Host(`maildev.${DOMAIN_NAME}`)"
+            - "traefik.http.services.${PROJECT_NAME}_maildev.loadbalancer.server.port=80"
+            - "traefik.http.routers.${PROJECT_NAME}_maildev.entrypoints=web"
 
 networks:
   proxy:
