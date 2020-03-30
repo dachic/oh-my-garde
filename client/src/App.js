@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Routes from './routes/Routes';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// setup fake backend
+import { configureFakeBackend } from './helpers';
+
+// Themes
+
+// default
+import './assets/scss/theme.scss';
+
+// dark
+// import './assets/scss/theme-dark.scss';
+
+// rtl
+// import './assets/scss/theme-rtl.scss';
+
+
+// configure fake backend
+configureFakeBackend();
+
+/**
+ * Main app component
+ */
+class App extends Component {
+  render() {
+    return <Routes></Routes>;
+  }
 }
 
 export default App;
