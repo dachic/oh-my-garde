@@ -1,5 +1,5 @@
 ###> docker
-docker/mysql/data
+docker/postgresql/data
 docker/data
 ###< docker
 

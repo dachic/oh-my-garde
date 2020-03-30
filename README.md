@@ -24,3 +24,4 @@ make ystart
 
 - [Server](http://api.localhost)
 - [Client](http://localhost)
+- [Adminer DB](http://adminer.localhost)
