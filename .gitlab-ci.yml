@@ -44,23 +44,22 @@ deps:build:
   script:
     - *init_project
     - make cinstall
-    - make yinstall
     - make ydev
     - make down
   cache:
-    key: ${CI_COMMIT_REF_SLUG}-dependencies
+    key: ${CI_COMMIT_REF_SLUG}-deps
     paths:
-      - app/node_modules/
-      - app/vendor/
-      - app/var/
+      - server/node_modules/
+      - server/vendor/
+      - server/var/
   artifacts:
     expire_in: 1 days
     when: always
     paths:
-      - app/public
-      - app/node_modules/
-      - app/vendor/
-      - app/var/
+      - server/public
+      - server/node_modules/
+      - server/vendor/
+      - server/var/
 
 # important to clear cache before any operation with database
 phpunit:test:
