@@ -5,8 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Constant\UserStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -53,8 +55,9 @@ class User  implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Choice(callback={"App\Constant\UserStatus", "getInvertedStatuses"})
      */
-    private $status;
+    private $status = UserStatus::STATUS_DISABLED;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Disponibility", mappedBy="user")

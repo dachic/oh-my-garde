@@ -19,15 +19,6 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-        api:
-            pattern: ^/api/
-            stateless: true
-            anonymous: true
-            provider: entity_provider
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-
         api_login:
             pattern: ^/api/login
             stateless: true
@@ -39,6 +30,20 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+        # order is important here (api must be placed before api_login)
+        api:
+            pattern: ^/api/
+            stateless: true
+            anonymous: true
+            provider: entity_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+        main:
+            pattern: ^/
+            stateless: false
+            anonymous: true
+
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
         ROLE_PHARMACY: [ROLE_USER]
@@ -47,6 +52,7 @@ security:
     access_control:
     - { path: ^/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
     - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/, roles: ROLE_USER }
     - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

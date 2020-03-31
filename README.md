@@ -20,14 +20,14 @@ Run client
 make ystart
 ```
 
-Migrations 
+Migrations
 
 ```shell
 docker-compose exec apache php bin/console m:m
 docker-compose exec apache php bin/console d:m:m
 ```
 
-Load fixtures 
+Load fixtures
 
 ```shell
 docker-compose exec apache php bin/console doctrine:fixtures:load
