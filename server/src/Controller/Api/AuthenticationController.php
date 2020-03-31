@@ -7,6 +7,7 @@ use App\Event\UserRegisteredEvent;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -31,9 +32,7 @@ class AuthenticationController extends AbstractController
         $email = $request->request->get('email');
         $phoneNumber = $request->request->get('phoneNumber');
         $password = $request->request->get('password');
-
-        $users = $userRepository->findByRoleAsEmailKey('ROLE_ADMIN');
-        dd($users);
+        $role = $request->request->get('role');
 
         if ($userRepository->findOneBy(['email' => $email])) {
             return $this->json([
@@ -47,8 +46,7 @@ class AuthenticationController extends AbstractController
             ->setLastname($lastname)
             ->setPhoneNumber($phoneNumber)
             ->setEmail($email)
-            // ->setActivationCode($userManager->getValidationCode())
-            // ->setActivationToken($userManager->getValidationToken())
+            ->addRole($role)
             ->setPassword($encoder->encodePassword($user, $password));
 
         $errors = $validator->validate($user);

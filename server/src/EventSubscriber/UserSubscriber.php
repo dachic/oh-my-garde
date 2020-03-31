@@ -42,7 +42,7 @@ class UserSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Send validation email with code and token link to validation account
+     * Send register validation mail
      *
      * @param UserRegisteredEvent $event
      * @return void
@@ -53,7 +53,7 @@ class UserSubscriber implements EventSubscriberInterface
         $email = $user->getEmail();
         $subject = "Validation de votre inscription sur Oh My Garde";
 
-        $view = $this->twig->render('emails/user/validation.html.twig', [
+        $view = $this->twig->render('mjml/emails/user/pending_registration.html.twig', [
             'user' => $user
         ]);
 
@@ -69,19 +69,19 @@ class UserSubscriber implements EventSubscriberInterface
     public function sendRegistrationMail(UserRegisteredEvent $event)
     {
         $user = $event->getUser();
-        $subject = "Nouvel utilisateur sur OuestFood";
+        $subject = "Nouvel utilisateur sur Oh My Garde";
 
         $users = $this->entityManager
             ->getRepository(User::class)
             ->findByRoleAsEmailKey(UserRole::ROLE_ADMIN);
 
         $emails = array_keys($users);
-        $view = $this->twig->render('emails/user/new.html.twig', [
+        $view = $this->twig->render('mjml/emails/user/validate_user.html.twig', [
             'user' => $user,
         ]);
 
         foreach ($emails as $email) {
-            $this->mailer->send($email, $subject, $view);
+            $this->mailerService->send($email, $subject, $view);
         }
     }
 }

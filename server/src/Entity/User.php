@@ -135,9 +135,13 @@ class User  implements UserInterface
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
@@ -145,6 +149,20 @@ class User  implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function addRole(String $role): self
+    {
+        if (!in_array($role, $this->getRoles(), true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function removeRole(String $role)
+    {
+        $this->setRoles(array_diff($this->getRoles(), [$role]));
     }
 
     public function getPhoneNumber(): ?string
@@ -279,5 +297,14 @@ class User  implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
+    public function getFullname()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getFullname();
+    }
 
 }

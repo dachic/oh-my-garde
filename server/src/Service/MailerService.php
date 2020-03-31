@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
 
 /**
@@ -29,10 +30,10 @@ class MailerService
     public function send($to, string $subject, string $view): void
     {
         $message = (new Email())
-            ->setFrom($_ENV['APP_EMAIL_FROM'])
-            ->setTo($to)
-            ->setSubject($subject)
-            ->setBody($view, 'text/html');
+            ->from($_ENV['APP_EMAIL_FROM'])
+            ->to($to)
+            ->subject($subject)
+            ->html($view);
 
         $this->mailer->send($message);
     }
