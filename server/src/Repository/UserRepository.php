@@ -47,4 +47,27 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByRole($role)
+    {
+        return $this->createQueryBuilder('u')
+            ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function getStatusA()
+    {
+
+    $sql = '
+    SELECT * FROM "omg_user" where roles LIKE "%ROLE_INTERN%" ;
+    ';
+    $em = $this->getEntityManager();
+    $stmt = $em->getConnection()->prepare($sql);
+    $stmt->execute();
+    
+    return $stmt->fetchAll();
+    }
+
 }

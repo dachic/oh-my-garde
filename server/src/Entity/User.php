@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -77,6 +77,8 @@ class User  implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Intership", mappedBy="user")
      */
     private $interships;
+
+    
 
     public function __construct()
     {
