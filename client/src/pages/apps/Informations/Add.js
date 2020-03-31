@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label, FormGroup, CustomInput } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import PageTitle from '../../../components/PageTitle';
-
+import Api from '../../../api/pharmacy';
 class Add extends Component {
   constructor(props) {
     super(props);
@@ -12,15 +12,21 @@ class Add extends Component {
     this.state = {};
   }
 
-
   handleSubmit(event, errors, values) {
-    event.preventDefault();
-
-    if (errors) {
+    // event.preventDefault();
+    console.log(errors);
+    if (errors.length) {
       this.setState({ errors, values });
     }
     else {
       // API Call
+      let form = JSON.stringify(this.state.values, null, 2);
+      console.log(form);
+      Api.add(form).then(user => {
+        console.log(user);
+      }).catch((error) => {
+        console.log(error);
+      });
     }
   }
 
