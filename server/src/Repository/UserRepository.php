@@ -22,9 +22,10 @@ class UserRepository extends ServiceEntityRepository
     public function findByRoleAsEmailKey($role): ?array
     {
         return $this->createQueryBuilder('u', 'u.email')
-            ->where('JSON_CONTAINS(u.roles, :role) = 1')// adapt to postgresql
-            ->setParameter('role', '"' . $role . '"')
+            ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
+            ->setParameter('role', $role)
             ->getQuery()
             ->getResult();
+
     }
 }

@@ -32,6 +32,9 @@ class AuthenticationController extends AbstractController
         $phoneNumber = $request->request->get('phoneNumber');
         $password = $request->request->get('password');
 
+        $users = $userRepository->findByRoleAsEmailKey('ROLE_ADMIN');
+        dd($users);
+
         if ($userRepository->findOneBy(['email' => $email])) {
             return $this->json([
                 "success" => false,

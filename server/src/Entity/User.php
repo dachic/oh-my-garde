@@ -44,7 +44,8 @@ class User  implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="jsonb", options={"jsonb": true})
+     * @Assert\Choice(callback={"App\Constant\UserRole", "getInvertedRoles"}, multiple=true)
      */
     private $roles = [];
 

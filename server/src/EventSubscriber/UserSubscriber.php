@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Constant\UserRole;
 use App\Entity\User;
 use Twig\Environment;
 use App\Service\Mailer;
@@ -72,7 +73,7 @@ class UserSubscriber implements EventSubscriberInterface
 
         $users = $this->entityManager
             ->getRepository(User::class)
-            ->findByRoleAsEmailKey(User::ROLE_ADMIN);
+            ->findByRoleAsEmailKey(UserRole::ROLE_ADMIN);
 
         $emails = array_keys($users);
         $view = $this->twig->render('emails/user/new.html.twig', [
