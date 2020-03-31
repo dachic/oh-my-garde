@@ -8,88 +8,46 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import PageTitle from '../../components/PageTitle';
 
 const records = [
-    {
-        "firstname": "Alexandria",
-        "lastname": "Philippe",
-        "email": "admin@ohmygarde.app",
-        "guards": []
-    },
-    {
-        "firstname": "Lucy",
-        "lastname": "Roussel",
-        "email": "pharmacy@ohmygarde.app",
-        "guards": [
-            {
-                "pharmacy": {
-                    "hospitalName": "CHU Lyon"
-                },
-                "day": "friday",
-                "hour": {
-                    "name": "20h-23h"
-                }
-            },
-            {
-                "pharmacy": {
-                    "hospitalName": "CHU Lyon"
-                },
-                "day": "friday",
-                "hour": {
-                    "name": "8h-20h"
-                }
-            },
-            {
-                "pharmacy": {
-                    "hospitalName": "CHU Lyon"
-                },
-                "day": "monday",
-                "hour": {
-                    "name": "8h-20h"
-                }
-            }
-        ]
-    },
-    {
+       {
         "firstname": "Philippine",
         "lastname": "Baudry",
-        "email": "intern@ohmygarde.app",
-        "guards": [
-            {
-                "pharmacy": {
-                    "hospitalName": "CHU Lyon"
-                },
-                "day": "monday",
-                "hour": {
-                    "name": "6h-8h"
-                }
-            }
-        ]
-    }
+        "horaire": "6h-8h",
+        "name": "Pharmacie des internes",
+        "nbJours": 1
+        },
+        {
+        "firstname": "Dylan",
+        "lastname": "Settbon",
+        "horaire": "8h-20h",
+        "name": "Pharmacie des internes",
+        "nbJours": 1
+        }
 ];
 
 const columns = [
     {
         dataField: 'firstname',
-        text: 'ID',
+        text: 'firstname',
         sort: true,
     },
     {
         dataField: 'lastname',
-        text: 'Company',
+        text: 'lastname',
         sort: false,
     },
     {
-        dataField: 'guards[].pharmacy.hospitalName',
-        text: 'Name',
+        dataField: 'horaire',
+        text: 'Horaire',
         sort: true,
     },
     {
-        dataField: 'guards.day',
-        text: 'Phone Number',
+        dataField: 'name',
+        text: 'Hopital',
         sort: false,
     },
     {
-        dataField: 'guards.hour.name',
-        text: 'Age',
+        dataField: 'nbJours',
+        text: 'Nombre de jour',
         sort: true,
     },
 ];
