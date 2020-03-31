@@ -5,8 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Constant\UserStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -42,7 +44,8 @@ class User  implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="jsonb", options={"jsonb": true})
+     * @Assert\Choice(callback={"App\Constant\UserRole", "getInvertedRoles"}, multiple=true)
      */
     private $roles = [];
 
@@ -53,8 +56,9 @@ class User  implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Choice(callback={"App\Constant\UserStatus", "getInvertedStatuses"})
      */
-    private $status;
+    private $status = UserStatus::STATUS_DISABLED;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Disponibility", mappedBy="user")
@@ -70,6 +74,11 @@ class User  implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Intership", mappedBy="user")
      */
     private $interships;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
 
     public function __construct()
     {
@@ -131,9 +140,13 @@ class User  implements UserInterface
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
@@ -141,6 +154,20 @@ class User  implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function addRole(String $role): self
+    {
+        if (!in_array($role, $this->getRoles(), true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function removeRole(String $role)
+    {
+        $this->setRoles(array_diff($this->getRoles(), [$role]));
     }
 
     public function getPhoneNumber(): ?string
@@ -275,5 +302,26 @@ class User  implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
+    public function getFullname()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getFullname();
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
 
 }

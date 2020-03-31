@@ -50,12 +50,6 @@ else
     make cinstall
 fi
 
-if [ "$1" == "dev" ] || [ "$1" == "server" ]; then
-
-    echo -e "==> Clearing cache for development"
-    make cache-clear
-fi
-
 echo -e "==> Running migrations"
 make migrate
 
@@ -64,6 +58,9 @@ make assets-install
 
 echo -e "==> Clearing cache"
 make cache-clear
+
+echo -e "==> Compiling cache"
+make compile
 
 echo -e "==> Installing node_modules"
 make yinstall
