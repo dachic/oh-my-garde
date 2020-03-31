@@ -1,5 +1,8 @@
 <?php
 namespace App\DataFixtures;
+use App\Entity\Disponibility;
+use App\Entity\DisponibilityHour;
+use App\Entity\Pharmacy;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -17,6 +20,7 @@ class UserFixtures extends Fixture
     {
         $faker = Faker\Factory::create('fr_FR');
 
+        // User
         $userAdmin = new User();
         $userAdmin->setLastname($faker->lastName);
         $userAdmin->setFirstname($faker->firstName);
@@ -49,6 +53,33 @@ class UserFixtures extends Fixture
         $userIntern->setRoles(['ROLE_INTERN']);
 
         $manager->persist($userIntern);
+
+        // DisponibilityHour
+        $hours = ["8h-20h", "20h-23h", "6h-8h"];
+
+        for ($i = 0; $i < sizeof($hours); $i++) {
+            $disponibilityHour = new DisponibilityHour();
+            $disponibilityHour->setName($hours[$i]);
+            $manager->persist($disponibilityHour);
+        }
+
+        // Disponibility
+        $days = ["monday", "thuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+        for ($i = 0; $i < sizeof($days); $i++) {
+            $disponibility = new Disponibility();
+            $disponibility->setUser($userIntern);
+            $disponibility->setHour($disponibilityHour);
+            $disponibility->setDay($days[$i]);
+            $manager->persist($disponibility);
+        }
+
+        // Pharmacy
+        $pharmacy = new Pharmacy();
+        $pharmacy->setEmail('hospital@ohmygarde.app');
+        $pharmacy->setPhoneNumber($faker->phoneNumber);
+        $pharmacy->setName('Pharmacie des internes');
+        $pharmacy->setHospitalName('CHU Lyon');
 
         $manager->flush();
     }
