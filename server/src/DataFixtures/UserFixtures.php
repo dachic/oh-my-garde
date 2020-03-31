@@ -1,7 +1,10 @@
 <?php
 namespace App\DataFixtures;
+use App\Entity\Agrement;
 use App\Entity\Disponibility;
 use App\Entity\DisponibilityHour;
+use App\Entity\Guard;
+use App\Entity\Intership;
 use App\Entity\Pharmacy;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -27,7 +30,7 @@ class UserFixtures extends Fixture
         $userAdmin->setPassword($this->passwordEncoder->encodePassword($userAdmin, 'admin'));
         $userAdmin->setEmail('admin@ohmygarde.app');
         $userAdmin->setPhoneNumber($faker->phoneNumber);
-        $userAdmin->setStatus('fixture');
+        $userAdmin->setStatus('enabled');
         $userAdmin->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($userAdmin);
@@ -38,7 +41,7 @@ class UserFixtures extends Fixture
         $userPharmacy->setPassword($this->passwordEncoder->encodePassword($userPharmacy, 'pharmacy'));
         $userPharmacy->setEmail('pharmacy@ohmygarde.app');
         $userPharmacy->setPhoneNumber($faker->phoneNumber);
-        $userPharmacy->setStatus('fixture');
+        $userPharmacy->setStatus('enabled');
         $userPharmacy->setRoles(['ROLE_PHARMACY']);
 
         $manager->persist($userPharmacy);
@@ -49,7 +52,7 @@ class UserFixtures extends Fixture
         $userIntern->setPassword($this->passwordEncoder->encodePassword($userIntern, 'intern'));
         $userIntern->setEmail('intern@ohmygarde.app');
         $userIntern->setPhoneNumber($faker->phoneNumber);
-        $userIntern->setStatus('fixture');
+        $userIntern->setStatus('enabled');
         $userIntern->setRoles(['ROLE_INTERN']);
 
         $manager->persist($userIntern);
@@ -74,12 +77,39 @@ class UserFixtures extends Fixture
             $manager->persist($disponibility);
         }
 
+        // Agrement
+        $agrements = ["101", "102", "103", "104", "105", "106"];
+
+        for ($i = 0; $i < sizeof($agrements); $i++) {
+            $agrement = new Agrement();
+            $agrement->setName($agrements[$i]);
+            $manager->persist($agrement);
+        }
+
         // Pharmacy
         $pharmacy = new Pharmacy();
         $pharmacy->setEmail('hospital@ohmygarde.app');
         $pharmacy->setPhoneNumber($faker->phoneNumber);
         $pharmacy->setName('Pharmacie des internes');
         $pharmacy->setHospitalName('CHU Lyon');
+        $pharmacy->addAgrement($agrement);
+        $manager->persist($pharmacy);
+
+        // Guard
+        $guard = new Guard();
+        $guard->setDay('monday');
+        $guard->setHour($disponibilityHour);
+        $guard->setUser($userIntern);
+        $guard->setStatus('accepted');
+        $guard->setPharmacy($pharmacy);
+        $manager->persist($guard);
+
+        // Internship
+        $internship = new Intership();
+        $internship->setPharmacy($pharmacy);
+        $internship->setUser($userIntern);
+        $internship->addAgrement($agrement);
+        $manager->persist($internship);
 
         $manager->flush();
     }
