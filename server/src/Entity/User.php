@@ -71,6 +71,11 @@ class User  implements UserInterface
      */
     private $interships;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Pharmacy", inversedBy="representative", cascade={"persist", "remove"})
+     */
+    private $pharmacy;
+
     public function __construct()
     {
         $this->disponibilities = new ArrayCollection();
@@ -275,5 +280,15 @@ class User  implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
+    public function getPharmacy(): ?Pharmacy
+    {
+        return $this->pharmacy;
+    }
 
+    public function setPharmacy(?Pharmacy $pharmacy): self
+    {
+        $this->pharmacy = $pharmacy;
+
+        return $this;
+    }
 }

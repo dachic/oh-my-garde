@@ -14,6 +14,7 @@ const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
 // dashboard
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
+const InformationsApp = React.lazy(() => import('../pages/apps/Informations/Add'));
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
 const EmailDetail = React.lazy(() => import('../pages/apps/Email/Detail'));
@@ -101,6 +102,29 @@ const dashboardRoutes = {
 };
 
 // apps
+// Switch this menu regarding the user logged in (intern or representative)
+const informationsAppRoutes = {
+    path: '/informations',
+    name: 'Pharmacie',
+    header: 'Entités',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/informations/add',
+            name: 'Ajouter',
+            component: InformationsApp,
+            route: PrivateRoute,
+            roles: ['Admin'],
+        },
+        {
+            path: '/informations/edit',
+            name: 'Modifier',
+            // component: EmailDetail,
+            route: PrivateRoute,
+            roles: ['Admin'],
+        },
+    ]
+};
 
 const calendarAppRoutes = {
     path: '/apps/calendar',
@@ -185,8 +209,7 @@ const taskAppRoutes = {
     ],
 };
 
-const appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
-
+const appRoutes = [informationsAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
 
 
 // pages

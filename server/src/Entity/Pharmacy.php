@@ -55,6 +55,11 @@ class Pharmacy
      */
     private $agrements;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="pharmacy", cascade={"persist", "remove"})
+     */
+    private $representative;
+
     public function __construct()
     {
         $this->guards = new ArrayCollection();
@@ -198,6 +203,24 @@ class Pharmacy
     {
         if ($this->agrements->contains($agrement)) {
             $this->agrements->removeElement($agrement);
+        }
+
+        return $this;
+    }
+
+    public function getRepresentative(): ?User
+    {
+        return $this->representative;
+    }
+
+    public function setRepresentative(?User $representative): self
+    {
+        $this->representative = $representative;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newPharmacy = null === $representative ? null : $this;
+        if ($representative->getPharmacy() !== $newPharmacy) {
+            $representative->setPharmacy($newPharmacy);
         }
 
         return $this;
