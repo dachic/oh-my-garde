@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DisponibilityHourRepository")
+ * @ApiFilter(OrderFilter::class, properties={"name"="desc"})
  */
 class DisponibilityHour
 {

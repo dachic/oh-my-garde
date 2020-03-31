@@ -7,10 +7,17 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
+
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ApiFilter(SearchFilter::class, properties={"roles": "exact"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
  */
 class User  implements UserInterface
 {
