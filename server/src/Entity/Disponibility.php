@@ -29,7 +29,7 @@ class Disponibility
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\DisponibilityHour", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\DisponibilityHour", cascade={"persist", "remove"})
      */
     private $hour;
 
