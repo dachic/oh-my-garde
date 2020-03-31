@@ -47,4 +47,15 @@ class GuardRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /*public function findHourGuard($user_id)
+    {
+        return $this->createQueryBuilder('g','g.hour')
+            ->andWhere('g.status = :status')
+            ->setParameter('status', "accepted")
+            ->andWhere('g.user_id = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->getQuery()
+            ->getResult();
+    }*/
 }

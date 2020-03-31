@@ -47,4 +47,14 @@ class DisponibilityHourRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findHourGuard($user_id)
+    {
+        return $this->createQuery(
+            'select d.id from omg_disponibility_hour d, omg_guard g 
+            where g.hour_id = d.id
+            and g.user_id = '.$user_id.'
+            and g.status = "accepted"
+        ')
+            ->getResult();
+    }
 }

@@ -8,15 +8,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Constant\UserStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
-<<<<<<< HEAD
+
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
 
-=======
+
 use Symfony\Component\Validator\Constraints as Assert;
->>>>>>> 651fde76e66e648bc1073176d402e28da234b0fc
+
 
 /**
  * @ApiResource()
@@ -85,14 +85,11 @@ class User  implements UserInterface
      */
     private $interships;
 
-<<<<<<< HEAD
-    
-=======
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $address;
->>>>>>> 651fde76e66e648bc1073176d402e28da234b0fc
+
 
     public function __construct()
     {

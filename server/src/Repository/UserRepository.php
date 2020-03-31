@@ -28,16 +28,17 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
 
     }
-
     
     public function findByRole($role)
     {
-        return $this->createQueryBuilder('u')
+        return $this->createQueryBuilder('u','u.id')
             ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
             ->setParameter('role', $role)
             ->getQuery()
             ->getResult();
     }
+
+    
 
 
     
