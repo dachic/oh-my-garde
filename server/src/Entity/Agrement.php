@@ -35,6 +35,11 @@ class Agrement
      */
     private $pharmacies;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->interships = new ArrayCollection();
@@ -110,6 +115,18 @@ class Agrement
             $this->pharmacies->removeElement($pharmacy);
             $pharmacy->removeAgrement($this);
         }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

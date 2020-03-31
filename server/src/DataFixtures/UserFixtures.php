@@ -78,11 +78,17 @@ class UserFixtures extends Fixture
         }
 
         // Agrement
-        $agrements = ["101", "102", "103", "104", "105", "106"];
+        $agrements = [
+            "108" => "Pharmacie clinique", 
+            "109" => "Economie & Vigilance", 
+            "110" => "Préparation et contrôles", 
+            "111" => "Dispositifs médicaux stériles & stérilisation"
+        ];
 
-        for ($i = 0; $i < sizeof($agrements); $i++) {
+        foreach ($agrements as $code => $name) {
             $agrement = new Agrement();
-            $agrement->setName($agrements[$i]);
+            $agrement->setCode($code);
+            $agrement->setName($name);
             $manager->persist($agrement);
         }
 
@@ -92,7 +98,6 @@ class UserFixtures extends Fixture
         $pharmacy->setPhoneNumber($faker->phoneNumber);
         $pharmacy->setName('Pharmacie des internes');
         $pharmacy->setHospitalName('CHU Lyon');
-        $pharmacy->addAgrement($agrement);
         $manager->persist($pharmacy);
 
         // Guard
@@ -109,6 +114,7 @@ class UserFixtures extends Fixture
         $internship->setPharmacy($pharmacy);
         $internship->setUser($userIntern);
         $internship->addAgrement($agrement);
+        $internship->setPosition("Intitulé du poste au sein de l'hôpital");
         $manager->persist($internship);
 
         $manager->flush();
