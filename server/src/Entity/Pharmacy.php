@@ -51,11 +51,6 @@ class Pharmacy
     private $interships;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Agrement", inversedBy="pharmacies")
-     */
-    private $agrements;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="pharmacy", cascade={"persist", "remove"})
      */
     private $representative;
@@ -64,7 +59,6 @@ class Pharmacy
     {
         $this->guards = new ArrayCollection();
         $this->interships = new ArrayCollection();
-        $this->agrements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -177,32 +171,6 @@ class Pharmacy
             if ($intership->getPharmacy() === $this) {
                 $intership->setPharmacy(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Agrement[]
-     */
-    public function getAgrements(): Collection
-    {
-        return $this->agrements;
-    }
-
-    public function addAgrement(Agrement $agrement): self
-    {
-        if (!$this->agrements->contains($agrement)) {
-            $this->agrements[] = $agrement;
-        }
-
-        return $this;
-    }
-
-    public function removeAgrement(Agrement $agrement): self
-    {
-        if ($this->agrements->contains($agrement)) {
-            $this->agrements->removeElement($agrement);
         }
 
         return $this;
