@@ -19,34 +19,17 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByRoleAsEmailKey($role): ?array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('u', 'u.email')
+            ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
+            ->setParameter('role', $role)
             ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+            ->getResult();
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
-    */
+
+    
     public function findByRole($role)
     {
         return $this->createQueryBuilder('u')
@@ -57,17 +40,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
 
-    public function getStatusA()
-    {
-
-    $sql = '
-    SELECT * FROM "omg_user" where roles LIKE "%ROLE_INTERN%" ;
-    ';
-    $em = $this->getEntityManager();
-    $stmt = $em->getConnection()->prepare($sql);
-    $stmt->execute();
     
-    return $stmt->fetchAll();
-    }
+
 
 }
