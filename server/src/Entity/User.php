@@ -75,6 +75,11 @@ class User  implements UserInterface
      */
     private $interships;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
     public function __construct()
     {
         $this->disponibilities = new ArrayCollection();
@@ -305,6 +310,18 @@ class User  implements UserInterface
     public function __toString()
     {
         return (string) $this->getFullname();
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
     }
 
 }
