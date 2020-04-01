@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Constant\UserRole;
 use App\Constant\UserStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -324,4 +325,8 @@ class User  implements UserInterface
         return $this;
     }
 
+    public function getRoleAsString()
+    {
+        return UserRole::getRoles()[$this->getRoles()[0]];
+    }
 }

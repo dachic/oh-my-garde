@@ -78,7 +78,7 @@ class Login extends Component {
                                                     </a>
                                                 </div>
 
-                                                <h6 className="h5 mb-0 mt-4">Bienvenue</h6>
+                                                <h6 className="h5 mb-0 mt-4">Connexion</h6>
                                                 <p className="text-muted mt-1 mb-4">Entrez votre adresse e-mail et mot de passe pour accéder au panneau d’administration.</p>
 
 

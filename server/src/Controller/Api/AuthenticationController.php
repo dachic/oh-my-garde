@@ -27,12 +27,13 @@ class AuthenticationController extends AbstractController
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $firstname = $request->request->get('firstname');
-        $lastname = $request->request->get('lastname');
-        $email = $request->request->get('email');
-        $phoneNumber = $request->request->get('phoneNumber');
-        $password = $request->request->get('password');
-        $role = $request->request->get('role');
+        $params = [];
+        $content = $request->getContent();
+        if (!empty($content)) {
+            $params = json_decode($content, true);
+        }
+
+        extract($params); // convert all raw data key into variable $firstname, $lastname, etc...
 
         if ($userRepository->findOneBy(['email' => $email])) {
             return $this->json([
@@ -70,5 +71,11 @@ class AuthenticationController extends AbstractController
             "success" => true,
             "message" => "Votre compte a bien été crée. Il sera activé le plus tôt possible"
         ], Response::HTTP_CREATED);
+        // } catch (\Throwable $th) {
+        //     return $this->json([
+        //         "success" => false,
+        //         "message" => "Une erreur s'est produite lors de l'enregistrement des données"
+        //     ], Response::HTTP_BAD_REQUEST);
+        // }
     }
 }

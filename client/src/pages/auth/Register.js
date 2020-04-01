@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 
 import { Container, Row, Col, Card, CardBody, Label, FormGroup, Button, Alert, InputGroup, InputGroupAddon, CustomInput } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { Mail, Lock, User } from 'react-feather';
+import { Mail, Lock, User, PhoneCall } from 'react-feather';
 
 import { registerUser } from '../../redux/actions';
 import { isUserAuthenticated } from '../../helpers/authUtils';
@@ -18,6 +18,14 @@ class Register extends Component {
         super(props);
 
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
+        this.state = {
+            firstname: 'kabad',
+            lastname: 'conde',
+            email: 'kaba@ohmygarde.app',
+            pasword: 'admin',
+            phoneNumber: '0768141623',
+            role: 'ROLE_ADMIN'
+        }
     }
 
     componentDidMount() {
@@ -34,7 +42,7 @@ class Register extends Component {
      * Handles the submit
      */
     handleValidSubmit = (event, values) => {
-        this.props.registerUser(values.fullname, values.email, values.password);
+        this.props.registerUser(values.firstname, values.lastname, values.email, values.phoneNumber, values.password);
     }
 
     /**
@@ -77,13 +85,12 @@ class Register extends Component {
                                                 <div className="mx-auto mb-5">
                                                     <a href="/">
                                                         <img src={logo} alt="" height="24" />
-                                                        <h3 className="d-inline align-middle ml-1 text-logo">Shreyu</h3>
+                                                        <h3 className="d-inline align-middle ml-1 text-logo">Oh My Garde</h3>
                                                     </a>
                                                 </div>
 
-                                                <h6 className="h5 mb-0 mt-4">Welcome back!</h6>
-                                                <p className="text-muted mt-1 mb-4">Enter your email address and password to access admin panel.</p>
-
+                                                <h6 className="h5 mb-0 mt-4">Inscription</h6>
+                                                <p className="text-muted mt-1 mb-4">Saisissez les informations ci-dessous pour vous inscrire</p>
 
                                                 {this.props.error && <Alert color="danger" isOpen={this.props.error ? true : false}>
                                                     <div>{this.props.error}</div>
@@ -91,18 +98,33 @@ class Register extends Component {
 
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
                                                     <AvGroup className="">
-                                                        <Label for="fullname">Username</Label>
+                                                        <Label for="firstname">Prénom</Label>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
                                                                     <User className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="text" name="fullname" id="fullname" placeholder="Shreyu N" required />
+                                                            <AvInput value={this.state.firstname}  type="text" name="firstname" id="firstname" placeholder="Michelle" required />
                                                         </InputGroup>
 
-                                                        <AvFeedback>This field is invalid</AvFeedback>
+                                                        <AvFeedback>Veuillez saisir votre prénom</AvFeedback>
                                                     </AvGroup>
+
+                                                    <AvGroup className="">
+                                                        <Label for="lastname">Nom</Label>
+                                                        <InputGroup>
+                                                            <InputGroupAddon addonType="prepend">
+                                                                <span className="input-group-text">
+                                                                    <User className="icon-dual" />
+                                                                </span>
+                                                            </InputGroupAddon>
+                                                            <AvInput value={this.state.lastname}  type="text" name="lastname" id="lastname" placeholder="Condé" required />
+                                                        </InputGroup>
+
+                                                        <AvFeedback>Veuillez saisir votre nom de famille</AvFeedback>
+                                                    </AvGroup>
+
                                                     <AvGroup className="">
                                                         <Label for="email">Email</Label>
                                                         <InputGroup>
@@ -111,32 +133,45 @@ class Register extends Component {
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="email" name="email" id="email" placeholder="hello@coderthemes.com" required />
+                                                            <AvInput value={this.state.email}  type="email" name="email" id="email" placeholder="kaba@coderthemes.com" required />
                                                         </InputGroup>
 
-                                                        <AvFeedback>This field is invalid</AvFeedback>
+                                                        <AvFeedback>Veuillez saisir votre addresse mail</AvFeedback>
                                                     </AvGroup>
 
+                                                    <AvGroup className="">
+                                                        <Label for="phoneNumber">Numéro de téléphone</Label>
+                                                        <InputGroup>
+                                                            <InputGroupAddon addonType="prepend">
+                                                                <span className="input-group-text">
+                                                                    <PhoneCall className="icon-dual" />
+                                                                </span>
+                                                            </InputGroupAddon>
+                                                            <AvInput value={this.state.phoneNumber}  type="text" name="phoneNumber" id="phoneNumber" placeholder="0756234589" required />
+                                                        </InputGroup>
+
+                                                        <AvFeedback>Saisissez votre numéro de téléphone</AvFeedback>
+                                                    </AvGroup>
 
                                                     <AvGroup className="mb-3">
-                                                        <Label for="password">Password</Label>
+                                                        <Label for="password">Mot de passe</Label>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
                                                                     <Lock className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="password" name="password" id="password" placeholder="Enter your password" required />
+                                                            <AvInput value={this.state.password}  type="password" name="password" id="password" placeholder="*********" required />
                                                         </InputGroup>
-                                                        <AvFeedback>This field is invalid</AvFeedback>
+                                                        <AvFeedback>Veuillez saisir un mot de passe</AvFeedback>
                                                     </AvGroup>
 
                                                     <AvGroup check className="mb-4">
-                                                        <CustomInput type="checkbox" id="terms" defaultChecked="true" className="pl-1" label="I accept Terms and Conditions" />
+                                                        <CustomInput type="checkbox" id="terms" defaultChecked="false" className="pl-1" label="J’accepte les termes et conditions" />
                                                     </AvGroup>
 
                                                     <FormGroup className="form-group mb-0 text-center">
-                                                        <Button color="primary" className="btn-block">Sign Up</Button>
+                                                        <Button color="primary" className="btn-block">Inscrivez-vous</Button>
                                                     </FormGroup>
                                                 </AvForm>
                                             </Col>
@@ -159,7 +194,7 @@ class Register extends Component {
 
                         <Row className="mt-1">
                             <Col className="col-12 text-center">
-                                <p className="text-muted">Already have an account? <Link to="/account/login" className="text-primary font-weight-bold ml-1">Sign In</Link></p>
+                                <p className="text-muted">Vous avez déjà un compte ? <Link to="/account/login" className="text-primary font-weight-bold ml-1">Connectez-vous</Link></p>
                             </Col>
                         </Row>
                     </Container>

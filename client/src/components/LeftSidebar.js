@@ -11,20 +11,22 @@ import * as FeatherIcon from 'react-feather';
 
 import AppMenu from './AppMenu';
 import profilePic from '../assets/images/users/avatar-7.jpg';
-
+import { getLoggedInUser } from '../helpers/authUtils';
 
 /**
  * User Widget
  */
 const UserProfile = () => {
+    const loggedInUser = getLoggedInUser();
+
     return <React.Fragment>
         <div className="media user-profile mt-2 mb-2">
             <img src={profilePic} className="avatar-sm rounded-circle mr-2" alt="Shreyu" />
             <img src={profilePic} className="avatar-xs rounded-circle mr-2" alt="Shreyu" />
 
             <div className="media-body">
-                <h6 className="pro-user-name mt-0 mb-0">Shreyu N</h6>
-                <span className="pro-user-desc">Administrator</span>
+                <h6 className="pro-user-name mt-0 mb-0">{loggedInUser.firstname} {loggedInUser.lastname}</h6>
+                <span className="pro-user-desc">{loggedInUser.roleAsString}</span>
             </div>
 
             <UncontrolledDropdown className="align-self-center profile-dropdown-menu">
@@ -37,11 +39,11 @@ const UserProfile = () => {
                 <DropdownMenu right className="topbar-dropdown-menu profile-dropdown-items">
                     <Link to="/" className="dropdown-item notify-item">
                         <FeatherIcon.User className="icon-dual icon-xs mr-2" />
-                        <span>My Account</span>
+                        <span>Mon compte</span>
                     </Link>
                     <Link to="/" className="dropdown-item notify-item">
                         <FeatherIcon.Settings className="icon-dual icon-xs mr-2" />
-                        <span>Settings</span>
+                        <span>Paramètres</span>
                     </Link>
                     <Link to="/" className="dropdown-item notify-item">
                         <FeatherIcon.HelpCircle className="icon-dual icon-xs mr-2" />
