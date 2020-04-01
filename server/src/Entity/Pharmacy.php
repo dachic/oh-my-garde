@@ -42,11 +42,6 @@ class Pharmacy
     private $phoneNumber;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $hospitalName;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Guard", mappedBy="pharmacy")
      */
     private $guards;
@@ -60,6 +55,12 @@ class Pharmacy
      * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="pharmacy", cascade={"persist", "remove"})
      */
     private $representative;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Hospital", inversedBy="pharmacy", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $hospital;
 
     public function __construct()
     {
@@ -104,18 +105,6 @@ class Pharmacy
     public function setPhoneNumber(string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function getHospitalName(): ?string
-    {
-        return $this->hospitalName;
-    }
-
-    public function setHospitalName(string $hospitalName): self
-    {
-        $this->hospitalName = $hospitalName;
 
         return $this;
     }
@@ -196,6 +185,18 @@ class Pharmacy
         if ($representative->getPharmacy() !== $newPharmacy) {
             $representative->setPharmacy($newPharmacy);
         }
+
+        return $this;
+    }
+
+    public function getHospital(): ?Hospital
+    {
+        return $this->hospital;
+    }
+
+    public function setHospital(Hospital $hospital): self
+    {
+        $this->hospital = $hospital;
 
         return $this;
     }

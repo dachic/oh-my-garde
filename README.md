@@ -1,5 +1,14 @@
 # Oh My Garde
 
+## Important
+
+After updating your entity run, these two commands to keep database migrations
+
+```shell
+make db-migration
+make migrate
+```
+
 ## Installation
 
 Copy docker env variables
@@ -30,7 +39,13 @@ docker-compose exec apache php bin/console d:m:m
 Load fixtures
 
 ```shell
-docker-compose exec apache php bin/console doctrine:fixtures:load
+make db-fix-load
+```
+
+Make entity
+
+```shell
+make db-create-entity
 ```
 
 Drop and Recreate Database

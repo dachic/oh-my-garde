@@ -36,7 +36,7 @@ class Agrement
     private $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Guard", mappedBy="agrement")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Guard", mappedBy="agrements")
      */
     private $guards;
 

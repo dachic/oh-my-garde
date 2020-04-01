@@ -106,6 +106,12 @@ class User  implements UserInterface
      */
     private $address;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $region;
+
 
     public function __construct()
     {
@@ -365,5 +371,17 @@ class User  implements UserInterface
     public function getRoleAsString()
     {
         return UserRole::getRoles()[$this->getRoles()[0]];
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
+
+        return $this;
     }
 }

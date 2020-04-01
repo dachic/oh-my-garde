@@ -31,13 +31,17 @@ db-drop:
 	docker-compose exec apache php bin/console doctrine:database:drop --force
 db-create:
 	docker-compose exec apache php bin/console doctrine:database:create
+db-create-entity:
+	docker-compose exec apache php bin/console make:entity
 db-update:
 	docker-compose exec apache php bin/console d:s:u --force
+db-migration:
+	docker-compose exec apache php bin/console make:migration
 cache-clear:
 	docker-compose exec -T apache bin/console cache:clear
 	docker-compose exec -T apache php bin/console cache:warmup
-db-update:
-	docker-compose exec -T apache bin/console d:s:u --force
+db-fix-load:
+	docker-compose exec apache php bin/console doctrine:fixtures:load
 deploy:
 	chmod +x ./script/deploy.sh && ./script/deploy.sh
 assets-install:
