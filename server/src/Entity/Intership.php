@@ -30,6 +30,7 @@ class Intership
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Pharmacy", inversedBy="interships")
+     * @ORM\JoinColumn(name="pharmacy_id", referencedColumnName="id", nullable=true)
      */
     private $pharmacy;
 
@@ -37,6 +38,11 @@ class Intership
      * @ORM\ManyToMany(targetEntity="App\Entity\Agrement", inversedBy="interships")
      */
     private $agrements;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $position;
 
     public function __construct()
     {
@@ -94,6 +100,18 @@ class Intership
         if ($this->agrements->contains($agrement)) {
             $this->agrements->removeElement($agrement);
         }
+
+        return $this;
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(string $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }

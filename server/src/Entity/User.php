@@ -98,9 +98,19 @@ class User  implements UserInterface
     private $interships;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Pharmacy", inversedBy="representative", cascade={"persist", "remove"})
+     */
+    private $pharmacy;
+     /* 
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $address;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $region;
 
 
     public function __construct()
@@ -325,6 +335,11 @@ class User  implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
+    public function getPharmacy(): ?Pharmacy
+    {
+        return $this->pharmacy;
+    }
+    
     public function getFullname()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
@@ -347,8 +362,26 @@ class User  implements UserInterface
         return $this;
     }
 
+    public function setPharmacy(?Pharmacy $pharmacy): self
+    {
+        $this->pharmacy = $pharmacy;
+
+        return $this;
+    }
     public function getRoleAsString()
     {
         return UserRole::getRoles()[$this->getRoles()[0]];
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
+
+        return $this;
     }
 }

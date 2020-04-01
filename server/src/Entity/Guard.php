@@ -56,14 +56,12 @@ class Guard
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Agrement", inversedBy="guards")
      */
-    private $agrement;
+    private $agrements;
 
     public function __construct()
     {
-        $this->agrement = new ArrayCollection();
+        $this->agrements = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -152,8 +150,8 @@ class Guard
 
     public function addAgrement(Agrement $agrement): self
     {
-        if (!$this->agrement->contains($agrement)) {
-            $this->agrement[] = $agrement;
+        if (!$this->agrements->contains($agrement)) {
+            $this->agrements[] = $agrement;
         }
 
         return $this;
@@ -161,8 +159,8 @@ class Guard
 
     public function removeAgrement(Agrement $agrement): self
     {
-        if ($this->agrement->contains($agrement)) {
-            $this->agrement->removeElement($agrement);
+        if ($this->agrements->contains($agrement)) {
+            $this->agrements->removeElement($agrement);
         }
 
         return $this;

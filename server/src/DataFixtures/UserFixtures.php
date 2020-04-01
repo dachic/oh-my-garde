@@ -1,17 +1,19 @@
 <?php
 namespace App\DataFixtures;
+use Faker;
+use App\Entity\Job;
+use App\Entity\User;
+use App\Entity\Guard;
+use App\Entity\Region;
 use App\Entity\Agrement;
+use App\Entity\Hospital;
+use App\Entity\Pharmacy;
+use App\Entity\Intership;
 use App\Entity\Disponibility;
 use App\Entity\DisponibilityHour;
-use App\Entity\Guard;
-use App\Entity\Intership;
-use App\Entity\Pharmacy;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Entity\User;
-use App\Entity\Job;
-use Faker;
 
 class UserFixtures extends Fixture
 {
@@ -24,6 +26,23 @@ class UserFixtures extends Fixture
     {
         $faker = Faker\Factory::create('fr_FR');
 
+        $regions = [];
+        $hospitals = [];
+        for ($i = 0; $i < 5; $i++) {
+            $region = new Region();
+            $region->setName('Region'.$i);
+            $manager->persist($region);
+            array_push($regions,$region);
+
+            for ($j = 0; $j < 5; $j++) {
+                $hospital = new Hospital();
+                $hospital->setName('Hospital'.$i."-".$j);
+                $hospital->setRegion($region);
+                $manager->persist($hospital);
+                array_push($hospitals,$hospital);
+            }
+        }
+
         // User
         $userAdmin = new User();
         $userAdmin->setLastname($faker->lastName);
@@ -32,6 +51,7 @@ class UserFixtures extends Fixture
         $userAdmin->setEmail('admin@ohmygarde.app');
         $userAdmin->setPhoneNumber($faker->phoneNumber);
         $userAdmin->setStatus('enabled');
+        $userAdmin->setRegion($regions[1]);
         $userAdmin->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($userAdmin);
@@ -43,6 +63,7 @@ class UserFixtures extends Fixture
         $userPharmacy->setEmail('pharmacy@ohmygarde.app');
         $userPharmacy->setPhoneNumber($faker->phoneNumber);
         $userPharmacy->setStatus('enabled');
+        $userPharmacy->setRegion($regions[2]);
         $userPharmacy->setRoles(['ROLE_PHARMACY']);
 
         $manager->persist($userPharmacy);
@@ -54,6 +75,7 @@ class UserFixtures extends Fixture
         $userIntern->setEmail('intern@ohmygarde.app');
         $userIntern->setPhoneNumber($faker->phoneNumber);
         $userIntern->setStatus('enabled');
+        $userIntern->setRegion($regions[3]);
         $userIntern->setRoles(['ROLE_INTERN']);
 
         $manager->persist($userIntern);
@@ -79,11 +101,17 @@ class UserFixtures extends Fixture
         }
 
         // Agrement
-        $agrements = ["101", "102", "103", "104", "105", "106"];
+        $agrements = [
+            "108" => "Pharmacie clinique", 
+            "109" => "Economie & Vigilance", 
+            "110" => "Préparation et contrôles", 
+            "111" => "Dispositifs médicaux stériles & stérilisation"
+        ];
 
-        for ($i = 0; $i < sizeof($agrements); $i++) {
+        foreach ($agrements as $code => $name) {
             $agrement = new Agrement();
-            $agrement->setName($agrements[$i]);
+            $agrement->setCode($code);
+            $agrement->setName($name);
             $manager->persist($agrement);
         }
 
@@ -92,8 +120,7 @@ class UserFixtures extends Fixture
         $pharmacy->setEmail('hospital@ohmygarde.app');
         $pharmacy->setPhoneNumber($faker->phoneNumber);
         $pharmacy->setName('Pharmacie des internes');
-        $pharmacy->setHospitalName('CHU Lyon');
-        $pharmacy->addAgrement($agrement);
+        $pharmacy->setHospital($hospitals[3]);
         $manager->persist($pharmacy);
 
         $job = new Job();
@@ -108,7 +135,6 @@ class UserFixtures extends Fixture
         $guard->setStatus('accepted');
         $guard->addAgrement($agrement);
         $guard->setPharmacy($pharmacy);
-
         $guard->setJob($job);
         $manager->persist($guard);
 
@@ -117,6 +143,7 @@ class UserFixtures extends Fixture
         $internship->setPharmacy($pharmacy);
         $internship->setUser($userIntern);
         $internship->addAgrement($agrement);
+        $internship->setPosition("Intitulé du poste au sein de l'hôpital");
         $manager->persist($internship);
 
         $manager->flush();

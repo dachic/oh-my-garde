@@ -32,19 +32,14 @@ class Pharmacy
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phoneNumber;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $hospitalName;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Guard", mappedBy="pharmacy")
@@ -57,15 +52,20 @@ class Pharmacy
     private $interships;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Agrement", inversedBy="pharmacies")
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="pharmacy", cascade={"persist", "remove"})
      */
-    private $agrements;
+    private $representative;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Hospital", inversedBy="pharmacy", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $hospital;
 
     public function __construct()
     {
         $this->guards = new ArrayCollection();
         $this->interships = new ArrayCollection();
-        $this->agrements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,18 +105,6 @@ class Pharmacy
     public function setPhoneNumber(string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function getHospitalName(): ?string
-    {
-        return $this->hospitalName;
-    }
-
-    public function setHospitalName(string $hospitalName): self
-    {
-        $this->hospitalName = $hospitalName;
 
         return $this;
     }
@@ -183,28 +171,32 @@ class Pharmacy
         return $this;
     }
 
-    /**
-     * @return Collection|Agrement[]
-     */
-    public function getAgrements(): Collection
+    public function getRepresentative(): ?User
     {
-        return $this->agrements;
+        return $this->representative;
     }
 
-    public function addAgrement(Agrement $agrement): self
+    public function setRepresentative(?User $representative): self
     {
-        if (!$this->agrements->contains($agrement)) {
-            $this->agrements[] = $agrement;
+        $this->representative = $representative;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newPharmacy = null === $representative ? null : $this;
+        if ($representative->getPharmacy() !== $newPharmacy) {
+            $representative->setPharmacy($newPharmacy);
         }
 
         return $this;
     }
 
-    public function removeAgrement(Agrement $agrement): self
+    public function getHospital(): ?Hospital
     {
-        if ($this->agrements->contains($agrement)) {
-            $this->agrements->removeElement($agrement);
-        }
+        return $this->hospital;
+    }
+
+    public function setHospital(Hospital $hospital): self
+    {
+        $this->hospital = $hospital;
 
         return $this;
     }
