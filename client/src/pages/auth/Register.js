@@ -18,14 +18,14 @@ class Register extends Component {
         super(props);
 
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
-        // this.state = {
-        //     firstname: 'kabad',
-        //     lastname: 'conde',
-        //     email: 'kabax@ohmygarde.app',
-        //     password: 'admin',
-        //     phoneNumber: '0768141623',
-        //     role: 'ROLE_ADMIN'
-        // }
+        this.state = {
+            firstname: '',
+            lastname: '',
+            email: '',
+            password: '',
+            phoneNumber: '',
+            role: ''
+        }
     }
 
     componentDidMount() {

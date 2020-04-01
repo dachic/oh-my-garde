@@ -79,7 +79,7 @@ function* register({ payload: { firstname, lastname, email, phoneNumber, passwor
         method: 'POST',
         headers: { "Content-Type": "application/json" },
     };
-console.log(options, "ok")
+
     try {
         const response = yield call(registerApi, '/register', options);
         yield put(registerUserSuccess(response));
