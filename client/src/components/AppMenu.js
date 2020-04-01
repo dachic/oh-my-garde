@@ -124,7 +124,7 @@ class AppMenu extends Component {
 
         return (
             <React.Fragment>
-                
+
                         {this.props.menu && this.props.menu.menuItems && (
                             <ul className="metismenu" id="menu-bar">
                                 {this.props.menu.menuItems.map((item, i) => {
