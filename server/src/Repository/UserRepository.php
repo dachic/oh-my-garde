@@ -19,29 +19,56 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findByRoleAsEmailKey($role): ?array
+    /**
+     * Get all users' emails by user role
+     *
+     * @param string $role
+     * @return array|null
+     */
+    public function findByRoleAsEmailKey(string $role): ?array
     {
         return $this->createQueryBuilder('u', 'u.email')
             ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
             ->setParameter('role', $role)
             ->getQuery()
             ->getResult();
-
     }
-    
-    public function findByRole($role)
+
+    /**
+     * Build find user by role query
+     *
+     * @param string $role
+     * @return void
+     */
+    public function findByRoleQuery(string $role)
     {
-        return $this->createQueryBuilder('u','u.id')
+        return $this->createQueryBuilder('u', 'u.email')
             ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
             ->setParameter('role', $role)
-            ->getQuery()
+            ->getQuery();
+    }
+
+    /**
+     * Find all user corresponding to a specified role
+     *
+     * @param string $role
+     * @return void
+     */
+    public function findByRole(string $role)
+    {
+        return $this->findByRoleQuery($role)
             ->getResult();
     }
 
-    
-
-
-    
-
-
+    /**
+     * Find only one user corresponding to a specified role
+     *
+     * @param string $role
+     * @return
+     */
+    public function findOneByRole(string $role)
+    {
+        return $this->findByRoleQuery($role)
+            ->getOneOrNullResult();
+    }
 }

@@ -5,6 +5,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Constant\UserRole;
 use App\Constant\UserStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -38,27 +39,35 @@ class User  implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le prénom ne peut être vide")
+     * @Assert\Length(min=2, minMessage="Votre prénom est trop court. {{ limit }} caractères ou plus.")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom de famille ne peut être vide")
+     * @Assert\Length(min=2, minMessage="Votre prénom est trop court. {{ limit }} caractères ou plus.")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Votre adresse email est incorrect", mode="strict")
+     * @Assert\NotBlank(message="L'adresse email ne peut être vide")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * c
      */
     private $password;
 
     /**
      * @ORM\Column(type="jsonb", options={"jsonb": true})
      * @Assert\Choice(callback={"App\Constant\UserRole", "getInvertedRoles"}, multiple=true)
+     * @Assert\NotBlank(message="Vous devez choisissez un status (role)")
      */
     private $roles = [];
 
@@ -338,4 +347,8 @@ class User  implements UserInterface
         return $this;
     }
 
+    public function getRoleAsString()
+    {
+        return UserRole::getRoles()[$this->getRoles()[0]];
+    }
 }

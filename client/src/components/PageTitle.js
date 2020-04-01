@@ -10,10 +10,10 @@ const PageTitle = (props) => {
     const items = props.breadCrumbItems || "";
     return (
         <React.Fragment>
-            
+
             <Breadcrumb className="float-right mt-1 font-size-14">
                 <BreadcrumbItem>
-                    <Link to="/">Shreyu</Link>
+                    <Link to="/">Oh My Garde</Link>
                 </BreadcrumbItem>
                 {items.map((item, index) => {
                     return item.active ? (
