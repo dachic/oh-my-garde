@@ -11,7 +11,7 @@
     "@fullcalendar/react": "^4.3.0",
     "@fullcalendar/timegrid": "^4.3.0",
     "apexcharts": "^3.8.6",
-    "availity-reactstrap-validation": "^2.6.0",
+    "availity-reactstrap-validation": "^2.6.1",
     "bootstrap": "^4.3.1",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",

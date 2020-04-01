@@ -3,6 +3,7 @@ import { Cookies } from 'react-cookie';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { fetchJSON } from '../../helpers/api';
+import { loginApi, registerApi } from '../../helpers/api/authentication';
 
 import { LOGIN_USER, LOGOUT_USER, REGISTER_USER, FORGET_PASSWORD } from './constants';
 
@@ -30,13 +31,13 @@ const setSession = user => {
  */
 function* login({ payload: { username, password } }) {
     const options = {
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email: username, password }),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     };
 
     try {
-        const response = yield call(fetchJSON, '/users/authenticate', options);
+        const response = yield call(loginApi, '/login', options);
         setSession(response);
         yield put(loginUserSuccess(response));
     } catch (error) {
@@ -72,15 +73,15 @@ function* logout({ payload: { history } }) {
 /**
  * Register the user
  */
-function* register({ payload: { fullname, email, password } }) {
+function* register({ payload: { firstname, lastname, email, phoneNumber, password, role } }) {
     const options = {
-        body: JSON.stringify({ fullname, email, password }),
+        body: JSON.stringify({ firstname, lastname, email, phoneNumber, password, role }),
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
     };
 
     try {
-        const response = yield call(fetchJSON, '/users/register', options);
+        const response = yield call(registerApi, '/register', options);
         yield put(registerUserSuccess(response));
     } catch (error) {
         let message;

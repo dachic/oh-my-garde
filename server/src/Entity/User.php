@@ -5,6 +5,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Constant\UserRole;
 use App\Constant\UserStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,6 +17,7 @@ use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
 
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 
 /**
@@ -26,6 +28,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User  implements UserInterface
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -35,34 +39,42 @@ class User  implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le prénom ne peut être vide")
+     * @Assert\Length(min=2, minMessage="Votre prénom est trop court. {{ limit }} caractères ou plus.")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom de famille ne peut être vide")
+     * @Assert\Length(min=2, minMessage="Votre prénom est trop court. {{ limit }} caractères ou plus.")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Votre adresse email est incorrect", mode="strict")
+     * @Assert\NotBlank(message="L'adresse email ne peut être vide")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * c
      */
     private $password;
 
     /**
      * @ORM\Column(type="jsonb", options={"jsonb": true})
      * @Assert\Choice(callback={"App\Constant\UserRole", "getInvertedRoles"}, multiple=true)
+     * @Assert\NotBlank(message="Vous devez choisissez un status (role)")
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $phoneNumber;
+     private $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -86,9 +98,19 @@ class User  implements UserInterface
     private $interships;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Pharmacy", inversedBy="representative", cascade={"persist", "remove"})
+     */
+    private $pharmacy;
+     /* 
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $address;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $region;
 
 
     public function __construct()
@@ -313,6 +335,11 @@ class User  implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
+    public function getPharmacy(): ?Pharmacy
+    {
+        return $this->pharmacy;
+    }
+    
     public function getFullname()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
@@ -335,4 +362,26 @@ class User  implements UserInterface
         return $this;
     }
 
+    public function setPharmacy(?Pharmacy $pharmacy): self
+    {
+        $this->pharmacy = $pharmacy;
+
+        return $this;
+    }
+    public function getRoleAsString()
+    {
+        return UserRole::getRoles()[$this->getRoles()[0]];
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
 }

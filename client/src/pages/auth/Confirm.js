@@ -54,10 +54,9 @@ class Confirm extends Component {
                                                 <img src={logo} alt="" height="37" />
                                             </a>
                                         </div>
-                                        
-                                        <h6 className="h5 mb-0 mt-4">Confirm your email</h6>
-                                        <p className="text-muted mt-3 mb-3">Your account has been successfully registered. To
-                                            complete the verification process, please check your email for a validation request.</p>
+
+                                        <h6 className="h5 mb-0 mt-4">Validation de votre compte</h6>
+                                        <p className="text-muted mt-3 mb-3">Votre compte a été crée avec succès. Un mail a été envoyé à l'administrateur de l'application. Vous recevrez un mail dès qu'il aura validé votre compte.</p>
                                     </CardBody>
                                 </Card>
                             </Col>
@@ -65,7 +64,7 @@ class Confirm extends Component {
 
                         <Row className="mt-3">
                             <Col className="text-center">
-                                <p className="text-muted">Return to <Link to="/account/login" className="text-primary font-weight-bold ml-1">Login</Link></p>
+                                <p className="text-muted">Revenir à la page de <Link to="/account/login" className="text-primary font-weight-bold ml-1">Connexion</Link></p>
                             </Col>
                         </Row>
                     </Container>

@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ApiResource()
@@ -11,6 +14,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
  */
 class Guard
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -42,6 +47,21 @@ class Guard
      * @ORM\ManyToOne(targetEntity="App\Entity\DisponibilityHour", cascade={"persist", "remove"})
      */
     private $hour;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="guards")
+     */
+    private $job;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Agrement", inversedBy="guards")
+     */
+    private $agrements;
+
+    public function __construct()
+    {
+        $this->agrements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -116,5 +136,43 @@ class Guard
             'horaire' => $this->hour->getName(),
             'jour' => $this->day
         ];
+    }
+    
+    public function getJob(): ?Job
+    {
+        return $this->job;
+    }
+
+    public function setJob(?Job $job): self
+    {
+        $this->job = $job;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Agrement[]
+     */
+    public function getAgrements(): Collection
+    {
+        return $this->agrement;
+    }
+
+    public function addAgrement(Agrement $agrement): self
+    {
+        if (!$this->agrements->contains($agrement)) {
+            $this->agrements[] = $agrement;
+        }
+
+        return $this;
+    }
+
+    public function removeAgrement(Agrement $agrement): self
+    {
+        if ($this->agrements->contains($agrement)) {
+            $this->agrements->removeElement($agrement);
+        }
+
+        return $this;
     }
 }

@@ -31,14 +31,19 @@ class Agrement
     private $interships;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pharmacy", mappedBy="agrements")
+     * @ORM\Column(type="string", length=255)
      */
-    private $pharmacies;
+    private $code;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Guard", mappedBy="agrements")
+     */
+    private $guards;
 
     public function __construct()
     {
         $this->interships = new ArrayCollection();
-        $this->pharmacies = new ArrayCollection();
+        $this->guards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,29 +91,41 @@ class Agrement
         return $this;
     }
 
-    /**
-     * @return Collection|Pharmacy[]
-     */
-    public function getPharmacies(): Collection
+    public function getCode(): ?string
     {
-        return $this->pharmacies;
+        return $this->code;
     }
 
-    public function addPharmacy(Pharmacy $pharmacy): self
+    public function setCode(string $code): self
     {
-        if (!$this->pharmacies->contains($pharmacy)) {
-            $this->pharmacies[] = $pharmacy;
-            $pharmacy->addAgrement($this);
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Guard[]
+     */
+    public function getGuards(): Collection
+    {
+        return $this->guards;
+    }
+
+    public function addGuard(Guard $guard): self
+    {
+        if (!$this->guards->contains($guard)) {
+            $this->guards[] = $guard;
+            $guard->addAgrement($this);
         }
 
         return $this;
     }
 
-    public function removePharmacy(Pharmacy $pharmacy): self
+    public function removeGuard(Guard $guard): self
     {
-        if ($this->pharmacies->contains($pharmacy)) {
-            $this->pharmacies->removeElement($pharmacy);
-            $pharmacy->removeAgrement($this);
+        if ($this->guards->contains($guard)) {
+            $this->guards->removeElement($guard);
+            $guard->removeAgrement($this);
         }
 
         return $this;

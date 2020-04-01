@@ -65,5 +65,8 @@ make compile
 echo -e "==> Installing node_modules"
 make yinstall
 
+echo -e "==> Update JWT private/public key"
+make jwt
+
 echo -e "==> Installation done ✅"
 exit 0
