@@ -6,7 +6,7 @@ const headers = { "Content-Type": "application/json" }
 
 export default {
   add(form) {
-    return fetch(uri('intershipsd'), {
+    return fetch(uri('interships'), {
       method: 'POST',
       headers: headers,
       body: form

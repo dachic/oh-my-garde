@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Card, CardBody, Button, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import Select from 'react-select';
+import { getLoggedInUser } from '../../../helpers/authUtils';
 
 import PageTitle from '../../../components/PageTitle';
 import pharmacyApi from '../../../api/pharmacy';
@@ -11,6 +12,8 @@ import internshipApi from '../../../api/internship';
 class Add extends Component {
   constructor(props) {
     super(props);
+    const loggedInUser = getLoggedInUser();
+    console.log(loggedInUser);
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
@@ -23,7 +26,7 @@ class Add extends Component {
       selectedPharmacy: '',
       user: '',
       errorSelect: {},
-      errorApi: '',
+      errorApi: ''
     };
   }
 
@@ -41,6 +44,7 @@ class Add extends Component {
         form = JSON.stringify(form, null, 2);
         internshipApi.add(form).then(pharmacy => {
           console.log(pharmacy);
+          event.currentTarget.reset();
           this.setState({ status: 'Les expériences ont bien été ajoutées', position: '', pharmacy: '', selectedAgrements: '', agrements: '', selectedPharmacy: '' });
         }).catch((error) => {
           this.setState({ errorApi: error.error });

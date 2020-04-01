@@ -36,8 +36,9 @@ docker-compose exec apache php bin/console doctrine:fixtures:load
 Drop and Recreate Database
 
 ```shell
-docker-compose exec apache php bin/console doctrine:database:drop --force
-docker-compose exec apache php bin/console doctrine:database:create
+make db-drop
+make db-create
+make db-update
 ```
 
 ## App base url
@@ -46,3 +47,4 @@ docker-compose exec apache php bin/console doctrine:database:create
 - [Client - http://localhost](http://localhost)
 - [Adminer DB - http://adminer.localhost](http://adminer.localhost)
 - [Api Docs - Api Route base - http://api.localhost/api](http://api.localhost/api)
+- [Mail Dev - http://maildev.localhost/](http://maildev.localhost/)

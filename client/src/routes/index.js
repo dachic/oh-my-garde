@@ -99,7 +99,7 @@ const dashboardRoutes = {
         text: '1',
     },
     component: Dashboard,
-    roles: ['ROLE_ADMIN'],
+    roles: ['ROLE_ADMIN', 'ROLE_PHARMACY', 'ROLE_INTERN'],
     route: PrivateRoute
 };
 
@@ -116,14 +116,14 @@ const pharmacyAppRoutes = {
             name: 'Ajouter',
             component: PharmacyApp,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ROLE_PHARMACY'],
         },
         {
             path: '/pharmacy/edit',
             name: 'Modifier',
             // component: EmailDetail,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ROLE_PHARMACY'],
         },
     ]
 };
@@ -144,24 +144,24 @@ const internAppRoutes = {
                     name: 'Ajouter',
                     component: InternApp,
                     route: PrivateRoute,
-                    roles: ['Admin'],
+                    roles: ['ROLE_INTERN'],
                 },
                 {
                     path: 'intern/internship/all',
                     name: 'Consulter',
                     // component: EmailDetail,
                     route: PrivateRoute,
-                    roles: ['Admin'],
+                    roles: ['ROLE_INTERN'],
                 }
             ],
-            roles: ['Admin'],
+            roles: ['ROLE_INTERN'],
         },
         {
             path: '/intern/profile',
             name: 'Profil',
             // component: EmailDetail,
             route: PrivateRoute,
-            roles: ['Admin'],
+            roles: ['ROLE_INTERN'],
         },
     ]
 };

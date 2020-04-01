@@ -27,6 +27,12 @@ install:
 	chmod +x ./script/install.sh && ./script/install.sh ${env}
 migrate:
 	docker-compose exec -T apache bin/console doctrine:migrations:migrate --no-interaction
+db-drop:
+	docker-compose exec apache php bin/console doctrine:database:drop --force
+db-create:
+	docker-compose exec apache php bin/console doctrine:database:create
+db-update:
+	docker-compose exec apache php bin/console d:s:u --force
 cache-clear:
 	docker-compose exec -T apache bin/console cache:clear
 	docker-compose exec -T apache php bin/console cache:warmup
