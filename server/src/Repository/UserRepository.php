@@ -26,6 +26,5 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('role', $role)
             ->getQuery()
             ->getResult();
-
     }
 }

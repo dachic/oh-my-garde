@@ -54,7 +54,7 @@ const UserProfile = () => {
                     <DropdownItem divider />
                     <Link to="/account/logout" className="dropdown-item notify-item">
                         <FeatherIcon.LogOut className="icon-dual icon-xs mr-2" />
-                        <span>Logout</span>
+                        <span>Se déconnecter</span>
                     </Link>
                 </DropdownMenu>
             </UncontrolledDropdown>

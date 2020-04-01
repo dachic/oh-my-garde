@@ -2,7 +2,7 @@
 import { Cookies } from 'react-cookie';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { fetchJSON } from '../../helpers/api';
+import { fetchJSON, loginApi } from '../../helpers/api';
 
 import { LOGIN_USER, LOGOUT_USER, REGISTER_USER, FORGET_PASSWORD } from './constants';
 
@@ -30,13 +30,13 @@ const setSession = user => {
  */
 function* login({ payload: { username, password } }) {
     const options = {
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email: username, password }),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     };
 
     try {
-        const response = yield call(fetchJSON, '/users/authenticate', options);
+        const response = yield call(loginApi, '/api/login', options);
         setSession(response);
         yield put(loginUserSuccess(response));
     } catch (error) {

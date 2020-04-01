@@ -19,8 +19,8 @@ class Login extends Component {
 
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
         this.state = {
-            username: 'test',
-            password: 'test'
+            username: 'kaba@ohmygarde.app',
+            password: 'admin'
         }
     }
 
@@ -74,12 +74,12 @@ class Login extends Component {
                                                 <div className="mx-auto mb-5">
                                                     <a href="/">
                                                         <img src={logo} alt="" height="24" />
-                                                        <h3 className="d-inline align-middle ml-1 text-logo">Shreyu</h3>
+                                                        <h3 className="d-inline align-middle ml-1 text-logo">Oh My Garde</h3>
                                                     </a>
                                                 </div>
 
-                                                <h6 className="h5 mb-0 mt-4">Welcome back!</h6>
-                                                <p className="text-muted mt-1 mb-4">Enter your email address and password to access admin panel.</p>
+                                                <h6 className="h5 mb-0 mt-4">Bienvenue</h6>
+                                                <p className="text-muted mt-1 mb-4">Entrez votre adresse e-mail et mot de passe pour accéder au panneau d’administration.</p>
 
 
                                                 {this.props.error && <Alert color="danger" isOpen={this.props.error ? true : false}>
@@ -88,7 +88,7 @@ class Login extends Component {
 
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
                                                     <AvGroup className="">
-                                                        <Label for="username">Username</Label>
+                                                        <Label for="username">Adresse email</Label>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
@@ -97,14 +97,14 @@ class Login extends Component {
                                                             </InputGroupAddon>
                                                             <AvInput type="text" name="username" id="username" placeholder="hello@coderthemes.com" value={this.state.username} required />
                                                         </InputGroup>
-                                                        
+
                                                         <AvFeedback>This field is invalid</AvFeedback>
                                                     </AvGroup>
 
 
                                                     <AvGroup className="mb-3">
-                                                        <Label for="password">Password</Label>
-                                                        <Link to="/account/forget-password" className="float-right text-muted text-unline-dashed ml-1">Forgot your password?</Link>
+                                                        <Label for="password">Mot de passe</Label>
+                                                        <Link to="/account/forget-password" className="float-right text-muted text-unline-dashed ml-1">Mot de passe oublié?</Link>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
@@ -113,14 +113,12 @@ class Login extends Component {
                                                             </InputGroupAddon>
                                                             <AvInput type="password" name="password" id="password" placeholder="Enter your password" value={this.state.password} required />
                                                         </InputGroup>
-                                                        <AvFeedback>This field is invalid</AvFeedback>
+                                                        <AvFeedback>Saisissez un mot de passe</AvFeedback>
                                                     </AvGroup>
 
                                                     <FormGroup className="form-group mb-0 text-center">
-                                                        <Button color="primary" className="btn-block">Log In</Button>
+                                                        <Button color="primary" className="btn-block">Connectez-vous</Button>
                                                     </FormGroup>
-
-                                                    <p className="mt-3"><strong>Username:</strong> test &nbsp;&nbsp; <strong>Password:</strong> test</p>
                                                 </AvForm>
                                             </Col>
 
@@ -136,7 +134,7 @@ class Login extends Component {
                                             </Col>
                                         </Row>
 
-                                        
+
                                     </CardBody>
                                 </Card>
                             </Col>
@@ -144,7 +142,7 @@ class Login extends Component {
 
                         <Row className="mt-3">
                             <Col className="col-12 text-center">
-                                <p className="text-muted">Don't have an account? <Link to="/account/register" className="text-primary font-weight-bold ml-1">Sign Up</Link></p>
+                                <p className="text-muted">Vous n'avez pas encore de compte? <Link to="/account/register" className="text-primary font-weight-bold ml-1">Inscrivez-vous</Link></p>
                             </Col>
                         </Row>
 
