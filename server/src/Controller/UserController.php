@@ -94,4 +94,28 @@ class UserController extends AbstractController
         return $response;
 
     }
+    /**
+     * @Route("/guard/all", name="user_all", methods={"GET","POST"})
+     */
+    public function all(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repository = $this->getDoctrine()->getRepository(Guard::class);
+
+        $array = $repository->findBy(['status' => 'accepted'],['user' => 'ASC','pharmacy' => 'ASC', 'hour' => 'ASC']);
+        $array2 = [];
+        foreach($array as $object){
+            array_push($array2, $object->toString());
+        }
+       
+        $response = new Response();
+        $response->setContent(json_encode(
+            $array2
+        ));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+    }
+    
 }    
