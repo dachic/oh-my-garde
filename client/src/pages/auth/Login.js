@@ -9,7 +9,7 @@ import { Mail, Lock } from 'react-feather';
 import { loginUser } from '../../redux/actions';
 import { isUserAuthenticated } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo_horizontal.svg';
 
 class Login extends Component {
     _isMounted = false;
@@ -73,8 +73,7 @@ class Login extends Component {
 
                                                 <div className="mx-auto mb-5">
                                                     <a href="/">
-                                                        <img src={logo} alt="" height="24" />
-                                                        <h3 className="d-inline align-middle ml-1 text-logo">Shreyu</h3>
+                                                        <img src={logo} alt="" height="37" />
                                                     </a>
                                                 </div>
 
