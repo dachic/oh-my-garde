@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200330174016 extends AbstractMigration
+final class Version20200401103942 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -29,22 +29,22 @@ final class Version20200330174016 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE disponibility_hour_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE pharmacy_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE agrement_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE omg_disponibility (id INT NOT NULL, user_id INT DEFAULT NULL, hour_id INT DEFAULT NULL, day VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE omg_disponibility (id INT NOT NULL, user_id INT DEFAULT NULL, hour_id INT DEFAULT NULL, day VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D3ECBBC8A76ED395 ON omg_disponibility (user_id)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_D3ECBBC8B5937BF9 ON omg_disponibility (hour_id)');
-        $this->addSql('CREATE TABLE omg_intership (id INT NOT NULL, user_id INT DEFAULT NULL, pharmacy_id INT DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_D3ECBBC8B5937BF9 ON omg_disponibility (hour_id)');
+        $this->addSql('CREATE TABLE omg_intership (id INT NOT NULL, user_id INT DEFAULT NULL, pharmacy_id INT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_8C231241A76ED395 ON omg_intership (user_id)');
         $this->addSql('CREATE INDEX IDX_8C2312418A94ABE2 ON omg_intership (pharmacy_id)');
         $this->addSql('CREATE TABLE omg_intership_agrement (intership_id INT NOT NULL, agrement_id INT NOT NULL, PRIMARY KEY(intership_id, agrement_id))');
         $this->addSql('CREATE INDEX IDX_459C1F199495B42F ON omg_intership_agrement (intership_id)');
         $this->addSql('CREATE INDEX IDX_459C1F1966BFF398 ON omg_intership_agrement (agrement_id)');
-        $this->addSql('CREATE TABLE omg_user (id INT NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, roles JSON NOT NULL, phone_number VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE omg_guard (id INT NOT NULL, user_id INT DEFAULT NULL, pharmacy_id INT DEFAULT NULL, hour_id INT DEFAULT NULL, day VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE omg_user (id INT NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, roles jsonb NOT NULL, phone_number VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, address VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE omg_guard (id INT NOT NULL, user_id INT DEFAULT NULL, pharmacy_id INT DEFAULT NULL, hour_id INT DEFAULT NULL, day VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_F4C4C329A76ED395 ON omg_guard (user_id)');
         $this->addSql('CREATE INDEX IDX_F4C4C3298A94ABE2 ON omg_guard (pharmacy_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_F4C4C329B5937BF9 ON omg_guard (hour_id)');
         $this->addSql('CREATE TABLE omg_disponibility_hour (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE omg_pharmacy (id INT NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, phone_number VARCHAR(255) NOT NULL, hospital_name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE omg_pharmacy (id INT NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, phone_number VARCHAR(255) NOT NULL, hospital_name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE omg_pharmacy_agrement (pharmacy_id INT NOT NULL, agrement_id INT NOT NULL, PRIMARY KEY(pharmacy_id, agrement_id))');
         $this->addSql('CREATE INDEX IDX_902B61288A94ABE2 ON omg_pharmacy_agrement (pharmacy_id)');
         $this->addSql('CREATE INDEX IDX_902B612866BFF398 ON omg_pharmacy_agrement (agrement_id)');

@@ -9,6 +9,7 @@ use App\Constant\UserStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ApiResource()
@@ -16,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User  implements UserInterface
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
