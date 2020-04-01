@@ -8,8 +8,6 @@ import pharmacyApi from '../../../api/pharmacy';
 import agrementApi from '../../../api/agrement';
 import internshipApi from '../../../api/internship';
 
-const customStyles = {}
-
 class Add extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +23,7 @@ class Add extends Component {
       selectedPharmacy: '',
       user: '',
       errorSelect: {},
+      errorApi: '',
     };
   }
 
@@ -44,7 +43,7 @@ class Add extends Component {
           console.log(pharmacy);
           this.setState({ status: 'Les expériences ont bien été ajoutées', position: '', pharmacy: '', selectedAgrements: '', agrements: '', selectedPharmacy: '' });
         }).catch((error) => {
-          console.log(error);
+          this.setState({ errorApi: error.error });
         });
       }
       else {
@@ -62,7 +61,8 @@ class Add extends Component {
       });
       this.setState({ pharmaciesOptions: options });
     }).catch((error) => {
-      console.log(error);
+      console.log(error.error);
+      this.setState({ pharmaciesOptions: { value: 0, label: "Aucun hôpital trouvé" } });
     });
   }
 
@@ -75,6 +75,7 @@ class Add extends Component {
       this.setState({ agrementsOptions: options });
     }).catch((error) => {
       console.log(error);
+      this.setState({ pharmaciesOptions: { value: 0, label: "Aucun agrément trouvé" } });
     });
   }
 
@@ -128,6 +129,14 @@ class Add extends Component {
               </div>
             </div>
           </Col>}
+        {this.state.errorApi &&
+          <Col md={12}>
+            <div className="mt-2 p-2">
+              <div className="alert alert-danger" role="alert" aria-label="Close">
+                <strong>{this.state.errorApi}</strong>
+              </div>
+            </div>
+          </Col>}
       </Row>
 
       <Row>
@@ -162,7 +171,7 @@ class Add extends Component {
                 </div>
 
                 <div>
-                  <Label for="agrements" styles={this.state.errorSelect && { border: 'red' }}>Agréments *</Label>
+                  <Label for="agrements" style={this.state.errorSelect && { border: 'red' }}>Agréments *</Label>
                   <Select
                     name="agrements"
                     isMulti={true}
