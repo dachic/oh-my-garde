@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import * as FeatherIcon from 'react-feather';
 
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
+import InternExport from '../pages/export/InternExport';
 
 // auth
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -100,6 +101,21 @@ const dashboardRoutes = {
     },
     component: Dashboard,
     roles: ['ROLE_ADMIN', 'ROLE_PHARMACY', 'ROLE_INTERN'],
+    route: PrivateRoute
+};
+
+// interns
+const internRoutes = {
+    path: '/interns/export',
+    name: 'Interns Export',
+    icon: FeatherIcon.Home,
+    header: 'Navigation',
+    badge: {
+        variant: 'success',
+        text: '1',
+    },
+    component: InternExport,
+    roles: ['ROLE_ADMIN'],
     route: PrivateRoute
 };
 
@@ -249,7 +265,7 @@ const taskAppRoutes = {
     ],
 };
 
-const appRoutes = [pharmacyAppRoutes, internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
 
 
 // pages

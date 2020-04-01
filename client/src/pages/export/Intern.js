@@ -296,7 +296,7 @@ const TableWithColumnToggle = () => {
     );
 };
 
-const Tables = () => {
+const Intern = () => {
     return (
         <React.Fragment>
             <Row className="page-title">
@@ -344,4 +344,4 @@ const Tables = () => {
     );
 };
 
-export default Tables;
+export default Intern;
