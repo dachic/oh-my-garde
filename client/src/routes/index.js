@@ -14,7 +14,8 @@ const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
 // dashboard
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
-const InformationsApp = React.lazy(() => import('../pages/apps/Informations/Add'));
+const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
+const InternApp = React.lazy(() => import('../pages/apps/Intern/Experiences'));
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
 const EmailDetail = React.lazy(() => import('../pages/apps/Email/Detail'));
@@ -103,22 +104,60 @@ const dashboardRoutes = {
 
 // apps
 // Switch this menu regarding the user logged in (intern or representative)
-const informationsAppRoutes = {
-    path: '/informations',
+const pharmacyAppRoutes = {
+    path: 'pharmacy',
     name: 'Pharmacie',
     header: 'Entités',
     icon: FeatherIcon.FileText,
     children: [
         {
-            path: '/informations/add',
+            path: '/pharmacy/add',
             name: 'Ajouter',
-            component: InformationsApp,
+            component: PharmacyApp,
             route: PrivateRoute,
             roles: ['Admin'],
         },
         {
-            path: '/informations/edit',
+            path: '/pharmacy/edit',
             name: 'Modifier',
+            // component: EmailDetail,
+            route: PrivateRoute,
+            roles: ['Admin'],
+        },
+    ]
+};
+
+const internAppRoutes = {
+    path: 'intern',
+    name: 'Interne',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/intern/internship',
+            name: 'Expériences',
+            component: InternApp,
+            route: PrivateRoute,
+            children: [
+                {
+                    path: '/intern/internship/add',
+                    name: 'Ajouter',
+                    component: InternApp,
+                    route: PrivateRoute,
+                    roles: ['Admin'],
+                },
+                {
+                    path: 'intern/internship/all',
+                    name: 'Consulter',
+                    // component: EmailDetail,
+                    route: PrivateRoute,
+                    roles: ['Admin'],
+                }
+            ],
+            roles: ['Admin'],
+        },
+        {
+            path: '/intern/profile',
+            name: 'Profil',
             // component: EmailDetail,
             route: PrivateRoute,
             roles: ['Admin'],
@@ -209,7 +248,7 @@ const taskAppRoutes = {
     ],
 };
 
-const appRoutes = [informationsAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+const appRoutes = [pharmacyAppRoutes, internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
 
 
 // pages

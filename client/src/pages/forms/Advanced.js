@@ -40,7 +40,7 @@ const ReactSelect = () => {
                             classNamePrefix="react-select"></Select>
                     </Col>
                 </Row>
-                
+
             </CardBody>
         </Card>
     );
@@ -70,7 +70,7 @@ const DatePickers = () => {
                     <Col lg={6}>
                         <div className="form-group">
                             <label>Date &amp; Time</label> <br />
-                            <Flatpickr value={new Date()} options={{enableTime: true}}
+                            <Flatpickr value={new Date()} options={{ enableTime: true }}
                                 onChange={date => { console.log(date) }}
                                 className="form-control" />
                         </div>
@@ -81,15 +81,15 @@ const DatePickers = () => {
                     <Col lg={6}>
                         <div className="form-group">
                             <label>Human-friendly Dates</label> <br />
-                            <Flatpickr value={new Date()} options={{altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d"}}
-                                    onChange={date => { console.log(date) }}
-                                    className="form-control" />
+                            <Flatpickr value={new Date()} options={{ altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d" }}
+                                onChange={date => { console.log(date) }}
+                                className="form-control" />
                         </div>
                     </Col>
                     <Col lg={6}>
                         <div className="form-group">
                             <label>MinDate and MaxDate</label> <br />
-                            <Flatpickr value={new Date()} options={{minDate: "today", maxDate: new Date().fp_incr(14)}}
+                            <Flatpickr value={new Date()} options={{ minDate: "today", maxDate: new Date().fp_incr(14) }}
                                 onChange={date => { console.log(date) }}
                                 className="form-control" />
                         </div>
@@ -100,7 +100,7 @@ const DatePickers = () => {
                     <Col lg={6}>
                         <div className="form-group">
                             <label>Selecting multiple dates</label> <br />
-                            <Flatpickr value={new Date()} options={{mode: "multiple", dateFormat: "Y-m-d"}}
+                            <Flatpickr value={new Date()} options={{ mode: "multiple", dateFormat: "Y-m-d" }}
                                 onChange={date => { console.log(date) }}
                                 className="form-control" />
                         </div>
@@ -108,9 +108,9 @@ const DatePickers = () => {
                     <Col lg={6}>
                         <div className="form-group">
                             <label>Date Range</label> <br />
-                            <Flatpickr value={new Date()} options={{mode: "range"}}
-                                    onChange={date => { console.log(date) }}
-                                    className="form-control" />
+                            <Flatpickr value={new Date()} options={{ mode: "range" }}
+                                onChange={date => { console.log(date) }}
+                                className="form-control" />
                         </div>
                     </Col>
                 </Row>
@@ -119,7 +119,7 @@ const DatePickers = () => {
                     <Col lg={6}>
                         <div className="form-group">
                             <label>Basic Time</label> <br />
-                            <Flatpickr value={new Date()} options={{enableTime: true, noCalendar: true, dateFormat: "H:i"}}
+                            <Flatpickr value={new Date()} options={{ enableTime: true, noCalendar: true, dateFormat: "H:i" }}
                                 onChange={date => { console.log(date) }}
                                 className="form-control" />
                         </div>
@@ -127,9 +127,9 @@ const DatePickers = () => {
                     <Col lg={6}>
                         <div className="form-group">
                             <label>24-hour Time Picker</label> <br />
-                            <Flatpickr value={new Date()}  options={{enableTime: true, noCalendar: true, dateFormat: "H:i",  time_24hr: true}}
-                                    onChange={date => { console.log(date) }}
-                                    className="form-control" />
+                            <Flatpickr value={new Date()} options={{ enableTime: true, noCalendar: true, dateFormat: "H:i", time_24hr: true }}
+                                onChange={date => { console.log(date) }}
+                                className="form-control" />
                         </div>
                     </Col>
                 </Row>

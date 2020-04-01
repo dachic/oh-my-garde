@@ -33,6 +33,13 @@ Load fixtures
 docker-compose exec apache php bin/console doctrine:fixtures:load
 ```
 
+Drop and Recreate Database
+
+```shell
+docker-compose exec apache php bin/console doctrine:database:drop --force
+docker-compose exec apache php bin/console doctrine:database:create
+```
+
 ## App base url
 
 - [Server - http://api.localhost](http://api.localhost)

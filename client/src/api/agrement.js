@@ -2,22 +2,12 @@
 const url = "http://api.localhost/api/"
 let uri = (path) => { return url + path }
 
-const headers = { "Content-Type": "application/json" }
+// const headers = { "Content-Type": "application/json" }
 
 export default {
 
-  add(pharmacy) {
-    return fetch(uri('pharmacies'), {
-      method: 'POST',
-      headers: headers,
-      body: pharmacy
-    }).then((response) => {
-      Promise.resolve(response);
-    }).catch(error => Promise.reject(error.response));
-  },
-
   getAll() {
-    return fetch(uri('pharmacies'), {
+    return fetch(uri('agrements'), {
       method: 'GET',
     }).then((response) => {
       // convert data from ReadableStream to JSON

@@ -31,11 +31,6 @@ class Agrement
     private $interships;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pharmacy", mappedBy="agrements")
-     */
-    private $pharmacies;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $code;
@@ -43,7 +38,6 @@ class Agrement
     public function __construct()
     {
         $this->interships = new ArrayCollection();
-        $this->pharmacies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,34 +80,6 @@ class Agrement
         if ($this->interships->contains($intership)) {
             $this->interships->removeElement($intership);
             $intership->removeAgrement($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Pharmacy[]
-     */
-    public function getPharmacies(): Collection
-    {
-        return $this->pharmacies;
-    }
-
-    public function addPharmacy(Pharmacy $pharmacy): self
-    {
-        if (!$this->pharmacies->contains($pharmacy)) {
-            $this->pharmacies[] = $pharmacy;
-            $pharmacy->addAgrement($this);
-        }
-
-        return $this;
-    }
-
-    public function removePharmacy(Pharmacy $pharmacy): self
-    {
-        if ($this->pharmacies->contains($pharmacy)) {
-            $this->pharmacies->removeElement($pharmacy);
-            $pharmacy->removeAgrement($this);
         }
 
         return $this;

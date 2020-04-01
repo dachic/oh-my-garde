@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label } from 'reactstrap';
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import PageTitle from '../../../components/PageTitle';
 import Api from '../../../api/pharmacy';
@@ -9,21 +9,22 @@ class Add extends Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {};
+    this.state = {
+      status: ''
+    };
   }
 
   handleSubmit(event, errors, values) {
-    // event.preventDefault();
-    console.log(errors);
-    if (errors.length) {
-      this.setState({ errors, values });
-    }
-    else {
-      // API Call
+    this.setState({ errors, values });
+
+    // API Call
+    if (!errors.length) {
+      // TODO: Add logged in user's id to form (representative: the entire user entity)
       let form = JSON.stringify(this.state.values, null, 2);
       console.log(form);
-      Api.add(form).then(user => {
-        console.log(user);
+      Api.add(form).then(pharmacy => {
+        console.log(pharmacy);
+        this.setState({ status: 'La pharmacie a bien été ajoutée', name: '', hospitalName: '', email: '', phoneNumber: '' });
       }).catch((error) => {
         console.log(error);
       });
@@ -42,37 +43,53 @@ class Add extends Component {
             title={'Ajouter une nouvelle pharmacie'}
           />
         </Col>
+        {this.state.status &&
+          <Col md={12}>
+            <div className="mt-2 p-2">
+              <div className="alert alert-success" role="alert" aria-label="Close">
+                <strong>{this.state.status}</strong>
+                <span aria-hidden="true">&times;</span>
+              </div>
+            </div>
+          </Col>}
       </Row>
 
       <Row>
-        <Col lg={6}>
+        <Col lg={12}>
           <Card>
             <CardBody>
-              <h4 className="header-title mt-0 mb-1">Informations sur la pharmacie</h4>
               <AvForm onSubmit={this.handleSubmit}>
 
                 <AvGroup>
-                  <Label for="hospitalName">Nom de l'hôpital relié</Label>
+                  <Label for="name">Nom de la pharmacie *</Label>
+                  <div className="input-group">
+                    <AvInput type="text" name="name" required />
+                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
+                  </div>
+                </AvGroup>
+
+                <AvGroup>
+                  <Label for="hospitalName">Nom de l'hôpital relié *</Label>
                   <div className="input-group">
                     <AvInput type="text" name="hospitalName" required />
-                    <AvFeedback>Champ incorrect.</AvFeedback>
+                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
                   </div>
                 </AvGroup>
 
                 <AvGroup>
-                  <Label for="email">Adresse email</Label>
+                  <Label for="email">Adresse email (si défférente de celle du représent)</Label>
                   <div className="input-group">
                     <InputGroupAddon addonType="prepend">@</InputGroupAddon>
-                    <AvInput type="email" placeholder="Email" name="email" required />
-                    <AvFeedback>Champ incorrect.</AvFeedback>
+                    <AvInput type="email" placeholder="Email" name="email" />
+                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
                   </div>
                 </AvGroup>
 
                 <AvGroup>
-                  <Label for="phoneNumber">Numéro de téléphone</Label>
+                  <Label for="phoneNumber">Numéro de téléphone (si défférent de celui du représent)</Label>
                   <div className="input-group">
-                    <AvInput type="text" name="phoneNumber" required />
-                    <AvFeedback>Champ incorrect.</AvFeedback>
+                    <AvInput type="text" name="phoneNumber" />
+                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
                   </div>
                 </AvGroup>
                 <Button color="primary" type="submit">
@@ -87,29 +104,6 @@ class Add extends Component {
           Invalid: {this.state.errors.join(', ')}<br />
           Values: <pre>{JSON.stringify(this.state.values, null, 2)}</pre>
         </div>}
-        <Col lg={6}>
-          <Card>
-            <CardBody>
-              <h4 className="header-title mt-0 mb-1">Besoins</h4>
-              <AvForm>
-                <AvField name="hospitalName" label="Nom de l'hôpital relié" type="text" required />
-
-                <AvGroup>
-                  <Label for="email">Email</Label>
-                  <div className="input-group">
-                    <InputGroupAddon addonType="prepend">@</InputGroupAddon>
-                    <AvInput placeholder="Email" name="email" required />
-                    <AvFeedback>Veuillez renseigner une adresse email.</AvFeedback>
-                  </div>
-                </AvGroup>
-
-                <Button color="primary" type="submit">
-                  Ajouter
-                </Button>
-              </AvForm>
-            </CardBody>
-          </Card>
-        </Col>
       </Row>
     </React.Fragment>
   }
