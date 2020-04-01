@@ -29,12 +29,6 @@ class Intership
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pharmacy", inversedBy="interships")
-     * @ORM\JoinColumn(name="pharmacy_id", referencedColumnName="id", nullable=true)
-     */
-    private $pharmacy;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Agrement", inversedBy="interships")
      */
     private $agrements;
@@ -43,6 +37,12 @@ class Intership
      * @ORM\Column(type="string", length=255)
      */
     private $position;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hospital", inversedBy="interships")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $hospital;
 
     public function __construct()
     {
@@ -62,18 +62,6 @@ class Intership
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getPharmacy(): ?Pharmacy
-    {
-        return $this->pharmacy;
-    }
-
-    public function setPharmacy(?Pharmacy $pharmacy): self
-    {
-        $this->pharmacy = $pharmacy;
 
         return $this;
     }
@@ -112,6 +100,18 @@ class Intership
     public function setPosition(string $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getHospital(): ?Hospital
+    {
+        return $this->hospital;
+    }
+
+    public function setHospital(?Hospital $hospital): self
+    {
+        $this->hospital = $hospital;
 
         return $this;
     }
