@@ -14,57 +14,64 @@ use App\Repository\DisponibilityHourRepository;
 
 
 /**
- * @Route("/test")
+ * @Route("/user")
  */
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="user_index", methods={"GET","POST"})
+     * @Route("/guard/count", name="user_index", methods={"GET","POST"})
      */
     public function index(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
-       
         $repository_user = $this->getDoctrine()->getRepository(User::class);
-        $repository_guard = $this->getDoctrine()->getRepository(DisponibilityHour::class);
+        $repository_disponibility_hour = $this->getDoctrine()->getRepository(DisponibilityHour::class);
+        $repository_guard = $this->getDoctrine()->getRepository(Guard::class);
 
         $array = [];
+
         // on recupere tout les internes
         $ids = $repository_user->findByRole("ROLE_INTERN");
 
+        // on recupere toutes les heures
+        $hours = $repository_disponibility_hour->findHourGuard();
+
+        // on recupere toutes les gardes
+        $guards = $repository_guard->findBy(['status' => 'accepted']);
+
         // on fait une boucle pour chaque interne
-        foreach($ids as $id){
-            
-            
-            // on récupère chaque horaire
-            $hours = $em->createQuery(
-                "select distinct d.id from App\Entity\DisponibilityHour d, App\Entity\Guard g, App\Entity\User u
-                where g.hour = d.id
-                and g.user = u.id
-                and u.id = ".$id->getId()."
-                and g.status = 'accepted'
-            ")->getResult();
-
-            foreach($hours as $hour){
-
-                $days = $em->createQuery(
-                "select u.firstname, u.lastname, d.name as horaire, p.name, count(d.name) as nbJours
-                from App\Entity\DisponibilityHour d, App\Entity\Guard g, App\Entity\User u, App\Entity\Pharmacy p
-                where g.hour = d.id
-                and g.user = u.id
-                and g.pharmacy = p.id
-                and u.id = ".$id->getId()."
-                and g.status = 'accepted'
-                and d.id = ".$hour['id']."
-                group by u.firstname, u.lastname, d.name, p.name
-                ")->getResult();
-
-                foreach($days as $day)
+        foreach($ids as $id)
+        {         
+            foreach($hours as $hour)
+            {
+                $count = 0;
+                foreach($guards as $guard)
+                {
+                    if(($guard->getHour()->getId() == $hour->getId()) && ($guard->getUser()->getId() == $id->getId()))
+                    {
+                        $count++;
+                        $day = [
+                            'LastName'  => $guard->getUser()->getLastName(),
+                            'FirstName' => $guard->getUser()->getFirstName(),
+                            'Name'      => $guard->getPharmacy()->getName(),
+                            'Horaire'   => $hour->getName(),
+                            'NbGarde'   => $count
+                        ];
+                    }
+                }
+                if(isset($day))
+                {
                     array_push($array, $day);
+                    unset($day);
+                } 
             }
-
         }
+
+        // unset tout les tableaux
+        unset($ids);
+        unset($hours);
+        unset($guards);
        
         $response = new Response();
         $response->setContent(json_encode(
