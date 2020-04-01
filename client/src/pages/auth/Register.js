@@ -132,7 +132,7 @@ class Register extends Component {
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.email} type="email" name="email" id="email" placeholder="kaba@coderthemes.com" required />
+                                                            <AvInput value={this.state.email} type="email" name="email" id="email" placeholder="adrien@ohmygarde.app" required />
                                                         </InputGroup>
 
                                                         <AvFeedback>Veuillez saisir votre addresse mail</AvFeedback>
