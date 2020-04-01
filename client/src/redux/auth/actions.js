@@ -28,9 +28,9 @@ export const loginUserFailed = (error) => ({
     payload: error,
 });
 
-export const registerUser = (firstname, lastname, email, password, phoneNumber) => ({
+export const registerUser = (firstname, lastname, email, password, phoneNumber, role) => ({
     type: REGISTER_USER,
-    payload: { firstname, lastname, email, password, phoneNumber },
+    payload: { firstname, lastname, email, password, phoneNumber, role },
 });
 
 export const registerUserSuccess = (user) => ({

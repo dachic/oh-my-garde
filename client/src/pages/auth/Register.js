@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom'
 
 import { Container, Row, Col, Card, CardBody, Label, FormGroup, Button, Alert, InputGroup, InputGroupAddon, CustomInput } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvFeedback, AvRadio, AvRadioGroup } from 'availity-reactstrap-validation';
 import { Mail, Lock, User, PhoneCall } from 'react-feather';
 
 import { registerUser } from '../../redux/actions';
@@ -18,14 +18,14 @@ class Register extends Component {
         super(props);
 
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
-        this.state = {
-            firstname: 'kabad',
-            lastname: 'conde',
-            email: 'kaba@ohmygarde.app',
-            pasword: 'admin',
-            phoneNumber: '0768141623',
-            role: 'ROLE_ADMIN'
-        }
+        // this.state = {
+        //     firstname: 'kabad',
+        //     lastname: 'conde',
+        //     email: 'kabax@ohmygarde.app',
+        //     password: 'admin',
+        //     phoneNumber: '0768141623',
+        //     role: 'ROLE_ADMIN'
+        // }
     }
 
     componentDidMount() {
@@ -42,7 +42,7 @@ class Register extends Component {
      * Handles the submit
      */
     handleValidSubmit = (event, values) => {
-        this.props.registerUser(values.firstname, values.lastname, values.email, values.phoneNumber, values.password);
+        this.props.registerUser(values.firstname, values.lastname, values.email, values.phoneNumber, values.password, values.role);
     }
 
     /**
@@ -105,7 +105,7 @@ class Register extends Component {
                                                                     <User className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.firstname}  type="text" name="firstname" id="firstname" placeholder="Michelle" required />
+                                                            <AvInput value={this.state.firstname} type="text" name="firstname" id="firstname" placeholder="Michelle" required />
                                                         </InputGroup>
 
                                                         <AvFeedback>Veuillez saisir votre prénom</AvFeedback>
@@ -119,7 +119,7 @@ class Register extends Component {
                                                                     <User className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.lastname}  type="text" name="lastname" id="lastname" placeholder="Condé" required />
+                                                            <AvInput value={this.state.lastname} type="text" name="lastname" id="lastname" placeholder="Condé" required />
                                                         </InputGroup>
 
                                                         <AvFeedback>Veuillez saisir votre nom de famille</AvFeedback>
@@ -133,7 +133,7 @@ class Register extends Component {
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.email}  type="email" name="email" id="email" placeholder="kaba@coderthemes.com" required />
+                                                            <AvInput value={this.state.email} type="email" name="email" id="email" placeholder="kaba@coderthemes.com" required />
                                                         </InputGroup>
 
                                                         <AvFeedback>Veuillez saisir votre addresse mail</AvFeedback>
@@ -147,7 +147,7 @@ class Register extends Component {
                                                                     <PhoneCall className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.phoneNumber}  type="text" name="phoneNumber" id="phoneNumber" placeholder="0756234589" required />
+                                                            <AvInput value={this.state.phoneNumber} type="text" name="phoneNumber" id="phoneNumber" placeholder="0756234589" required />
                                                         </InputGroup>
 
                                                         <AvFeedback>Saisissez votre numéro de téléphone</AvFeedback>
@@ -161,9 +161,21 @@ class Register extends Component {
                                                                     <Lock className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.password}  type="password" name="password" id="password" placeholder="*********" required />
+                                                            <AvInput value={this.state.password} type="password" name="password" id="password" placeholder="*********" required />
                                                         </InputGroup>
                                                         <AvFeedback>Veuillez saisir un mot de passe</AvFeedback>
+                                                    </AvGroup>
+
+                                                    <AvGroup className="mb-3">
+                                                        <FormGroup>
+                                                            <Label for="roleUser">Rôle</Label>
+                                                            <AvRadioGroup name="role" required errorMessage="Choisissez un rôle">
+                                                                <AvRadio label="Chef de l'hôpital" value="ROLE_PHARMACY" />
+                                                                <AvRadio label="Interne" value="ROLE_INTERN" />
+                                                            </AvRadioGroup>
+                                                        </FormGroup>
+
+                                                        <AvFeedback>Veuillez choisir un rôle</AvFeedback>
                                                     </AvGroup>
 
                                                     <AvGroup check className="mb-4">

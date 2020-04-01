@@ -46,9 +46,12 @@ class AuthenticationController extends AbstractController
         $user->setFirstname($firstname)
             ->setLastname($lastname)
             ->setPhoneNumber($phoneNumber)
-            ->setEmail($email)
-            ->addRole($role)
-            ->setPassword($encoder->encodePassword($user, $password));
+            ->setEmail($email);
+
+        if (!empty($role)) {
+            $user->addRole($role);
+        }
+        $user->setPassword($encoder->encodePassword($user, $password));
 
         $errors = $validator->validate($user);
 

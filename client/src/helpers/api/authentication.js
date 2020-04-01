@@ -27,7 +27,6 @@ const loginApi = (endpoint, options) => {
 }
 
 const registerApi = (endpoint, options) => {
-    console.log(options, endpoint);
     return new Promise((resolve, reject) => {
         fetch(`${process.env.REACT_APP_API_URL}${endpoint}`, options)
             .then(response => {
@@ -36,7 +35,20 @@ const registerApi = (endpoint, options) => {
                 }
 
                 if (response.status === 400) {
-                    reject("Une erreur inattendue s'est produite lors de l'envoi des données. Ré-essayez !");
+                    return response.json()
+                        .catch(() => {
+                            // Couldn't parse the JSON
+                            // throw new Error(response.status);
+                            reject("Une erreur inattendue s'est produite lors de la lectuer des données. Ré-essayez !");
+                        }).then((data) => {
+                            // Got valid JSON with error response, use it
+                            if (data.success === false) {
+                                reject(data.message);
+                            } else {
+                                reject("Une erreur inattendue s'est produite lors de l'envoi des données. Ré-essayez !");
+                            }
+                            // throw new Error(message || response.status);
+                        });
                 }
 
                 return response.json()

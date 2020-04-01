@@ -73,13 +73,13 @@ function* logout({ payload: { history } }) {
 /**
  * Register the user
  */
-function* register({ payload: { firstname, lastname, email, phoneNumber, password } }) {
+function* register({ payload: { firstname, lastname, email, phoneNumber, password, role } }) {
     const options = {
-        body: JSON.stringify({ firstname, lastname, email, phoneNumber, password }),
+        body: JSON.stringify({ firstname, lastname, email, phoneNumber, password, role }),
         method: 'POST',
         headers: { "Content-Type": "application/json" },
     };
-
+console.log(options, "ok")
     try {
         const response = yield call(registerApi, '/register', options);
         yield put(registerUserSuccess(response));
