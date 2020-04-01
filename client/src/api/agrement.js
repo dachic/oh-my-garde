@@ -15,6 +15,6 @@ export default {
     }).then(function (data) {
       // console.log("api response", data['hydra:member']);
       return Promise.resolve(data['hydra:member']);
-    }).catch(error => Promise.reject(error.response));
+    }).catch(error => Promise.reject(error));
   },
 };
