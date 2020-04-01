@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardBody, Toast, ToastBody, ToastHeader } from 'reactstrap';
 
-import logo from '../../../assets/images/logo.svg';
+import logo from '../../../assets/images/logo.png';
 
 const Toasts = () => {
     const messages = [

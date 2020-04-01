@@ -3,7 +3,7 @@ import { Row, Col, Card, CardBody, Button } from 'reactstrap';
 
 import PageTitle from '../../components/PageTitle';
 
-import logo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/logo.png';
 
 
 const Invoice = () => {
@@ -72,7 +72,6 @@ const Invoice = () => {
                             <div className="clearfix">
                                 <div className="float-sm-right">
                                     <img src={logo} alt="" height="48" />
-                                    <h4 className="m-0 d-inline align-middle">Shreyu</h4>
                                     <address className="pl-2 mt-2">
                                         {invoiceDetail.address.line_1}<br />
                                         {invoiceDetail.address.city}, {invoiceDetail.address.state} {invoiceDetail.address.zip}<br />
