@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +35,16 @@ class Hospital
      * @ORM\OneToOne(targetEntity="App\Entity\Pharmacy", mappedBy="hospital", cascade={"persist", "remove"})
      */
     private $pharmacy;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Intership", mappedBy="hospital")
+     */
+    private $interships;
+
+    public function __construct()
+    {
+        $this->interships = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +87,37 @@ class Hospital
         // set the owning side of the relation if necessary
         if ($pharmacy->getHospital() !== $this) {
             $pharmacy->setHospital($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Intership[]
+     */
+    public function getInterships(): Collection
+    {
+        return $this->interships;
+    }
+
+    public function addIntership(Intership $intership): self
+    {
+        if (!$this->interships->contains($intership)) {
+            $this->interships[] = $intership;
+            $intership->setHospital($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntership(Intership $intership): self
+    {
+        if ($this->interships->contains($intership)) {
+            $this->interships->removeElement($intership);
+            // set the owning side to null (unless already changed)
+            if ($intership->getHospital() === $this) {
+                $intership->setHospital(null);
+            }
         }
 
         return $this;
