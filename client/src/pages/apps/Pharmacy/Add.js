@@ -3,7 +3,7 @@ import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label } from 'reacts
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import PageTitle from '../../../components/PageTitle';
-import Api from '../../../api/pharmacy';
+import Api from '../../../api/hospital';
 class Add extends Component {
   constructor(props) {
     super(props);

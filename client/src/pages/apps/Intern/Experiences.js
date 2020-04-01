@@ -5,9 +5,9 @@ import Select from 'react-select';
 import { getLoggedInUser } from '../../../helpers/authUtils';
 
 import PageTitle from '../../../components/PageTitle';
-import pharmacyApi from '../../../api/pharmacy';
+import hospitalApi from '../../../api/hospital';
 import agrementApi from '../../../api/agrement';
-import internshipApi from '../../../api/internship';
+// import internshipApi from '../../../api/internship';
 
 class Add extends Component {
   constructor(props) {
@@ -22,11 +22,11 @@ class Add extends Component {
       agrementsOptions: {},
       agrements: [],
       selectedAgrements: [],
-      pharmacy: '',
+      hospital: '',
       selectedPharmacy: '',
-      user: '',
       errorSelect: {},
-      errorApi: ''
+      errorApi: '',
+      user: `api/users/${loggedInUser.id}`
     };
   }
 
@@ -34,31 +34,37 @@ class Add extends Component {
     this.setState({ errors, values });
 
     if (!errors.length) {
-      if (this.state.agrements.length) {
+      if (!this.state.agrements.length) {
+        this.setState({ errorSelect: { agrement: "vous devez sélectionner au moins un argument" } });
+        return;
+      }
+      else if (this.state.hospital === '') {
+        this.setState({ errorSelect: { hospital: "vous devez sélectionner un hôpital" } });
+        return;
+      }
+      else {
         let form = this.state.values;
         let agrements = this.state.agrements;
         let pharmacy = this.state.pharmacy;
-        form.users = "api/users/2";
+        form.users = this.state.user;
+        // form.users = "api/users/" + this.loggedInUser.id;
         form.agrements = agrements;
         form.pharmacy = pharmacy;
         form = JSON.stringify(form, null, 2);
-        internshipApi.add(form).then(pharmacy => {
-          console.log(pharmacy);
-          event.currentTarget.reset();
-          this.setState({ status: 'Les expériences ont bien été ajoutées', position: '', pharmacy: '', selectedAgrements: '', agrements: '', selectedPharmacy: '' });
-        }).catch((error) => {
-          this.setState({ errorApi: error.error });
-        });
-      }
-      else {
-        this.setState({ errorSelect: { agrement: "vous devez sélectionner au moins un argument" } });
-        return;
+        console.log(form);
+        // internshipApi.add(form).then(pharmacy => {
+        //   console.log(pharmacy);
+        //   event.currentTarget.reset();
+        //   this.setState({ status: 'Les expériences ont bien été ajoutées', position: '', pharmacy: '', selectedAgrements: '', agrements: '', selectedPharmacy: '' });
+        // }).catch((error) => {
+        //   this.setState({ errorApi: error.error });
+        // });
       }
     }
   }
 
   loadPharmaciesFromServer() {
-    pharmacyApi.getAll().then(pharmacyList => {
+    hospitalApi.getAll().then(pharmacyList => {
       let options = [];
       Object.keys(pharmacyList).forEach(function (key) {
         options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
@@ -100,11 +106,9 @@ class Add extends Component {
 
   handleSelectedPharmacy = e => {
     if (e) {
-      this.setState({ pharmacy: `api/pharmacies/${e.value}` });
-      this.setState({ selectedPharmacy: e });
+      this.setState({ hospital: `api/hospitals/${e.value}`, selectedPharmacy: e, errorSelect: {} });
     } else {
-      this.setState({ pharmacy: '' });
-      this.setState({ selectedPharmacy: e });
+      this.setState({ hospital: '', errorSelect: { hospital: "vous devez sélectionner un hôpital" }, selectedPharmacy: e });
     }
   }
 
@@ -162,7 +166,7 @@ class Add extends Component {
                   </div>
                 </AvGroup>
                 <div style={{ marginBottom: '15px' }}>
-                  <Label for="pharmacy">Hôpital dans lequel le stage a été effectué</Label>
+                  <Label for="pharmacy">Hôpital dans lequel le stage a été effectué *</Label>
                   <Select
                     name="pharmacy"
                     options={this.state.pharmaciesOptions}
@@ -172,6 +176,8 @@ class Add extends Component {
                     value={this.state.selectedPharmacy}
                     onChange={this.handleSelectedPharmacy}
                     classNamePrefix="react-select"></Select>
+                  {this.state.errorSelect &&
+                    <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.hospital}</p>}
                 </div>
 
                 <div>

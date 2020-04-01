@@ -1,8 +1,11 @@
 
+import { getLoggedInUser } from '../helpers/authUtils';
+
 const url = "http://api.localhost/api/"
 let uri = (path) => { return url + path }
 
 const headers = { "Content-Type": "application/json" }
+const loggedInUser = getLoggedInUser();
 
 export default {
   add(form) {

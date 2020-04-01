@@ -17,13 +17,12 @@ export default {
   },
 
   getAll() {
-    return fetch(uri('pharmacies'), {
+    return fetch(uri('hospitals'), {
       method: 'GET',
     }).then((response) => {
       // convert data from ReadableStream to JSON
       return response.json();
     }).then(function (data) {
-      // console.log("api response", data['hydra:member']);
       return Promise.resolve(data['hydra:member']);
     }).catch(error => Promise.reject(error));
   },
