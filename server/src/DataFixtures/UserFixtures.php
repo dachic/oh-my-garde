@@ -10,6 +10,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
+use App\Entity\Job;
 use Faker;
 
 class UserFixtures extends Fixture
@@ -100,13 +101,20 @@ class UserFixtures extends Fixture
         $pharmacy->setHospitalName('CHU Lyon');
         $manager->persist($pharmacy);
 
+        $job = new Job();
+        $job->setTitle("CRPV");
+        $manager->persist($job);
+
         // Guard
         $guard = new Guard();
         $guard->setDay('monday');
         $guard->setHour($disponibilityHour);
         $guard->setUser($userIntern);
         $guard->setStatus('accepted');
+        $guard->addAgrement($agrement);
         $guard->setPharmacy($pharmacy);
+
+        $guard->setJob($job);
         $manager->persist($guard);
 
         // Internship

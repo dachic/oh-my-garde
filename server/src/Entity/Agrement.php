@@ -35,9 +35,15 @@ class Agrement
      */
     private $code;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Guard", mappedBy="agrement")
+     */
+    private $guards;
+
     public function __construct()
     {
         $this->interships = new ArrayCollection();
+        $this->guards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +99,34 @@ class Agrement
     public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Guard[]
+     */
+    public function getGuards(): Collection
+    {
+        return $this->guards;
+    }
+
+    public function addGuard(Guard $guard): self
+    {
+        if (!$this->guards->contains($guard)) {
+            $this->guards[] = $guard;
+            $guard->addAgrement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGuard(Guard $guard): self
+    {
+        if ($this->guards->contains($guard)) {
+            $this->guards->removeElement($guard);
+            $guard->removeAgrement($this);
+        }
 
         return $this;
     }

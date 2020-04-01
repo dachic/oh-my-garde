@@ -67,6 +67,7 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => (
             }
 
             const loggedInUser = getLoggedInUser();
+
             // check if route is restricted by role
             if (roles && roles.indexOf(loggedInUser.role) === -1) {
                 // role not authorised so redirect to home page
@@ -98,7 +99,7 @@ const dashboardRoutes = {
         text: '1',
     },
     component: Dashboard,
-    roles: ['Admin'],
+    roles: ['ROLE_ADMIN'],
     route: PrivateRoute
 };
 
