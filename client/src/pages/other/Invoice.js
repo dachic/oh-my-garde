@@ -3,7 +3,7 @@ import { Row, Col, Card, CardBody, Button } from 'reactstrap';
 
 import PageTitle from '../../components/PageTitle';
 
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.svg';
 
 
 const Invoice = () => {
