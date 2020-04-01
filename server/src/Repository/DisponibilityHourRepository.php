@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\DisponibilityHour;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 
 /**
  * @method DisponibilityHour|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,14 +48,13 @@ class DisponibilityHourRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findHourGuard($user_id)
+    public function findHourGuard()
     {
-        return $this->createQuery(
-            'select d.id from omg_disponibility_hour d, omg_guard g 
-            where g.hour_id = d.id
-            and g.user_id = '.$user_id.'
-            and g.status = "accepted"
-        ')
+        return $this->createQueryBuilder('d')
+            ->innerJoin('App\Entity\Guard', 'g', Join::WITH, 'g.hour = d')
+            ->andWhere('g.status = :status')
+            ->setParameter('status', 'accepted')
+            ->getQuery()
             ->getResult();
     }
 }
