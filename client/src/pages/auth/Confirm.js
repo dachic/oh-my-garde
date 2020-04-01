@@ -5,7 +5,7 @@ import { Redirect, Link } from 'react-router-dom'
 import { Container, Row, Col, Card, CardBody, } from 'reactstrap';
 
 import { isUserAuthenticated } from '../../helpers/authUtils';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo_horizontal.svg';
 
 class Confirm extends Component {
     _isMounted = false;
@@ -51,8 +51,7 @@ class Confirm extends Component {
                                     <CardBody className="p-4">
                                         <div className="mx-auto mb-5">
                                             <a href="/">
-                                                <img src={logo} alt="" height="24" />
-                                                <h3 className="d-inline align-middle ml-1 text-logo">Oh My Garde</h3>
+                                                <img src={logo} alt="" height="37" />
                                             </a>
                                         </div>
 

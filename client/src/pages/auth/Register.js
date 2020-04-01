@@ -9,7 +9,7 @@ import { Mail, Lock, User, PhoneCall } from 'react-feather';
 import { registerUser } from '../../redux/actions';
 import { isUserAuthenticated } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo_horizontal.svg';
 
 class Register extends Component {
     _isMounted = false;
@@ -84,8 +84,7 @@ class Register extends Component {
 
                                                 <div className="mx-auto mb-5">
                                                     <a href="/">
-                                                        <img src={logo} alt="" height="24" />
-                                                        <h3 className="d-inline align-middle ml-1 text-logo">Oh My Garde</h3>
+                                                        <img src={logo} alt="" height="37" />
                                                     </a>
                                                 </div>
 

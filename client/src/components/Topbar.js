@@ -9,7 +9,7 @@ import NotificationDropdown from './NotificationDropdown';
 import ProfileDropdown from './ProfileDropdown';
 import LanguageDropdown from './LanguageDropdown';
 
-import logo from '../assets/images/logo.png';
+import logo from '../assets/images/logo_horizontal.svg';
 import profilePic from '../assets/images/users/avatar-7.jpg';
 
 
@@ -91,8 +91,7 @@ class Topbar extends Component {
             { /* logo */}
             <Link to="/" className="navbar-brand mr-0 mr-md-2 logo">
               <span className="logo-lg">
-                <img src={logo} alt="" height="24" />
-                <span className="d-inline h5 ml-2 text-logo">Oh My Garde</span>
+                <img src={logo} alt="" height="37" />
               </span>
               <span className="logo-sm">
                 <img src={logo} alt="" height="24" />
