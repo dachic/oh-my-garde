@@ -39,7 +39,7 @@ class Guard
     private $status;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\DisponibilityHour", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\DisponibilityHour", cascade={"persist", "remove"})
      */
     private $hour;
 
