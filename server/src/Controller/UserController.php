@@ -62,11 +62,17 @@ class UserController extends AbstractController
                         {
                             $count++;
                             $day = [
-                                'LastName'  => $guard->getUser()->getLastName(),
-                                'FirstName' => $guard->getUser()->getFirstName(),
-                                'Name'      => $guard->getPharmacy()->getName(),
-                                'Horaire'   => $hour->getName(),
-                                'NbGarde'   => $count
+                                'id'  => $guard->getId(),
+                                'lastname'  => $guard->getUser()->getLastName(),
+                                'firstname' => $guard->getUser()->getFirstName(),
+                                'phoneNumber' => $guard->getUser()->getPhoneNumber(),
+                                'email' => $guard->getUser()->getEmail(),
+                                'namePharmacy'  => $guard->getPharmacy()->getName(),
+                                'phoneNumberPharmacy' => $guard->getPharmacy()->getPhoneNumber(),
+                                'emailPharmacy' => $guard->getPharmacy()->getEmail(),
+                                'nameHopistal' => $guard->getPharmacy()->getHospital()->getName(),
+                                'horaire'   => $hour->getName(),
+                                'nbGarde'   => $count
                             ];
                         }
                         
@@ -104,14 +110,14 @@ class UserController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Guard::class);
 
         $array = $repository->findBy(['status' => 'accepted'],['user' => 'ASC','pharmacy' => 'ASC', 'hour' => 'ASC']);
-        $array2 = [];
+        $newArray = [];
         foreach($array as $object){
-            array_push($array2, $object->toString());
+            array_push($newArray, $object->toString());
         }
        
         $response = new Response();
         $response->setContent(json_encode(
-            $array2
+            $newArray
         ));
         $response->headers->set('Content-Type', 'application/json');
         return $response;

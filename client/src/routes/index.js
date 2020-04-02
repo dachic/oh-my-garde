@@ -108,12 +108,7 @@ const dashboardRoutes = {
 const internRoutes = {
     path: '/interns/export',
     name: 'Interns Export',
-    icon: FeatherIcon.Home,
-    header: 'Navigation',
-    badge: {
-        variant: 'success',
-        text: '1',
-    },
+    icon: FeatherIcon.DownloadCloud,
     component: InternExport,
     roles: ['ROLE_ADMIN'],
     route: PrivateRoute
