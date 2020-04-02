@@ -89,7 +89,7 @@ class Register extends Component {
                                                 </div>
 
                                                 <h6 className="h5 mb-0 mt-4">Inscription</h6>
-                                                <p className="text-muted mt-1 mb-4">Saisissez les informations ci-dessous pour vous inscrire</p>
+                                                <p className="text-muted mt-1 mb-4">Si vous n'avez pas de compte, veuillez compléter les informations demandées ci-dessous pour vous inscrire</p>
 
                                                 {this.props.error && <Alert color="danger" isOpen={this.props.error ? true : false}>
                                                     <div>{this.props.error}</div>
@@ -125,7 +125,7 @@ class Register extends Component {
                                                     </AvGroup>
 
                                                     <AvGroup className="">
-                                                        <Label for="email">Email</Label>
+                                                        <Label for="email">E-mail</Label>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
@@ -135,7 +135,20 @@ class Register extends Component {
                                                             <AvInput value={this.state.email} type="email" name="email" id="email" placeholder="adrien@ohmygarde.app" required />
                                                         </InputGroup>
 
-                                                        <AvFeedback>Veuillez saisir votre addresse mail</AvFeedback>
+                                                        <AvFeedback>Veuillez saisir votre addresse e-mail</AvFeedback>
+                                                    </AvGroup>
+
+                                                    <AvGroup className="mb-3">
+                                                        <Label for="password">Mot de passe</Label>
+                                                        <InputGroup>
+                                                            <InputGroupAddon addonType="prepend">
+                                                                <span className="input-group-text">
+                                                                    <Lock className="icon-dual" />
+                                                                </span>
+                                                            </InputGroupAddon>
+                                                            <AvInput value={this.state.password} type="password" name="password" id="password" placeholder="*********" required />
+                                                        </InputGroup>
+                                                        <AvFeedback>Veuillez saisir un mot de passe</AvFeedback>
                                                     </AvGroup>
 
                                                     <AvGroup className="">
@@ -153,23 +166,10 @@ class Register extends Component {
                                                     </AvGroup>
 
                                                     <AvGroup className="mb-3">
-                                                        <Label for="password">Mot de passe</Label>
-                                                        <InputGroup>
-                                                            <InputGroupAddon addonType="prepend">
-                                                                <span className="input-group-text">
-                                                                    <Lock className="icon-dual" />
-                                                                </span>
-                                                            </InputGroupAddon>
-                                                            <AvInput value={this.state.password} type="password" name="password" id="password" placeholder="*********" required />
-                                                        </InputGroup>
-                                                        <AvFeedback>Veuillez saisir un mot de passe</AvFeedback>
-                                                    </AvGroup>
-
-                                                    <AvGroup className="mb-3">
                                                         <FormGroup>
                                                             <Label for="roleUser">Rôle</Label>
                                                             <AvRadioGroup name="role" required errorMessage="Choisissez un rôle">
-                                                                <AvRadio label="Chef de l'hôpital" value="ROLE_PHARMACY" />
+                                                                <AvRadio label="Chef d'un hôpital" value="ROLE_PHARMACY" />
                                                                 <AvRadio label="Interne" value="ROLE_INTERN" />
                                                             </AvRadioGroup>
                                                         </FormGroup>
@@ -178,11 +178,11 @@ class Register extends Component {
                                                     </AvGroup>
 
                                                     <AvGroup check className="mb-4">
-                                                        <CustomInput type="checkbox" id="terms" defaultChecked="false" className="pl-1" label="J’accepte les termes et conditions" />
+                                                        <CustomInput type="checkbox" id="terms" defaultChecked="false" className="pl-1" label="J’accepte les termes et conditions d'utilisation de la plateforme" />
                                                     </AvGroup>
 
                                                     <FormGroup className="form-group mb-0 text-center">
-                                                        <Button color="primary" className="btn-block">Inscrivez-vous</Button>
+                                                        <Button color="primary" className="btn-block">M'inscrire</Button>
                                                     </FormGroup>
                                                 </AvForm>
                                             </Col>
@@ -191,9 +191,6 @@ class Register extends Component {
                                                 <div className="auth-page-sidebar">
                                                     <div className="overlay"></div>
                                                     <div className="auth-user-testimonial">
-                                                        <p className="font-size-24 font-weight-bold text-white mb-1">I simply love it!</p>
-                                                        <p className="lead">"It's a elegent templete. I love it very much!"</p>
-                                                        <p>- Admin User</p>
                                                     </div>
                                                 </div>
                                             </Col>

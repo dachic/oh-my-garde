@@ -249,7 +249,7 @@ const taskAppRoutes = {
     ],
 };
 
-const appRoutes = [pharmacyAppRoutes, internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+const appRoutes = [pharmacyAppRoutes, internAppRoutes];
 
 
 // pages
@@ -498,6 +498,6 @@ const allRoutes = [
     authRoutes,
 ];
 
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, pagesRoutes, componentsRoutes, chartRoutes, formsRoutes, tableRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };
