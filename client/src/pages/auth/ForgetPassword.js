@@ -139,7 +139,7 @@ class ForgetPassword extends Component {
 
                         <Row className="mt-1">
                             <Col className="col-12 text-center">
-                                <p className="texttext-muted">Retour à <Link to="/account/login" className="text-primary font-weight-bold ml-1">Me connecter</Link></p>
+                                <p className="texttext-muted">Revenir à la page de <Link to="/account/login" className="text-primary font-weight-bold ml-1">Connexion</Link></p>
                             </Col>
                         </Row>
                     </Container>
