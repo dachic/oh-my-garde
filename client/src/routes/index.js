@@ -60,6 +60,9 @@ const Editor = React.lazy(() => import('../pages/forms/Editor'));
 const BasicTables = React.lazy(() => import('../pages/tables/Basic'));
 const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 
+// users
+const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
+
 
 // handle auth and authorization
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
@@ -272,8 +275,24 @@ const taskAppRoutes = {
     ],
 };
 
+// users
+const usersRoutes = {
+    path: '/users',
+    name: 'Utilisateurs',
+    header: 'Entités',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/users/all',
+            name: 'Tous les utilisateurs',
+            component: ListAllUser,
+            route: PrivateRoute,
+            roles: ['ROLE_ADMIN'],
+        },
+    ]
+};
 
-const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes];
+const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, usersRoutes];
 
 // pages
 const pagesRoutes = {
