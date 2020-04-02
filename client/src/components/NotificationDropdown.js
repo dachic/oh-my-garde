@@ -56,9 +56,9 @@ class NotificationDropdown extends Component {
                             <h5 className="m-0 font-size-16">
                                 <span className="float-right">
                                     <Link to="/notifications" className="text-dark">
-                                        <small>Clear All</small>
+                                        <small>Effacer tout</small>
                                     </Link>
-                                </span>Notification
+                                </span>Notifications
                                 </h5>
                         </div>
                         <PerfectScrollbar style={notificationContainerStyle}>
@@ -74,12 +74,12 @@ class NotificationDropdown extends Component {
                             })}
                         </PerfectScrollbar>
 
-                        <Link to="/" className="dropdown-item text-center text-primary notify-item notify-all border-top">View All</Link>
+                        <Link to="/" className="dropdown-item text-center text-primary notify-item notify-all border-top">Voir tout</Link>
                     </div>
                 </DropdownMenu>
             </Dropdown>
 
-            <UncontrolledTooltip placement="left" target="notiDropdown">{this.props.notifications.length} new unread notificationse</UncontrolledTooltip>
+            <UncontrolledTooltip placement="left" target="notiDropdown">{this.props.notifications.length} notifications non lues</UncontrolledTooltip>
             </React.Fragment>
         );
     }

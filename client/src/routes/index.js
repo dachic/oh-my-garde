@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import * as FeatherIcon from 'react-feather';
 
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
+import InternExport from '../pages/export/InternExport';
 
 
 
@@ -104,6 +105,16 @@ const dashboardRoutes = {
     },
     component: Dashboard,
     roles: ['ROLE_ADMIN', 'ROLE_PHARMACY', 'ROLE_INTERN'],
+    route: PrivateRoute
+};
+
+// interns
+const internRoutes = {
+    path: '/interns/export',
+    name: 'Interns Export',
+    icon: FeatherIcon.DownloadCloud,
+    component: InternExport,
+    roles: ['ROLE_ADMIN'],
     route: PrivateRoute
 };
 
@@ -261,7 +272,8 @@ const taskAppRoutes = {
     ],
 };
 
-const appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+
+const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes];
 
 // pages
 const pagesRoutes = {
@@ -510,6 +522,6 @@ const allRoutes = [
     authRoutes,
 ];
 
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, pagesRoutes, componentsRoutes, chartRoutes, formsRoutes, tableRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };

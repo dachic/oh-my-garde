@@ -121,15 +121,8 @@ class Topbar extends Component {
                 </div>
               </li>
 
-              <LanguageDropdown tag="li" />
+             
               <NotificationDropdown notifications={Notifications} />
-
-              <li className="notification-list">
-                <button className="btn btn-link nav-link right-bar-toggle" onClick={this.handleRightSideBar}>
-                  <Settings />
-                </button>
-              </li>
-
               <ProfileDropdown profilePic={profilePic} menuItems={ProfileMenus} username={'Shreyu N'} description="Administrator" />
             </ul>
 

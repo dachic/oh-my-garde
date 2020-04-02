@@ -51,7 +51,7 @@ class UserSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
         $email = $user->getEmail();
-        $subject = "Validation de votre inscription sur Oh My Garde";
+        $subject = "Confirmation d'inscription sur OhMyGarde";
 
         $view = $this->twig->render('mjml/emails/user/pending_registration.html.twig', [
             'user' => $user
@@ -69,11 +69,11 @@ class UserSubscriber implements EventSubscriberInterface
     public function sendRegistrationMail(UserRegisteredEvent $event)
     {
         $user = $event->getUser();
-        $subject = "Nouvel utilisateur sur Oh My Garde";
+        $subject = "Nouvel utilisateur sur OhMyGarde";
 
         $users = $this->entityManager
             ->getRepository(User::class)
-            ->findByRoleAsEmailKey(UserRole::ROLE_ADMIN);
+            ->findByRoleAndRegionAsEmailKey(UserRole::ROLE_ADMIN, $user->getRegion());
 
         $emails = array_keys($users);
         $view = $this->twig->render('mjml/emails/user/validate_user.html.twig', [
