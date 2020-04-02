@@ -27,6 +27,7 @@ const loginApi = (endpoint, options) => {
 }
 
 const registerApi = (endpoint, options) => {
+
     return new Promise((resolve, reject) => {
         fetch(`${process.env.REACT_APP_API_URL}${endpoint}`, options)
             .then(response => {

@@ -73,9 +73,9 @@ function* logout({ payload: { history } }) {
 /**
  * Register the user
  */
-function* register({ payload: { firstname, lastname, email, phoneNumber, password, role } }) {
+function* register({ payload: { firstname, lastname, email, phoneNumber, password, role, region } }) {
     const options = {
-        body: JSON.stringify({ firstname, lastname, email, phoneNumber, password, role }),
+        body: JSON.stringify({ firstname, lastname, email, phoneNumber, password, role, region }),
         method: 'POST',
         headers: { "Content-Type": "application/json" },
     };
