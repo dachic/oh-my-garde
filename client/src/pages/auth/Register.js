@@ -10,6 +10,11 @@ import { registerUser } from '../../redux/actions';
 import { isUserAuthenticated } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
 import logo from '../../assets/images/logo_horizontal.svg';
+import Select from 'react-select';
+
+const options = [
+    { value: '1', label: 'Rhône-Alpes' }
+];
 
 class Register extends Component {
     _isMounted = false;
@@ -24,7 +29,8 @@ class Register extends Component {
             email: '',
             password: '',
             phoneNumber: '',
-            role: ''
+            role: '',
+            region: null,
         }
     }
 
@@ -42,7 +48,14 @@ class Register extends Component {
      * Handles the submit
      */
     handleValidSubmit = (event, values) => {
-        this.props.registerUser(values.firstname, values.lastname, values.email, values.phoneNumber, values.password, values.role);
+        this.props.registerUser(
+            values.firstname,
+            values.lastname,
+            values.email,
+            values.phoneNumber,
+            values.password,
+            values.role,
+            this.state.region.value);
     }
 
     /**
@@ -62,8 +75,17 @@ class Register extends Component {
         return <Redirect to='/account/confirm' />;
     }
 
+    handleChange = region => {
+        this.setState(
+            { region },
+            () => console.log(`Option selected:`, this.state.region.value)
+        );
+    };
+
     render() {
         const isAuthTokenValid = isUserAuthenticated();
+        const { region } = this.state;
+
         return (
             <React.Fragment>
 
@@ -167,14 +189,26 @@ class Register extends Component {
 
                                                     <AvGroup className="mb-3">
                                                         <FormGroup>
-                                                            <Label for="roleUser">Rôle</Label>
-                                                            <AvRadioGroup name="role" required errorMessage="Choisissez un rôle">
+                                                            <Label for="roleUser">Vous êtes</Label>
+                                                            <AvRadioGroup name="role" required errorMessage="Choisissez un status">
                                                                 <AvRadio label="Chef de l'hôpital" value="ROLE_PHARMACY" />
                                                                 <AvRadio label="Interne" value="ROLE_INTERN" />
                                                             </AvRadioGroup>
                                                         </FormGroup>
 
-                                                        <AvFeedback>Veuillez choisir un rôle</AvFeedback>
+                                                        <AvFeedback>Veuillez choisir votre status</AvFeedback>
+                                                    </AvGroup>
+
+                                                    <AvGroup className="mb-3">
+                                                        <FormGroup>
+                                                            <Select
+                                                                placeholder="Région"
+                                                                isSearchable="true"
+                                                                value={region}
+                                                                onChange={this.handleChange}
+                                                                options={options}
+                                                            />
+                                                        </FormGroup>
                                                     </AvGroup>
 
                                                     <AvGroup check className="mb-4">

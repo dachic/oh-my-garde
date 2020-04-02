@@ -73,7 +73,7 @@ class UserSubscriber implements EventSubscriberInterface
 
         $users = $this->entityManager
             ->getRepository(User::class)
-            ->findByRoleAsEmailKey(UserRole::ROLE_ADMIN);
+            ->findByRoleAndRegionAsEmailKey(UserRole::ROLE_ADMIN, $user->getRegion());
 
         $emails = array_keys($users);
         $view = $this->twig->render('mjml/emails/user/validate_user.html.twig', [

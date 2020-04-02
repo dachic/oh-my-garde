@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Event\UserRegisteredEvent;
+use App\Repository\RegionRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ class AuthenticationController extends AbstractController
     public function index(
         Request $request,
         UserRepository $userRepository,
+        RegionRepository $regionRepository,
         ValidatorInterface $validator,
         UserPasswordEncoderInterface $encoder,
         EntityManagerInterface $entityManager,
@@ -33,25 +35,54 @@ class AuthenticationController extends AbstractController
             $params = json_decode($content, true);
         }
 
-        extract($params); // convert all raw data key into variable $firstname, $lastname, etc...
-
-        if ($userRepository->findOneBy(['email' => $email])) {
+        if ($userRepository->findOneBy(['email' => $params['email']])) {
             return $this->json([
                 "success" => false,
-                "message" => sprintf("Un utilisateur avec l'email %s existe déjà 🤪", $email)
+                "message" => sprintf("Un utilisateur avec l'email %s existe déjà 🤪", $params['email'])
+            ]);
+        }
+
+        // check region
+        $hasRegion = !empty($params['region']);
+        $regionEntity = false;
+        if ($hasRegion) {
+            $regionEntity = $regionRepository->find($params['region']);
+        }
+
+        if(!$hasRegion || !$regionEntity) {
+            return $this->json([
+                "success" => false,
+                "message" => sprintf("La région dans laquelle vous vous inscrivez n'est pas répertoriée")
             ]);
         }
 
         $user = new User();
-        $user->setFirstname($firstname)
-            ->setLastname($lastname)
-            ->setPhoneNumber($phoneNumber)
-            ->setEmail($email);
 
-        if (!empty($role)) {
-            $user->addRole($role);
+        if (!empty($params['firstname'])) {
+            $user->setFirstname($params['firstname']);
         }
-        $user->setPassword($encoder->encodePassword($user, $password));
+
+        if (!empty($params['lastname'])) {
+            $user->setLastname($params['lastname']);
+        }
+
+        if (!empty($params['phoneNumber'])) {
+            $user->setPhoneNumber($params['phoneNumber']);
+        }
+
+        if (!empty($params['email'])) {
+            $user->setEmail($params['email']);
+        }
+
+        if (!empty($params['role'])) {
+            $user->addRole($params['role']);
+        }
+
+        if (!empty($regionEntity)) {
+            $user->setRegion($regionEntity);
+        }
+
+        $user->setPassword($encoder->encodePassword($user, $params['password']));
 
         $errors = $validator->validate($user);
 
@@ -74,11 +105,5 @@ class AuthenticationController extends AbstractController
             "success" => true,
             "message" => "Votre compte a bien été crée. Il sera activé le plus tôt possible"
         ], Response::HTTP_CREATED);
-        // } catch (\Throwable $th) {
-        //     return $this->json([
-        //         "success" => false,
-        //         "message" => "Une erreur s'est produite lors de l'enregistrement des données"
-        //     ], Response::HTTP_BAD_REQUEST);
-        // }
     }
 }

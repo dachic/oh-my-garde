@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Region;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -30,6 +31,24 @@ class UserRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('u', 'u.email')
             ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
             ->setParameter('role', $role)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get all users' emails by user role and region
+     *
+     * @param string $role
+     * @param Region $region
+     * @return array|null
+     */
+    public function findByRoleAndRegionAsEmailKey(string $role, Region $region): ?array
+    {
+        return $this->createQueryBuilder('u', 'u.email')
+            ->where("JSONB_EXISTS(u.roles, :role) = TRUE")
+            ->setParameter('role', $role)
+            ->innerJoin('u.region', 'rg', 'WITH', 'u.region IN (:region)')
+            ->setParameter('region', $region)
             ->getQuery()
             ->getResult();
     }
