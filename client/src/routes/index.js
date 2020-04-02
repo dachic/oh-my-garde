@@ -21,6 +21,7 @@ const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
 const InternApp = React.lazy(() => import('../pages/apps/Intern/Experiences'));
+const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
 const EmailDetail = React.lazy(() => import('../pages/apps/Email/Detail'));
@@ -140,6 +141,22 @@ const pharmacyAppRoutes = {
             route: PrivateRoute,
             roles: ['ROLE_PHARMACY'],
         },
+    ]
+};
+
+const guardAppRoutes = {
+    path: 'guard',
+    name: 'Gardes',
+    header: 'Gardes',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/guard/add',
+            name: 'Ajouter',
+            component: GuardApp,
+            route: PrivateRoute,
+            roles: ['ROLE_PHARMACY'],
+        }
     ]
 };
 
@@ -273,7 +290,7 @@ const taskAppRoutes = {
 };
 
 
-const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes];
+const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, guardAppRoutes];
 
 // pages
 const pagesRoutes = {
