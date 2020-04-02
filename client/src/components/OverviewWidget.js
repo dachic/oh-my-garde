@@ -9,13 +9,12 @@ const OverviewWidget = (props) => {
     const items = props.items || [];
     const bodyClass = props.bodyClass || "px-3 py-4";
     const totalItems = items.length;
-    const cardBodyClass = props.cardBodyClass || "p-0";
 
     return (
 
-        <Card className={classNames(props.bgClass)}>
-            <CardBody className={classNames(cardBodyClass)}>
-                <h5 className="card-title header-title border-bottom p-3 mb-0">{title}</h5>
+        <Card>
+            <CardBody>
+                <h4 className="p-2 card-title mb-0">{title}</h4>
 
                 {items.map((item, idx) => {
                     const Icon = item.icon || null;
@@ -27,7 +26,7 @@ const OverviewWidget = (props) => {
 
                     return <Media className={classNames(bodyClass, borderClass)} key={idx}>
                         <Media body>
-                            <h4 className="mt-0 mb-1 font-size-22 font-weight-normal">{item.title}</h4>
+                            <h5 className="mt-0 mb-1 font-weight-normal">{item.title}</h5>
                             <span className="text-muted">{item.description}</span>
                         </Media>
                         {Icon && <Icon className="align-self-center icon-dual icon-lg"></Icon>}
