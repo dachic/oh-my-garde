@@ -100,7 +100,7 @@ class Register extends Component {
                                 <Card className="">
                                     <CardBody className="p-0">
                                         <Row>
-                                            <Col md={12} className="p-5 position-relative">
+                                            <Col md={6} className="p-5 position-relative">
                                                 { /* preloader */}
                                                 {this.props.loading && <Loader />}
 
@@ -118,40 +118,35 @@ class Register extends Component {
                                                 </Alert>}
                                                 
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
-                                                    <Row>
-                                                        <Col md={6}>
-                                                            <AvGroup className="">
-                                                                <Label for="firstname">Prénom</Label>
-                                                                <InputGroup>
-                                                                    <InputGroupAddon addonType="prepend">
-                                                                        <span className="input-group-text">
-                                                                            <User className="icon-dual" />
-                                                                        </span>
-                                                                    </InputGroupAddon>
-                                                                    <AvInput value={this.state.firstname} type="text" name="firstname" id="firstname" placeholder="Michelle" required />
-                                                                </InputGroup>
+                                                   
+                                                    <AvGroup className="">
+                                                        <Label for="firstname">Prénom</Label>
+                                                        <InputGroup>
+                                                            <InputGroupAddon addonType="prepend">
+                                                                <span className="input-group-text">
+                                                                    <User className="icon-dual" />
+                                                                </span>
+                                                            </InputGroupAddon>
+                                                            <AvInput value={this.state.firstname} type="text" name="firstname" id="firstname" placeholder="Votre prénom" required />
+                                                        </InputGroup>
 
-                                                                <AvFeedback>Veuillez saisir votre prénom</AvFeedback>
-                                                            </AvGroup>
-                                                        </Col>
+                                                        <AvFeedback>Veuillez saisir votre prénom</AvFeedback>
+                                                    </AvGroup>
+                                                
+                                                    <AvGroup className="">
+                                                        <Label for="lastname">Nom</Label>
+                                                        <InputGroup>
+                                                            <InputGroupAddon addonType="prepend">
+                                                                <span className="input-group-text">
+                                                                    <User className="icon-dual" />
+                                                                </span>
+                                                            </InputGroupAddon>
+                                                            <AvInput value={this.state.lastname} type="text" name="lastname" id="lastname" placeholder="Votre nom" required />
+                                                        </InputGroup>
 
-                                                        <Col md={6}>
-                                                            <AvGroup className="">
-                                                                <Label for="lastname">Nom</Label>
-                                                                <InputGroup>
-                                                                    <InputGroupAddon addonType="prepend">
-                                                                        <span className="input-group-text">
-                                                                            <User className="icon-dual" />
-                                                                        </span>
-                                                                    </InputGroupAddon>
-                                                                    <AvInput value={this.state.lastname} type="text" name="lastname" id="lastname" placeholder="Condé" required />
-                                                                </InputGroup>
-
-                                                                <AvFeedback>Veuillez saisir votre nom de famille</AvFeedback>
-                                                            </AvGroup>
-                                                        </Col>
-                                                    </Row>
-
+                                                        <AvFeedback>Veuillez saisir votre nom de famille</AvFeedback>
+                                                    </AvGroup>
+                                            
                                                     <AvGroup className="">
                                                         <Label for="email">E-mail</Label>
                                                         <InputGroup>
@@ -160,7 +155,7 @@ class Register extends Component {
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.email} type="email" name="email" id="email" placeholder="adrien@ohmygarde.app" required />
+                                                            <AvInput value={this.state.email} type="email" name="email" id="email" placeholder="Votre adresse e-mail" required />
                                                         </InputGroup>
 
                                                         <AvFeedback>Veuillez saisir votre addresse e-mail</AvFeedback>
@@ -174,7 +169,7 @@ class Register extends Component {
                                                                     <Lock className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.password} type="password" name="password" id="password" placeholder="*********" required />
+                                                            <AvInput value={this.state.password} type="password" name="password" id="password" placeholder="Votre mot de passe" required />
                                                         </InputGroup>
                                                         <AvFeedback>Veuillez saisir un mot de passe</AvFeedback>
                                                     </AvGroup>
@@ -187,29 +182,29 @@ class Register extends Component {
                                                                     <PhoneCall className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput value={this.state.phoneNumber} type="text" name="phoneNumber" id="phoneNumber" placeholder="0756234589" required />
+                                                            <AvInput value={this.state.phoneNumber} type="text" name="phoneNumber" id="phoneNumber" placeholder="Votre numéro de téléphone" required />
                                                         </InputGroup>
 
                                                         <AvFeedback>Saisissez votre numéro de téléphone</AvFeedback>
                                                     </AvGroup>
 
+                                                
                                                     <AvGroup className="mb-3">
                                                         <FormGroup>
-
                                                             <Label for="roleUser">Vous êtes</Label>
                                                             <AvRadioGroup name="role" required errorMessage="Choisissez un status">
-                                                                <AvRadio label="Chef de l'hôpital" value="ROLE_PHARMACY" />
+                                                                <AvRadio label="Chef d'un hôpital" value="ROLE_PHARMACY" />
                                                                 <AvRadio label="Interne" value="ROLE_INTERN" />
                                                             </AvRadioGroup>
                                                         </FormGroup>
-
                                                         <AvFeedback>Veuillez choisir votre status</AvFeedback>
                                                     </AvGroup>
-
+                                                
                                                     <AvGroup className="mb-3">
                                                         <FormGroup>
+                                                        <Label for="roleUser">Région associée</Label>
                                                             <Select
-                                                                placeholder="Région"
+                                                                placeholder="Choisir une région"
                                                                 isSearchable="true"
                                                                 value={region}
                                                                 onChange={this.handleChange}
@@ -217,9 +212,9 @@ class Register extends Component {
                                                             />
                                                         </FormGroup>
                                                     </AvGroup>
-
+                                                   
                                                     <AvGroup check className="mb-4">
-                                                        <CustomInput type="checkbox" id="terms" defaultChecked="false" className="pl-1" label="J’accepte les termes et conditions d'utilisation de la plateforme" />
+                                                        <CustomInput type="checkbox" id="terms" defaultChecked="false" className="pl-1" label="J’accepte les Conditions d'Utilisation de la plateforme" />
                                                     </AvGroup>
 
                                                     <FormGroup className="form-group mb-0 text-center">
@@ -228,13 +223,13 @@ class Register extends Component {
                                                 </AvForm>
                                             </Col>
 
-                                            {/* <Col md={6} className="d-none d-md-inline-block">
+                                            <Col md={6} className="d-none d-md-inline-block">
                                                 <div className="auth-page-sidebar">
                                                     <div className="overlay"></div>
                                                     <div className="auth-user-testimonial">
                                                     </div>
                                                 </div>
-                                            </Col> */}
+                                            </Col>
                                         </Row>
                                     </CardBody>
                                 </Card>
