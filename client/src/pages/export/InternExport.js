@@ -42,11 +42,18 @@ const defaultSorted = [
 const expandRow = {
     renderer: row => (
         <div>
-            <p className="mt-2">Informations supplementaires sur {`${row.lastname} ${row.firstname}`} </p>
-            <p className="mt-2">{`Email: ${row.email}`} {`Téléphone: ${row.phoneNumber}`}</p>
-            <p className="mt-2">Informations supplementaires sur {`${row.namePharmacy}`}</p>
-            <p className="mt-2">{`Hopital: ${row.nameHopistal}`} {`Téléphone: ${row.phoneNumberPharmacy}`} {`Email: ${row.emailPharmacy}`}</p>
-        </div>
+            <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.lastname} ${row.firstname}`} </p>
+                <div class="list-group">
+                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action">{`Email: ${row.email}`}</a>
+                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumber}`}</a>
+                </div>
+            <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.namePharmacy}`}</p>
+                <div class="list-group">
+                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action">{`Email: ${row.emailPharmacy}`}</a>
+                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumberPharmacy}`}</a>
+                    <a class="list-group-item list-group-item-action">{`Hopital: ${row.nameHopistal}`} </a>
+                </div>
+       </div>
     ),
     showExpandColumn: true,
     onlyOneExpanding: true,
@@ -74,6 +81,9 @@ const box = {
     justifyContent: 'center',
     alignItems: 'center',
     height:"80vh"
+};
+const center = {
+    textAlign: 'center',
 };
 const sizePerPageRenderer = ({ options, currSizePerPage, onSizePerPageChange }) => (
     <React.Fragment>
