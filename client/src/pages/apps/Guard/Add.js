@@ -25,7 +25,9 @@ class Add extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       status: '',
-      pharmacies:[]
+      pharmacies:[],
+      hours:[],
+      jobs: []
     };
   }
 
@@ -35,7 +37,7 @@ class Add extends Component {
     url.search = new URLSearchParams({
         'hospital.region.id':1,
     })
-    let opt = {
+    var opt = {
         method: "GET",
         headers: {
             'Accept': 'application/json',
@@ -43,9 +45,7 @@ class Add extends Component {
             'Authorization': 'Bearer ' + loggedInUser.token
         }
     };
-
     fetch(url,opt).then((response) => {
-        console.log("oui",response)
         return response.json()
     }).then(pharmacies => {
         const opts = [];
@@ -55,6 +55,51 @@ class Add extends Component {
 
         this.setState({
             pharmacies: opts
+        })
+    })
+
+
+    var url = new URL(process.env.REACT_APP_API_URL+"/disponibility_hours");
+    var opt = {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + loggedInUser.token
+        }
+    };
+    fetch(url,opt).then((response) => {
+        return response.json()
+    }).then(hours => {
+        const opts = [];
+        hours.forEach(hour => {
+            opts.push({ value: hour.id, label: hour.name })
+        });
+
+        this.setState({
+            hours: opts
+        })
+    })
+
+    var url = new URL(process.env.REACT_APP_API_URL+"/jobs");
+    var opt = {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + loggedInUser.token
+        }
+    };
+    fetch(url,opt).then((response) => {
+        return response.json()
+    }).then(jobs => {
+        const opts = [];
+        jobs.forEach(job => {
+            opts.push({ value: job.id, label: job.title })
+        });
+
+        this.setState({
+            jobs: opts
         })
     })
   }
@@ -110,7 +155,7 @@ class Add extends Component {
                     <FormGroup>
                     <Label for="roleUser">Pharmacie *</Label>
                         <Select
-                            placeholder="Choisir un jour"
+                            placeholder="Choisir une pharmacie"
                             isSearchable="true"
                             name="pharmacy"
                             onChange={this.handleChange}
@@ -126,7 +171,7 @@ class Add extends Component {
                         <Select
                             placeholder="Choisir un jour"
                             isSearchable="true"
-                            name="pharmacy"
+                            name="day"
                             onChange={this.handleChange}
                             options={options}
                             required
@@ -134,22 +179,32 @@ class Add extends Component {
                     </FormGroup>
                 </AvGroup>
 
-                
-
-                <AvGroup>
-                  <Label for="hospitalName">Heures *</Label>
-                  <div className="input-group">
-                    <AvInput type="text" name="hour" required />
-                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
-                  </div>
+                <AvGroup className="mb-3">
+                    <FormGroup>
+                    <Label for="roleUser">Créneau horaire *</Label>
+                        <Select
+                            placeholder="Choisir un créneau"
+                            isSearchable="true"
+                            name="hour"
+                            onChange={this.handleChange}
+                            options={this.state.hours}
+                            required
+                        />
+                    </FormGroup>
                 </AvGroup>
 
-                <AvGroup>
-                  <Label for="hospitalName">Job *</Label>
-                  <div className="input-group">
-                    <AvInput type="text" name="job" required />
-                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
-                  </div>
+                <AvGroup className="mb-3">
+                    <FormGroup>
+                    <Label for="roleUser">Job *</Label>
+                        <Select
+                            placeholder="Choisir un job"
+                            isSearchable="true"
+                            name="job"
+                            onChange={this.handleChange}
+                            options={this.state.jobs}
+                            required
+                        />
+                    </FormGroup>
                 </AvGroup>
 
                 
