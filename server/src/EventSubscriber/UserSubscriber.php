@@ -51,7 +51,7 @@ class UserSubscriber implements EventSubscriberInterface
     {
         $user = $event->getUser();
         $email = $user->getEmail();
-        $subject = "Validation de votre inscription sur Oh My Garde";
+        $subject = "Confirmation d'inscription sur OhMyGarde";
 
         $view = $this->twig->render('mjml/emails/user/pending_registration.html.twig', [
             'user' => $user
@@ -69,7 +69,7 @@ class UserSubscriber implements EventSubscriberInterface
     public function sendRegistrationMail(UserRegisteredEvent $event)
     {
         $user = $event->getUser();
-        $subject = "Nouvel utilisateur sur Oh My Garde";
+        $subject = "Nouvel utilisateur sur OhMyGarde";
 
         $users = $this->entityManager
             ->getRepository(User::class)

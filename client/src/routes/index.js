@@ -272,7 +272,8 @@ const taskAppRoutes = {
     ],
 };
 
-const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+
+const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes];
 
 // pages
 const pagesRoutes = {
@@ -521,6 +522,6 @@ const allRoutes = [
     authRoutes,
 ];
 
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, pagesRoutes, componentsRoutes, chartRoutes, formsRoutes, tableRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };
