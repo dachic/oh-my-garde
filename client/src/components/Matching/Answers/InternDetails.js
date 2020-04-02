@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import { Card,CardTitle,CardSubtitle,CardText,CardBody } from "reactstrap";
+import React from "react";
+import { Card,CardTitle,CardSubtitle,CardBody } from "reactstrap";
 
 const InternDetails = props => {
   const rank = 50 + (props.rank * 60)
