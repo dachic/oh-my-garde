@@ -4,17 +4,18 @@ import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-valida
 
 import PageTitle from '../../../components/PageTitle';
 import Api from '../../../api/guard';
+import { getLoggedInUser } from '../../../helpers/authUtils';
 
 import Select from 'react-select';
 
 const options = [
-    { value: 'monday', label: 'Lundi',
-    value: 'monday', label: 'Lundi',
-    value: 'monday', label: 'Lundi',
-    value: 'monday', label: 'Lundi',
-    value: 'monday', label: 'Lundi',
-    value: 'monday', label: 'Lundi',
- }
+    { value: 'monday', label: 'Lundi' },
+    { value: 'thuesday', label: 'Mardi' },
+    { value: 'wednesday', label: 'Mercredi' },
+    { value: 'thursday', label: 'Jeudi' },
+    { value: 'friday', label: 'Vendredi' },
+    { value: 'saturday', label: 'Samedi' },
+    { value: 'sunday', label: 'Dimanche' }
 ];
 
 class Add extends Component {
@@ -23,8 +24,39 @@ class Add extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      status: ''
+      status: '',
+      pharmacies:[]
     };
+  }
+
+  componentDidMount() {
+    const loggedInUser = getLoggedInUser();
+    var url = new URL(process.env.REACT_APP_API_URL+"/pharmacies");
+    url.search = new URLSearchParams({
+        'hospital.region.id':1,
+    })
+    let opt = {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + loggedInUser.token
+        }
+    };
+
+    fetch(url,opt).then((response) => {
+        console.log("oui",response)
+        return response.json()
+    }).then(pharmacies => {
+        const opts = [];
+        pharmacies.forEach(pharmacy => {
+            opts.push({ value: pharmacy.id, label: pharmacy.name })
+        });
+
+        this.setState({
+            pharmacies: opts
+        })
+    })
   }
 
   handleSubmit(event, errors, values) {
@@ -74,22 +106,27 @@ class Add extends Component {
               <AvForm onSubmit={this.handleSubmit}>
 
                 
-              <AvGroup>
-                  <Label for="hospitalName">Pharmacie *</Label>
-                  <div className="input-group">
-                    <AvInput type="text" name="day" required />
-                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
-                  </div>
-                </AvGroup>
-
-                <AvGroup className="mb-3">
+              <AvGroup className="mb-3">
                     <FormGroup>
-                    <Label for="roleUser">Day </Label>
+                    <Label for="roleUser">Pharmacie *</Label>
                         <Select
                             placeholder="Choisir un jour"
                             isSearchable="true"
                             name="pharmacy"
-                            value="test"
+                            onChange={this.handleChange}
+                            options={this.state.pharmacies}
+                            required
+                        />
+                    </FormGroup>
+                </AvGroup>
+
+                <AvGroup className="mb-3">
+                    <FormGroup>
+                    <Label for="roleUser">Jour *</Label>
+                        <Select
+                            placeholder="Choisir un jour"
+                            isSearchable="true"
+                            name="pharmacy"
                             onChange={this.handleChange}
                             options={options}
                             required
@@ -100,7 +137,7 @@ class Add extends Component {
                 
 
                 <AvGroup>
-                  <Label for="hospitalName">Hour *</Label>
+                  <Label for="hospitalName">Heures *</Label>
                   <div className="input-group">
                     <AvInput type="text" name="hour" required />
                     <AvFeedback>Champ incorrect/requis.</AvFeedback>

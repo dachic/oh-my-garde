@@ -5,9 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
-
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\DisponibilityHourRepository")
  * @ApiFilter(OrderFilter::class, properties={"name"="desc"})
  */
