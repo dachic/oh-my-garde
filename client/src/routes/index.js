@@ -15,7 +15,8 @@ const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
-const InternApp = React.lazy(() => import('../pages/apps/Intern/Experiences'));
+const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'));
+const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
 const EmailDetail = React.lazy(() => import('../pages/apps/Email/Detail'));
@@ -116,7 +117,7 @@ const pharmacyAppRoutes = {
             name: 'Ajouter',
             component: PharmacyApp,
             route: PrivateRoute,
-            roles: ['ROLE_PHARMACY'],
+            roles: ['ROLE_PHARMACY', 'ROLE_INTERN'],
         },
         {
             path: '/pharmacy/edit',
@@ -147,9 +148,9 @@ const internAppRoutes = {
                     roles: ['ROLE_INTERN'],
                 },
                 {
-                    path: 'intern/internship/all',
+                    path: '/intern/internship/all',
                     name: 'Consulter',
-                    // component: EmailDetail,
+                    component: InternList,
                     route: PrivateRoute,
                     roles: ['ROLE_INTERN'],
                 }
@@ -495,7 +496,7 @@ const allRoutes = [
     chartRoutes,
     formsRoutes,
     tableRoutes,
-    authRoutes,
+    authRoutes
 ];
 
 const authProtectedRoutes = [dashboardRoutes, ...appRoutes, pagesRoutes, componentsRoutes, chartRoutes, formsRoutes, tableRoutes];

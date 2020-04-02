@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 
 import internshipApi from '../../../api/internship';
 
-class Add extends Component {
+class AllInternships extends Component {
   constructor(props) {
     super(props);
     const loggedInUser = getLoggedInUser();
@@ -18,7 +18,6 @@ class Add extends Component {
 
   loadInternships() {
     internshipApi.getUsersInternships().then(interships => {
-      console.log(interships);
       this.setState({ intershipsList: interships });
     }).catch((error) => {
       console.log(error);
@@ -77,4 +76,4 @@ class Add extends Component {
   }
 }
 
-export default Add;
+export default AllInternships;

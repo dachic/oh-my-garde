@@ -7,13 +7,12 @@ import { getLoggedInUser } from '../../../helpers/authUtils';
 import PageTitle from '../../../components/PageTitle';
 import hospitalApi from '../../../api/hospital';
 import agrementApi from '../../../api/agrement';
-// import internshipApi from '../../../api/internship';
+import internshipApi from '../../../api/internship';
 
-class Add extends Component {
+class AddInternship extends Component {
   constructor(props) {
     super(props);
     const loggedInUser = getLoggedInUser();
-    console.log(loggedInUser);
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
@@ -45,20 +44,17 @@ class Add extends Component {
       else {
         let form = this.state.values;
         let agrements = this.state.agrements;
-        let pharmacy = this.state.pharmacy;
-        form.users = this.state.user;
-        // form.users = "api/users/" + this.loggedInUser.id;
+        let hospital = this.state.hospital;
+        form.user = this.state.user;
         form.agrements = agrements;
-        form.pharmacy = pharmacy;
+        form.hospital = hospital;
         form = JSON.stringify(form, null, 2);
-        console.log(form);
-        // internshipApi.add(form).then(pharmacy => {
-        //   console.log(pharmacy);
-        //   event.currentTarget.reset();
-        //   this.setState({ status: 'Les expériences ont bien été ajoutées', position: '', pharmacy: '', selectedAgrements: '', agrements: '', selectedPharmacy: '' });
-        // }).catch((error) => {
-        //   this.setState({ errorApi: error.error });
-        // });
+        internshipApi.add(form).then(pharmacy => {
+          document.getElementById("internship-form").reset();
+          this.setState({ status: 'Les expériences ont bien été ajoutées' });
+        }).catch((error) => {
+          this.setState({ errorApi: error.error });
+        });
       }
     }
   }
@@ -126,7 +122,7 @@ class Add extends Component {
               { label: 'Forms', path: '/forms/validation' },
               { label: '', path: '/forms/validation', active: true },
             ]}
-            title={'Mes expériences'}
+            title={'Mes stages'}
           />
         </Col>
         {this.state.status &&
@@ -148,16 +144,10 @@ class Add extends Component {
       </Row>
 
       <Row>
-        {this.state.values && <div>
-          <h5>Submission values</h5>
-          Invalid: {this.state.errors.join(', ')}<br />
-          Values: <pre>{JSON.stringify(this.state.values, null, 2)}</pre>
-        </div>}
         <Col lg={12}>
           <Card>
             <CardBody>
-              <h4 className="header-title mt-0 mb-1">Ajouter un stage</h4>
-              <AvForm onSubmit={this.handleSubmit}>
+              <AvForm onSubmit={this.handleSubmit} id="internship-form">
                 <AvGroup>
                   <Label for="position">Intitulé du poste *</Label>
                   <div className="input-group">
@@ -197,7 +187,7 @@ class Add extends Component {
                     <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.agrement}</p>}
                 </div>
                 <Button color="primary" type="submit">
-                  Ajouter
+                  Ajouter le stage
                 </Button>
               </AvForm>
             </CardBody>
@@ -208,4 +198,4 @@ class Add extends Component {
   }
 }
 
-export default Add;
+export default AddInternship;

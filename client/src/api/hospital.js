@@ -6,14 +6,19 @@ const headers = { "Content-Type": "application/json" }
 
 export default {
 
-  add(pharmacy) {
+  addLinkedPharmacy(pharmacy) {
     return fetch(uri('pharmacies'), {
       method: 'POST',
       headers: headers,
       body: pharmacy
     }).then((response) => {
-      Promise.resolve(response);
-    }).catch(error => Promise.reject(error.response));
+      if (response.status === 500) {
+        return Promise.reject({ error: "Une erreur est survenue, veuillez réessayer.." })
+      }
+      return Promise.resolve(response);
+    }).catch(error => Promise.reject({
+      error: 'Il semblerait qu\'il exite déjà une pharmacie liée à cet hôpital.'
+    }));
   },
 
   getAll() {
