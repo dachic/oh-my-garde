@@ -51,7 +51,7 @@ class AddInternship extends Component {
         form = JSON.stringify(form, null, 2);
         internshipApi.add(form).then(pharmacy => {
           document.getElementById("internship-form").reset();
-          this.setState({ status: 'Les expériences ont bien été ajoutées' });
+          this.setState({ status: 'Le stage a bien été ajouté' });
         }).catch((error) => {
           this.setState({ errorApi: error.error });
         });

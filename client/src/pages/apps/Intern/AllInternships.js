@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, CardBody, Table, Badge, Button } from 'reactstrap';
-import { getLoggedInUser } from '../../../helpers/authUtils';
 import { DateTime } from 'luxon';
 
+import PageTitle from '../../../components/PageTitle';
 import internshipApi from '../../../api/internship';
 
 class AllInternships extends Component {
   constructor(props) {
     super(props);
-    const loggedInUser = getLoggedInUser();
 
     this.state = {
       status: '',
@@ -30,12 +29,21 @@ class AllInternships extends Component {
 
   render() {
     return <React.Fragment>
-      <Row style={{ marginTop: '15px' }}>
+      <Row className="page-title">
+        <Col md={12}>
+          <PageTitle
+            breadCrumbItems={[
+              { label: 'Forms', path: '/forms/validation' },
+              { label: 'Back', path: '/forms/validation', active: true },
+            ]}
+            title={'Liste de mes stages'}
+          />
+        </Col>
+      </Row>
+      <Row>
         <Col lg={12}>
           <Card>
             <CardBody>
-              <h4 className="header-title mt-0 mb-1">Liste des stages</h4>
-
               <Table className="mb-0" responsive striped>
                 <thead>
                   <tr>
@@ -60,7 +68,11 @@ class AllInternships extends Component {
                               return <Badge color={`soft-${agr.color}`} key={index} className="mr-1">{agr.name}</Badge>
                             }) : record.agrement.name}</td>
                           <td>{DateTime.fromISO(record.creation).toSQLDate().toString()}</td>
-                          <td><Button color="outline-primary" key={index}>Modifier</Button></td>
+                          <td>
+                            <Button href={`/internship/edit?id=${record.id}`} color="outline-primary" key={index}>
+                              Modifier
+                            </Button>
+                          </td>
                         </tr>
                       );
                     })
@@ -71,7 +83,6 @@ class AllInternships extends Component {
           </Card>
         </Col>
       </Row>
-
     </React.Fragment >
   }
 }

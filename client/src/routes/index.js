@@ -15,8 +15,10 @@ const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
+const EditPharmacy = React.lazy(() => import('../pages/apps/Pharmacy/Edit'));
 const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'));
 const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
+const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
 const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
 const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
 const EmailDetail = React.lazy(() => import('../pages/apps/Email/Detail'));
@@ -56,7 +58,7 @@ const Editor = React.lazy(() => import('../pages/forms/Editor'));
 const BasicTables = React.lazy(() => import('../pages/tables/Basic'));
 const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 
-
+const loggedInUser = getLoggedInUser();
 // handle auth and authorization
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
     <Route
@@ -106,6 +108,7 @@ const dashboardRoutes = {
 
 // apps
 // Switch this menu regarding the user logged in (intern or representative)
+
 const pharmacyAppRoutes = {
     path: 'pharmacy',
     name: 'Pharmacie',
@@ -117,12 +120,12 @@ const pharmacyAppRoutes = {
             name: 'Ajouter',
             component: PharmacyApp,
             route: PrivateRoute,
-            roles: ['ROLE_PHARMACY', 'ROLE_INTERN'],
+            roles: ['ROLE_PHARMACY'],
         },
         {
             path: '/pharmacy/edit',
             name: 'Modifier',
-            // component: EmailDetail,
+            component: EditPharmacy,
             route: PrivateRoute,
             roles: ['ROLE_PHARMACY'],
         },
@@ -132,6 +135,7 @@ const pharmacyAppRoutes = {
 const internAppRoutes = {
     path: 'intern',
     name: 'Interne',
+    header: 'Entités',
     icon: FeatherIcon.FileText,
     children: [
         {
@@ -165,6 +169,13 @@ const internAppRoutes = {
             roles: ['ROLE_INTERN'],
         },
     ]
+};
+
+const EditInternshipRoutes = {
+    path: '/internship/edit',
+    component: EditInternship,
+    route: PrivateRoute,
+    roles: ['ROLE_INTERN'],
 };
 
 const calendarAppRoutes = {
@@ -250,8 +261,16 @@ const taskAppRoutes = {
     ],
 };
 
-const appRoutes = [pharmacyAppRoutes, internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
-
+let appRoutes = [];
+if (loggedInUser.role === 'ROLE_PHARMACY') {
+    appRoutes = [pharmacyAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+}
+else if (loggedInUser.role === 'ROLE_INTERN') {
+    appRoutes = [internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+}
+else {
+    appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+}
 
 // pages
 const pagesRoutes = {
@@ -496,9 +515,10 @@ const allRoutes = [
     chartRoutes,
     formsRoutes,
     tableRoutes,
-    authRoutes
+    authRoutes,
+    EditInternshipRoutes
 ];
 
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, pagesRoutes, componentsRoutes, chartRoutes, formsRoutes, tableRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, pagesRoutes, componentsRoutes, chartRoutes, formsRoutes, tableRoutes, EditInternshipRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };
