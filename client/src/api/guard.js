@@ -1,8 +1,13 @@
+import { getLoggedInUser } from '../helpers/authUtils';
 
 const url = "http://api.localhost/api/"
 let uri = (path) => { return url + path }
+const loggedInUser = getLoggedInUser();
 
-const headers = { "Content-Type": "application/json" }
+const headers = { 
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer ' + loggedInUser.token
+}
 
 export default {
 

@@ -27,9 +27,41 @@ class Add extends Component {
       status: '',
       pharmacies:[],
       hours:[],
-      jobs: []
+      jobs: [],
+      day: null,
+      hour: null,
+      pharmacy: null,
+      job: null
     };
   }
+
+    handleChangeDay = day => {
+        this.setState(
+            { day },
+            () => console.log(`Option selected:`, this.state.day.value)
+        );
+    };
+
+    handleChangeJob = job => {
+        this.setState(
+            { job },
+            () => console.log(`Option selected:`, this.state.job.value)
+        );
+    };
+
+    handleChangePharmacy = pharmacy => {
+        this.setState(
+            { pharmacy },
+            () => console.log(`Option selected:`, this.state.pharmacy.value)
+        );
+    };
+
+    handleChangeHour = hour => {
+        this.setState(
+            { hour },
+            () => console.log(`Option selected:`, this.state.hour.value)
+        );
+    };
 
   componentDidMount() {
     const loggedInUser = getLoggedInUser();
@@ -110,11 +142,17 @@ class Add extends Component {
     // API Call
     if (!errors.length) {
       // TODO: Add logged in user's id to form (representative: the entire user entity)
-      let form = JSON.stringify(this.state.values, null, 2);
+      let form = JSON.stringify(
+        {
+        'day': this.state.day.value,
+        'hour': 'api/disponibility_hours/'+this.state.hour.value,
+        'pharmacy': 'api/pharmacies/'+this.state.pharmacy.value,
+        'job': 'api/jobs/'+this.state.job.value
+        }, null, 2);
       console.log(form);
       Api.add(form).then(guard => {
         console.log(guard);
-        this.setState({ status: 'La garde a bien été ajoutée', name: '', hospitalName: '', email: '', phoneNumber: '' });
+        this.setState({ status: 'La garde a bien été ajoutée', hour: null, day: null, pharmacy: null, job: null });
       }).catch((error) => {
         console.log(error);
       });
@@ -122,6 +160,11 @@ class Add extends Component {
   }
 
   render() {
+    const { day } = this.state;
+    const { pharmacy } = this.state;
+    const { hour } = this.state;
+    const { job } = this.state;
+
     return <React.Fragment>
       <Row className="page-title">
         <Col md={12}>
@@ -158,7 +201,8 @@ class Add extends Component {
                             placeholder="Choisir une pharmacie"
                             isSearchable="true"
                             name="pharmacy"
-                            onChange={this.handleChange}
+                            value={pharmacy}
+                            onChange={this.handleChangePharmacy}
                             options={this.state.pharmacies}
                             required
                         />
@@ -172,7 +216,8 @@ class Add extends Component {
                             placeholder="Choisir un jour"
                             isSearchable="true"
                             name="day"
-                            onChange={this.handleChange}
+                            value={day}
+                            onChange={this.handleChangeDay}
                             options={options}
                             required
                         />
@@ -186,7 +231,8 @@ class Add extends Component {
                             placeholder="Choisir un créneau"
                             isSearchable="true"
                             name="hour"
-                            onChange={this.handleChange}
+                            value={hour}
+                            onChange={this.handleChangeHour}
                             options={this.state.hours}
                             required
                         />
@@ -200,14 +246,13 @@ class Add extends Component {
                             placeholder="Choisir un job"
                             isSearchable="true"
                             name="job"
-                            onChange={this.handleChange}
+                            value={job}
+                            onChange={this.handleChangeJob}
                             options={this.state.jobs}
                             required
                         />
                     </FormGroup>
                 </AvGroup>
-
-                
 
                 <Button color="primary" type="submit">
                   Ajouter
