@@ -6,6 +6,10 @@ import * as FeatherIcon from 'react-feather';
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
 import InternExport from '../pages/export/InternExport';
 
+
+
+const Matching = React.lazy(() => import ('../pages/matching/Matching'));
+
 // auth
 const Login = React.lazy(() => import('../pages/auth/Login'));
 const Logout = React.lazy(() => import('../pages/auth/Logout'));
@@ -187,6 +191,14 @@ const calendarAppRoutes = {
     roles: ['Admin'],
 };
 
+const matchingRoute = {
+    path: '/guards/matching',
+    name: 'Matching',
+    header: 'Apps',
+    component: Matching,
+    route: PrivateRoute,
+}
+
 const emailAppRoutes = {
     path: '/apps/email',
     name: 'Email',
@@ -261,7 +273,6 @@ const taskAppRoutes = {
 };
 
 const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
-
 
 // pages
 const pagesRoutes = {
@@ -500,6 +511,7 @@ const flattenRoutes = routes => {
 const allRoutes = [
     rootRoute,
     dashboardRoutes,
+    matchingRoute,
     ...appRoutes,
     pagesRoutes,
     componentsRoutes,
