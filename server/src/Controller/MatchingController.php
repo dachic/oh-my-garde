@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Constants\Score;
+use App\Entity\User;
 use App\Repository\GuardRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -18,54 +18,84 @@ class MatchingController
 {
 
     /**
-     * @Route("/guard/matching/{id}", name="app_guard_matching", methods={"GET"}, defaults={"_format": "json"})
+     * @Route("/api/guard/matching/{id}", name="app_guard_matching", methods={"GET"}, defaults={"_format": "json"})
      */
     public function getInternRankingForPosition(GuardRepository $guardRepository,UserRepository $userRepository,$id)
     {
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
         $guard = $guardRepository->find($id);
-        $interns = $userRepository->findAll();
+        $interns = $userRepository->findByRole('ROLE_INTERN');
 
         $ranking = $this->getScorePerIntern($guard,$interns);
 
-        $data = $serializer->serialize($ranking,'json',[
-            'circular_reference_handler' => function ($object) {
-                return $object;
-            }
-        ]);
+        return new Response($this->castJson($ranking), 200, ['Content-Type' => 'application/json']);
+    }
 
-        return new Response($data, 200, ['Content-Type' => 'application/json']);
+    public function sortByBestRanked($internsScore, $limit = 5){
+        $tempRanking = [];
+        $rankedScore = [];
+        foreach ($internsScore as $i => $internScore){
+            $tempRanking[$i] = $internScore['score']['total'];
+        }
+
+        arsort($tempRanking);
+
+        foreach($tempRanking as $key => $value){
+            if($limit > 0){
+                array_push($rankedScore,$internsScore[$key]);
+            }else break;
+            $limit--;
+        }
+
+        return $rankedScore;
     }
 
     public function getScorePerIntern($guard,$interns){
-        $ranking = [];
+        $internsScore = [];
+
         foreach($interns as $intern){
-            $score = $this->calculateScore($guard,$intern);
-            array_push($ranking,["intern" => $intern,"score" => $score]);
-        };
-        return $ranking;
+            if($this->isAvailable($intern,$guard)){
+                $score = $this->calculateScore($guard,$intern);
+                array_push($internsScore,["intern" => $intern,"score" => $score]);
+            }
+        }
+
+        return $this->sortByBestRanked($internsScore);
+    }
+
+    public function isAvailable($intern,$guard){
+        if($guard->getPharmacy()->getHospital()->getRegion() == $intern->getRegion()){
+            foreach($intern->getDisponibilities() as $disponibility) {
+                if(($disponibility->getHour() == $guard->getHour()) && ($disponibility->getDay() == $guard->getDay())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public function calculateScore($guard,$intern){
-        $internScore = 0;
+        $score['total'] = 0;
+        $score['attribute'] = [];
+
         $skills = $this->getSkills($intern);
 
-        if($this->hasSkills($guard->getId(),$skills['hospitalWhereWorked'])){
-            $internScore += Score::WORKED_AT_HOSPITAL;
-        }
-
-        if ($this->hasSkills($guard->getJob()->getTitle(),$skills['heldPosition'])){
-            $internScore += Score::WORKED_IN_A_SAME_POSITION;
+        if($this->hasSkills($guard->getId(),$skills['pharmacyWhereWorked'])){
+            $score['total'] += Score::WORKED_AT_HOSPITAL;
+            array_push($score['attribute'],'WORKED_AT_HOSPITAL');
         }
 
         if($this->hasAllAgrements($guard->getAgrements(),$skills['approvals'])){
-            $internScore += Score::HAS_REQUIRED_APPROVALS;
+            $score['total'] += Score::HAS_REQUIRED_APPROVALS;
+            array_push($score['attribute'],'HAS_REQUIRED_APPROVALS');
         }
 
-        return $internScore;
+        if ($this->hasSkills($guard->getJob()->getTitle(),$skills['heldPosition'])){
+            $score['total'] += Score::WORKED_IN_A_SAME_POSITION;
+            array_push($score['attribute'],'WORKED_IN_A_SAME_POSITION');
+        }
+
+        $score['percent'] = round (($score['total'] * 100) / score::MAXIMUM_SCORE);
+        return $score;
     }
 
     public function hasSkills($request,$skills){
@@ -74,7 +104,7 @@ class MatchingController
 
     public function hasAllAgrements($requests,$agrements){
         foreach($requests as $agrement){
-            if(!(in_array($agrement->getName(),$agrements))){
+            if(!(in_array($agrement->getCode(),$agrements))){
                 return false;
             }
         }
@@ -82,24 +112,40 @@ class MatchingController
     }
 
     public function getSkills($intern){
-        $skills['hospitalWhereWorked'] = [];
+        $skills['pharmacyWhereWorked'] = [];
         $skills['heldPosition'] = [];
         $skills['approvals'] = [];
-        foreach ($intern->getInterships() as $intership){
-            array_push($skills['hospitalWhereWorked'] ,$intership->getPharmacy()->getId());
-            foreach ($intership->getAgrements() as $agrement){
-                array_push($skills['approvals'] , $agrement->getName());
+
+        foreach ($intern->getInterships() as $internship){
+            array_push($skills['pharmacyWhereWorked'] ,$internship->getPharmacy()->getId());
+            foreach ($internship->getAgrements() as $agrement){
+                array_push($skills['approvals'] , $agrement->getCode());
             }
+            array_push($skills['heldPosition'], $internship->getPosition());
         }
 
+        /*
         foreach ($intern->getGuards() as $guard){
             array_push($skills['hospitalWhereWorked'],$guard->getPharmacy()->getId());
-            array_push($skills['heldPosition'], $guard->getJob()->getTitle());
-            foreach ($guard->getAgrements() as $agrement){
+
+            foreach($guard->getAgrements() as $agrement){
                 array_push($skills['approvals'] , $agrement->getName());
             }
-
-        }
+        }*/
         return $skills;
+    }
+
+    public function castJson($ranking){
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $data = $serializer->normalize($ranking,null,[AbstractNormalizer::ATTRIBUTES => ['id','firstname','lastname','email','phoneNumber','address']]);
+
+        return $serializer->serialize($data,'json',[
+            'circular_reference_handler' => function ($object) {
+                return $object;
+            }
+        ]);
     }
 }
