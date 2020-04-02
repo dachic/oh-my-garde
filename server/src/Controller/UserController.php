@@ -11,6 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Repository\DisponibilityHourRepository;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 
 /**
@@ -80,5 +84,48 @@ class UserController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
 
+    }
+
+    /**
+     * @param User $user
+     * @Route("/{id}/internships", name="user_internships", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function internships(User $user): Response
+    {
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $infos = [];
+        $infosAgr = [];
+        $array = [];
+        $agr = [];
+
+        $colors = ['primary','success', 'danger', 'warning', 'info'];
+        foreach ($user->getInterships() as $intership){
+            foreach($intership->getAgrements() as $agrement)
+            {
+                shuffle($colors);
+                $agr = [
+                    "code" => $agrement->getCode(),
+                    "name" => $agrement->getName(),
+                    "color" => $colors[0]
+                ];
+                 array_push($infosAgr ,$agr); 
+            }
+            $infos = [
+                'id'  => $intership->getId(),
+                'position'  => $intership->getPosition(),
+                'hospital'  => $intership->getHospital()->getName(),
+                'agrement'  => $infosAgr,
+                'creation'  => $intership->getCreatedAt()
+            ];
+            array_push($array ,$infos); 
+            $infosAgr = [];
+        }
+        
+        return $this->json([
+            "data" => $array
+        ]);
     }
 }    
