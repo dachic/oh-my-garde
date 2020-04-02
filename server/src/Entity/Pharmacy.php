@@ -47,11 +47,6 @@ class Pharmacy
     private $guards;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Intership", mappedBy="pharmacy")
-     */
-    private $interships;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="pharmacy", cascade={"persist", "remove"})
      */
     private $representative;
@@ -65,7 +60,6 @@ class Pharmacy
     public function __construct()
     {
         $this->guards = new ArrayCollection();
-        $this->interships = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,37 +128,6 @@ class Pharmacy
             // set the owning side to null (unless already changed)
             if ($guard->getPharmacy() === $this) {
                 $guard->setPharmacy(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Intership[]
-     */
-    public function getInterships(): Collection
-    {
-        return $this->interships;
-    }
-
-    public function addIntership(Intership $intership): self
-    {
-        if (!$this->interships->contains($intership)) {
-            $this->interships[] = $intership;
-            $intership->setPharmacy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIntership(Intership $intership): self
-    {
-        if ($this->interships->contains($intership)) {
-            $this->interships->removeElement($intership);
-            // set the owning side to null (unless already changed)
-            if ($intership->getPharmacy() === $this) {
-                $intership->setPharmacy(null);
             }
         }
 
