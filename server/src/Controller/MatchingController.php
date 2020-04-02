@@ -117,7 +117,7 @@ class MatchingController
         $skills['approvals'] = [];
 
         foreach ($intern->getInterships() as $internship){
-            array_push($skills['pharmacyWhereWorked'] ,$internship->getPharmacy()->getId());
+            array_push($skills['pharmacyWhereWorked'] ,$internship->getHospital()->getPharmacy()->getId());
             foreach ($internship->getAgrements() as $agrement){
                 array_push($skills['approvals'] , $agrement->getCode());
             }
