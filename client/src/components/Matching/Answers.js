@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Card, Button, CardBody, Tooltip } from "reactstrap";
+import { Table, Card, Button, CardBody } from "reactstrap";
 import matchingAPI from "../../api/matching";
 import InternDetails from "./Answers/InternDetails";
 import TooltipCriteria from "./Answers/TooltipCriteria";
@@ -11,7 +11,7 @@ const Answers = props => {
         matchingAPI
             .getInternsRankingForGuard(props.guard)
             .then(data => setRanking(data));
-    }, []);
+    }, [props]);
 
     function getBadge(skills, aggrement) {
         return skills.includes(aggrement) ? (
@@ -27,7 +27,7 @@ const Answers = props => {
 
     function displayInternDetails(index, e) {
         document.getElementById("internDetails-" + index).style.display =
-            e.type == "mouseover" ? "block" : "none";
+            e.type === "mouseover" ? "block" : "none";
     }
 
     return (
@@ -63,7 +63,7 @@ const Answers = props => {
                                             rank={index}
                                         />
                                         <a
-                                            href="#"
+                                            href="#s"
                                             onMouseOver={e =>
                                                 displayInternDetails(index, e)
                                             }

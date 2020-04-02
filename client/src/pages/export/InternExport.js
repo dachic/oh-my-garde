@@ -51,7 +51,7 @@ const expandRow = {
                 <div class="list-group">
                     <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action">{`Email: ${row.emailPharmacy}`}</a>
                     <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumberPharmacy}`}</a>
-                    <a class="list-group-item list-group-item-action">{`Hopital: ${row.nameHopistal}`} </a>
+                    <div class="list-group-item list-group-item-action">{`Hopital: ${row.nameHopistal}`} </div>
                 </div>
        </div>
     ),
@@ -107,19 +107,19 @@ export default class InternExport extends Component {
             interns: []
         };
     }
-    
+
     componentDidMount() {
         fetch("http://api.localhost/user/guard/count").then(response => {
             return response.json()
         }).then(response => {
-          
+
            this.setState({
                interns: response
            })
         })
         .catch(() => {
-           
-        }); 
+
+        });
     }
 
     render() {
@@ -131,7 +131,7 @@ export default class InternExport extends Component {
                      </div>
                     );
         }
-          
+
         return (
             <div>
                 <Card style={cardMargin}>
@@ -172,7 +172,7 @@ export default class InternExport extends Component {
                         </ToolkitProvider>
                     </CardBody>
                 </Card>
-            </div>   
+            </div>
         )
     }
 }
