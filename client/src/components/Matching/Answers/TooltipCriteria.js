@@ -3,7 +3,6 @@ import {Tooltip} from 'reactstrap'
 
 const TooltipCriteria = props => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
-    console.log(props);
 
     const toggle = () => setTooltipOpen(!tooltipOpen);
 

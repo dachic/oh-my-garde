@@ -1,16 +1,36 @@
 import { getLoggedInUser } from '../helpers/authUtils';
+import {fetchJSON} from '../helpers/api'
 
-const url = "http://api.localhost/api/"
-let uri = (path) => { return url + path }
+const url = process.env.REACT_APP_API_URL;
+let uri = (path) => { return url + path };
 const loggedInUser = getLoggedInUser();
 
 const headers = {
-  'Accept': 'application/json', 
+  'Accept': 'application/json',
   'Content-Type': 'application/json',
   'Authorization': 'Bearer ' + loggedInUser.token
 }
 
 export default {
+    async get(guard){
+        const res = fetchJSON(url + '/guards/' + guard)
+        return await res
+    },
+
+    async getInternsRankingForGuard(guard){
+        const res = fetchJSON(url + '/guard/matching/' + guard)
+        return await res
+    },
+
+    async assignInternToGuard(guard,intern){
+        const res = fetchJSON(url + '/guard/assign/',{
+            method:'POST',
+            headers:headers,
+            body: JSON.stringify({guard:guard,intern:intern.id})
+        })
+
+        return await res
+    },
 
   add(guard) {
     return fetch(uri('guards'), {

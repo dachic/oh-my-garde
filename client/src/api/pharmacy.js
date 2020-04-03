@@ -5,7 +5,6 @@ let uri = (path) => { return url + path }
 const headers = { "Content-Type": "application/json" }
 
 export default {
-
   add(pharmacy) {
     return fetch(uri('pharmacies'), {
       method: 'POST',
