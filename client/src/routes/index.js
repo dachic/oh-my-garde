@@ -4,9 +4,6 @@ import { Route } from 'react-router-dom';
 import * as FeatherIcon from 'react-feather';
 
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
-import InternExport from '../pages/export/InternExport';
-
-
 
 const Matching = React.lazy(() => import('../pages/matching/Matching'));
 
@@ -59,7 +56,7 @@ const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 // users
 const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
 const EditUser = React.lazy(() => import('../pages/users/Edit/EditUser'));
-
+const InternExport = React.lazy(() => import('../pages/export/InternExport'));
 
 const loggedInUser = getLoggedInUser();
 // handle auth and authorization
