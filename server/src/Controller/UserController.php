@@ -16,7 +16,7 @@ use App\Repository\DisponibilityHourRepository;
 
 
 /**
- * @Route("/user")
+ * @Route("/api/user")
  */
 class UserController extends AbstractController
 {
