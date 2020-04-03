@@ -24,14 +24,7 @@ const EditPharmacy = React.lazy(() => import('../pages/apps/Pharmacy/Edit'));
 const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'));
 const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
 const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
-const CalendarApp = React.lazy(() => import('../pages/apps/Calendar'));
-const EmailInbox = React.lazy(() => import('../pages/apps/Email/Inbox'));
-const EmailDetail = React.lazy(() => import('../pages/apps/Email/Detail'));
-const EmailCompose = React.lazy(() => import('../pages/apps/Email/Compose'));
-const ProjectList = React.lazy(() => import('../pages/apps/Project/List'));
-const ProjectDetail = React.lazy(() => import('../pages/apps/Project/Detail/'));
-const TaskList = React.lazy(() => import('../pages/apps/Tasks/List'));
-const TaskBoard = React.lazy(() => import('../pages/apps/Tasks/Board'));
+const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -111,7 +104,7 @@ const dashboardRoutes = {
     route: PrivateRoute
 };
 
-// interns
+// Intern export for admin
 const internRoutes = {
     path: '/interns/export',
     name: 'Interns Export',
@@ -120,9 +113,6 @@ const internRoutes = {
     roles: ['ROLE_ADMIN'],
     route: PrivateRoute
 };
-
-// apps
-// Switch this menu regarding the user logged in (intern or representative)
 
 const pharmacyAppRoutes = {
     path: 'pharmacy',
@@ -147,6 +137,7 @@ const pharmacyAppRoutes = {
     ]
 };
 
+// Intern's routes
 const internAppRoutes = {
     path: 'intern',
     name: 'Interne',
@@ -192,17 +183,7 @@ const EditInternshipRoutes = {
     route: PrivateRoute,
     roles: ['ROLE_INTERN'],
 };
-
-const calendarAppRoutes = {
-    path: '/apps/calendar',
-    name: 'Calendar',
-    header: 'Apps',
-    icon: FeatherIcon.Calendar,
-    component: CalendarApp,
-    route: PrivateRoute,
-    roles: ['Admin'],
-};
-
+// Guards and matching
 const matchingRoute = {
     path: '/guards/matching',
     name: 'Matching',
@@ -211,77 +192,20 @@ const matchingRoute = {
     route: PrivateRoute,
 }
 
-const emailAppRoutes = {
-    path: '/apps/email',
-    name: 'Email',
-    icon: FeatherIcon.Inbox,
+const guardAppRoutes = {
+    path: 'guard',
+    name: 'Gardes',
+    header: 'Gardes',
+    icon: FeatherIcon.FileText,
     children: [
         {
-            path: '/apps/email/inbox',
-            name: 'Inbox',
-            component: EmailInbox,
+            path: '/guard/add',
+            name: 'Ajouter',
+            component: GuardApp,
             route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/apps/email/details',
-            name: 'Details',
-            component: EmailDetail,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/apps/email/compose',
-            name: 'Compose',
-            component: EmailCompose,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
+            roles: ['ROLE_PHARMACY'],
+        }
     ]
-};
-
-const projectAppRoutes = {
-    path: '/apps/projects',
-    name: 'Projects',
-    icon: FeatherIcon.Briefcase,
-    children: [
-        {
-            path: '/apps/projects/list',
-            name: 'List',
-            component: ProjectList,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/apps/projects/detail',
-            name: 'Detail',
-            component: ProjectDetail,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-    ]
-};
-
-const taskAppRoutes = {
-    path: '/apps/tasks',
-    name: 'Tasks',
-    icon: FeatherIcon.Bookmark,
-    children: [
-        {
-            path: '/apps/tasks/list',
-            name: 'List',
-            component: TaskList,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/apps/tasks/board',
-            name: 'Board',
-            component: TaskBoard,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-    ],
 };
 
 let appRoutes = [];
@@ -297,7 +221,7 @@ if (loggedInUser !== null) {
     }
 }
 else {
-    appRoutes = [calendarAppRoutes];
+    appRoutes = [internRoutes, guardAppRoutes];
 }
 
 // pages
