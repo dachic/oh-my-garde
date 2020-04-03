@@ -46,7 +46,7 @@ class ForgetPassword extends Component {
      */
     handleValidSubmit = (event, values) => {
         console.log(values);
-        
+
         this.setState({ isLoading: true });
 
         // You can make actual api call to register here
@@ -110,10 +110,10 @@ class ForgetPassword extends Component {
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="text" name="email" id="email" placeholder="Votre adresse e-mail" 
+                                                            <AvInput type="text" name="email" id="email" placeholder="Votre adresse e-mail"
                                                                 value={this.state.email} required />
                                                         </InputGroup>
-                                                        
+
                                                         <AvFeedback>This field is invalid</AvFeedback>
                                                     </AvGroup>
 
@@ -126,7 +126,7 @@ class ForgetPassword extends Component {
 
                                             <Col md={6} className="d-none d-md-inline-block">
                                                 <div className="auth-page-sidebar">
-                                                    <div className="overlay"></div>
+
                                                     <div className="auth-user-testimonial">
                                                     </div>
                                                 </div>

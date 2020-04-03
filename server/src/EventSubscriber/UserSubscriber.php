@@ -2,13 +2,17 @@
 
 namespace App\EventSubscriber;
 
-use App\Constant\UserRole;
 use App\Entity\User;
 use Twig\Environment;
-use App\Service\Mailer;
-use App\Event\UserRegisteredEvent;
+use App\Constant\UserRole;
+use App\Constant\UserStatus;
 use App\Service\MailerService;
+use App\Event\UserRegisteredEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserSubscriber implements EventSubscriberInterface
@@ -37,7 +41,11 @@ class UserSubscriber implements EventSubscriberInterface
             UserRegisteredEvent::NAME  => [
                 ['sendRegistrationMail', 0],
                 ['sendValidationMail', 10],
-            ]
+            ],
+            KernelEvents::VIEW => [
+                'sendAccountValidationMail',
+                EventPriorities::POST_WRITE
+            ],
         ];
     }
 
@@ -60,27 +68,54 @@ class UserSubscriber implements EventSubscriberInterface
         $this->mailerService->send($email, $subject, $view);
     }
 
+
+    public function sendMail(ViewEvent $event)
+    {
+        $book = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if (!$book instanceof Book || Request::METHOD_POST !== $method) {
+            return;
+        }
+
+        $message = (new \Swift_Message('A new book has been added'))
+            ->setFrom('system@example.com')
+            ->setTo('contact@les-tilleuls.coop')
+            ->setBody(sprintf('The book #%d has been added.', $book->getId()));
+
+        $this->mailer->send($message);
+    }
+
     /**
-     * Inform admin user that a user has registered to applications
+     * Send validation email
      *
-     * @param UserRegisteredEvent $event
+     * @param ViewEvent $event
      * @return void
      */
-    public function sendRegistrationMail(UserRegisteredEvent $event)
+    public function sendAccountValidationMail(ViewEvent $event)
     {
-        $user = $event->getUser();
-        $subject = "Nouvel utilisateur sur OhMyGarde";
+        $user = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
 
-        $users = $this->entityManager
-            ->getRepository(User::class)
-            ->findByRoleAndRegionAsEmailKey(UserRole::ROLE_ADMIN, $user->getRegion());
+        if (!$user instanceof User || Request::METHOD_PATCH !== $method) {
+            return;
+        }
 
-        $emails = array_keys($users);
-        $view = $this->twig->render('mjml/emails/user/validate_user.html.twig', [
-            'user' => $user,
-        ]);
+        $email = $user->getEmail();
 
-        foreach ($emails as $email) {
+        if ($user->getStatus() === UserStatus::STATUS_ENABLED) {
+            $subject = "Validation de votre compte sur OhMyGarde";
+            $view = $this->twig->render('mjml/emails/user/account_validated.html.twig', [
+                'user' => $user,
+            ]);
+
+            $this->mailerService->send($email, $subject, $view);
+        } else if ($user->getStatus() === UserStatus::STATUS_DISABLED) {
+            $subject = "Désactivation de votre compte sur OhMyGarde";
+            $view = $this->twig->render('mjml/emails/user/account_unvalidated.html.twig', [
+                'user' => $user,
+            ]);
+
             $this->mailerService->send($email, $subject, $view);
         }
     }

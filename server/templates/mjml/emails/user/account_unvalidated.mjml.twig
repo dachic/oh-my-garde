@@ -1,0 +1,28 @@
+<mjml>
+  <mj-body>
+    <mj-section background-color="#f0f0f0">
+      <mj-column>
+        <mj-text font-style="italic" font-size="20px" color="#626262">Confirmation de votre inscription</mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#fafafa">
+      <mj-column width="400px">
+        <mj-text font-style="italic" font-size="20px" font-family="Helvetica Neue" color="#626262">Bienvenue</mj-text>
+
+        <mj-text color="#525252">Bonjour {{ user.firstname }},</mj-text>
+
+        <mj-text color="#525252" line-height="20px">Vous recevez ce message car votre compte vient d'être désactivé.
+        </mj-text>
+
+        <mj-text line-height="20px">Vous pouvez connectez un administrateur s'il s'agit d'une erreur</mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#f0f0f0">
+      <mj-column>
+        <mj-text font-style="italic" font-size="10px" color="#626262">OhMyGarde - <a href="{{ clientAppUrl }}">{{ clientAppUrl }}</a> | {{ 'now'|date('d/m/Y') }}</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

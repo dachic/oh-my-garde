@@ -93,7 +93,7 @@ const EditUser = () => {
                         <Card>
                             <CardBody>
                                 <Row>
-                                    <Col xl={9}>
+                                    <Col xl={12}>
                                         <h4 className="header-title mt-0 mb-1">Informations principales</h4>
 
                                         {hasMessage && <UncontrolledAlert className="mt-2" color={alertColor}>

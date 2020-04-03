@@ -226,7 +226,7 @@ class Register extends Component {
 
                                             <Col md={6} className="d-none d-md-inline-block">
                                                 <div className="auth-page-sidebar">
-                                                    <div className="overlay"></div>
+
                                                     <div className="auth-user-testimonial">
                                                     </div>
                                                 </div>
