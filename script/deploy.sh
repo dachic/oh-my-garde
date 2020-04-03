@@ -9,9 +9,6 @@ make migrate
 echo -e "==> Installing composer dependencies"
 make cinstall-prod
 
-echo -e "==> Dumping your routes into the public"
-make route-sync
-
 echo -e 'Install front dependencies'
 make yinstall
 
@@ -21,5 +18,11 @@ make ybuild
 echo -e "==> Installing assets"
 make assets-install
 
+echo -e "==> Update JWT private/public key"
+make jwt
+
 echo -e "==> Clearing cache for production"
 make cache-clear
+
+echo -e "==> Installation done ✅"
+exit 0

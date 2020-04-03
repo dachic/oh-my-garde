@@ -45,17 +45,17 @@ class UserController extends AbstractController
         // on recupere toutes les pharmacies
         $pharmacies = $repository_pharmacy->findAll();
 
-        
+
 
         // on fait une boucle pour chaque interne
         foreach($ids as $id)
-        {         
+        {
             foreach($hours as $hour)
             {
-               
+
               foreach($pharmacies as $pharmacy)
                 {
-                    $count =  0; 
+                    $count =  0;
                     foreach($guards as $guard)
                     {
                         if(($guard->getHour()->getId() == $hour->getId()) && ($guard->getUser()->getId() == $id->getId()) && ($guard->getPharmacy()->getId() == $pharmacy->getId()))
@@ -75,7 +75,7 @@ class UserController extends AbstractController
                                 'nbGarde'   => $count
                             ];
                         }
-                        
+
                     }
                     if(isset($day))
                     {
@@ -83,15 +83,15 @@ class UserController extends AbstractController
                       unset($day);
                     }
                 }
-                
-            } 
+
+            }
         }
 
         // unset tout les tableaux
         unset($ids);
         unset($hours);
         unset($guards);
-       
+
         $response = new Response();
         $response->setContent(json_encode(
             $array
@@ -122,7 +122,7 @@ class UserController extends AbstractController
                     "name" => $agrement->getName(),
                     "color" => $colors[0]
                 ];
-                 array_push($infosAgr ,$agr); 
+                 array_push($infosAgr ,$agr);
             }
             $infos = [
                 'id'  => $intership->getId(),
@@ -131,10 +131,10 @@ class UserController extends AbstractController
                 'agrement'  => $infosAgr,
                 'creation'  => $intership->getCreatedAt()
             ];
-            array_push($array ,$infos); 
+            array_push($array ,$infos);
             $infosAgr = [];
         }
-        
+
         return $this->json([
             "data" => $array
         ]);
@@ -165,4 +165,4 @@ class UserController extends AbstractController
             "data" => $infos
         ]);
     }
-}    
+}

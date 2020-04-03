@@ -56,6 +56,11 @@ const Editor = React.lazy(() => import('../pages/forms/Editor'));
 const BasicTables = React.lazy(() => import('../pages/tables/Basic'));
 const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 
+// users
+const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
+const EditUser = React.lazy(() => import('../pages/users/Edit/EditUser'));
+
+
 const loggedInUser = getLoggedInUser();
 // handle auth and authorization
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
@@ -208,6 +213,30 @@ const guardAppRoutes = {
     ]
 };
 
+// users
+const usersRoutes = {
+    path: '/users',
+    name: 'Utilisateurs',
+    header: 'Entités',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/users/all',
+            name: 'Liste des utilisateurs',
+            component: ListAllUser,
+            route: PrivateRoute,
+            roles: ['ROLE_ADMIN'],
+        },
+        {
+            path: '/users/edit',
+            name: 'Edition un utilisateur',
+            component: EditUser,
+            route: PrivateRoute,
+            roles: ['ROLE_ADMIN'],
+        }
+    ],
+};
+
 let appRoutes = [];
 if (loggedInUser !== null) {
     if (loggedInUser.role === 'ROLE_PHARMACY') {
@@ -216,8 +245,8 @@ if (loggedInUser !== null) {
     else if (loggedInUser.role === 'ROLE_INTERN') {
         appRoutes = [internAppRoutes];
     }
-    else {
-        appRoutes = [internRoutes, guardAppRoutes];
+    else if (loggedInUser.role === 'ROLE_ADMIN'){
+        appRoutes = [internRoutes, guardAppRoutes, usersRoutes];
     }
 }
 

@@ -125,8 +125,8 @@ export default class InternExport extends Component {
     render() {
         if (this.state.interns.length === 0) {
             return (<div style={box}>
-                        <div class="spinner-border" style={spinner} role="status">
-                        <span class="sr-only">Loading...</span>
+                        <div className="spinner-border" style={spinner} role="status">
+                        <span className="sr-only">Loading...</span>
                         </div>
                      </div>
                     );
