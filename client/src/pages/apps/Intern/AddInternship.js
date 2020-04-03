@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, Label } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button, Label, UncontrolledAlert, Spinner } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import { getLoggedInUser } from '../../../helpers/authUtils';
 
 import PageTitle from '../../../components/PageTitle';
-import pharmacyApi from '../../../api/pharmacy';
+import hospitalApi from '../../../api/hospital';
 import agrementApi from '../../../api/agrement';
 import internshipApi from '../../../api/internship';
 
-class Add extends Component {
+class AddInternship extends Component {
   constructor(props) {
     super(props);
     const loggedInUser = getLoggedInUser();
-    console.log(loggedInUser);
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
@@ -22,11 +21,13 @@ class Add extends Component {
       agrementsOptions: {},
       agrements: [],
       selectedAgrements: [],
-      pharmacy: '',
+      hospital: '',
       selectedPharmacy: '',
-      user: '',
       errorSelect: {},
-      errorApi: ''
+      errorApi: '',
+      user: `api/users/${loggedInUser.id}`,
+      areHospitalsLoaded: false,
+      areAgrementsLoaded: false
     };
   }
 
@@ -34,36 +35,39 @@ class Add extends Component {
     this.setState({ errors, values });
 
     if (!errors.length) {
-      if (this.state.agrements.length) {
+      if (!this.state.agrements.length) {
+        this.setState({ errorSelect: { agrement: "vous devez sélectionner au moins un argument" } });
+        return;
+      }
+      else if (this.state.hospital === '') {
+        this.setState({ errorSelect: { hospital: "vous devez sélectionner un hôpital" } });
+        return;
+      }
+      else {
         let form = this.state.values;
         let agrements = this.state.agrements;
-        let pharmacy = this.state.pharmacy;
-        form.users = "api/users/2";
+        let hospital = this.state.hospital;
+        form.user = this.state.user;
         form.agrements = agrements;
-        form.pharmacy = pharmacy;
+        form.hospital = hospital;
         form = JSON.stringify(form, null, 2);
         internshipApi.add(form).then(pharmacy => {
-          console.log(pharmacy);
-          event.currentTarget.reset();
-          this.setState({ status: 'Les expériences ont bien été ajoutées', position: '', pharmacy: '', selectedAgrements: '', agrements: '', selectedPharmacy: '' });
+          document.getElementById("internship-form").reset();
+          this.setState({ status: 'Le stage a bien été ajouté' });
         }).catch((error) => {
           this.setState({ errorApi: error.error });
         });
-      }
-      else {
-        this.setState({ errorSelect: { agrement: "vous devez sélectionner au moins un argument" } });
-        return;
       }
     }
   }
 
   loadPharmaciesFromServer() {
-    pharmacyApi.getAll().then(pharmacyList => {
+    hospitalApi.getAll().then(pharmacyList => {
       let options = [];
       Object.keys(pharmacyList).forEach(function (key) {
         options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
       });
-      this.setState({ pharmaciesOptions: options });
+      this.setState({ pharmaciesOptions: options, areHospitalsLoaded: true });
     }).catch((error) => {
       console.log(error.error);
       this.setState({ pharmaciesOptions: { value: 0, label: "Aucun hôpital trouvé" } });
@@ -76,7 +80,7 @@ class Add extends Component {
       Object.keys(pharmacyList).forEach(function (key) {
         options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
       });
-      this.setState({ agrementsOptions: options });
+      this.setState({ agrementsOptions: options, areAgrementsLoaded: true });
     }).catch((error) => {
       console.log(error);
       this.setState({ pharmaciesOptions: { value: 0, label: "Aucun agrément trouvé" } });
@@ -100,15 +104,13 @@ class Add extends Component {
 
   handleSelectedPharmacy = e => {
     if (e) {
-      this.setState({ pharmacy: `api/pharmacies/${e.value}` });
-      this.setState({ selectedPharmacy: e });
+      this.setState({ hospital: `api/hospitals/${e.value}`, selectedPharmacy: e, errorSelect: {} });
     } else {
-      this.setState({ pharmacy: '' });
-      this.setState({ selectedPharmacy: e });
+      this.setState({ hospital: '', errorSelect: { hospital: "vous devez sélectionner un hôpital" }, selectedPharmacy: e });
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.loadPharmaciesFromServer();
     this.loadAgrementsFromServer();
   }
@@ -122,38 +124,28 @@ class Add extends Component {
               { label: 'Forms', path: '/forms/validation' },
               { label: '', path: '/forms/validation', active: true },
             ]}
-            title={'Mes expériences'}
+            title={'Ajouter un stage'}
           />
         </Col>
         {this.state.status &&
-          <Col md={12}>
-            <div className="mt-2 p-2">
-              <div className="alert alert-success" role="alert" aria-label="Close">
-                <strong>{this.state.status}</strong>
-              </div>
-            </div>
+          <Col md={12} className="mt-2">
+            <UncontrolledAlert color="success" key="1">
+              <strong>{this.state.status} </strong>
+            </UncontrolledAlert>
           </Col>}
         {this.state.errorApi &&
           <Col md={12}>
-            <div className="mt-2 p-2">
-              <div className="alert alert-danger" role="alert" aria-label="Close">
-                <strong>{this.state.errorApi}</strong>
-              </div>
-            </div>
+            <UncontrolledAlert color="danger" key="1">
+              <strong>{this.state.errorApi} </strong>
+            </UncontrolledAlert>
           </Col>}
       </Row>
 
       <Row>
-        {this.state.values && <div>
-          <h5>Submission values</h5>
-          Invalid: {this.state.errors.join(', ')}<br />
-          Values: <pre>{JSON.stringify(this.state.values, null, 2)}</pre>
-        </div>}
         <Col lg={12}>
           <Card>
             <CardBody>
-              <h4 className="header-title mt-0 mb-1">Ajouter un stage</h4>
-              <AvForm onSubmit={this.handleSubmit}>
+              <AvForm onSubmit={this.handleSubmit} id="internship-form">
                 <AvGroup>
                   <Label for="position">Intitulé du poste *</Label>
                   <div className="input-group">
@@ -162,36 +154,46 @@ class Add extends Component {
                   </div>
                 </AvGroup>
                 <div style={{ marginBottom: '15px' }}>
-                  <Label for="pharmacy">Hôpital dans lequel le stage a été effectué</Label>
-                  <Select
-                    name="pharmacy"
-                    options={this.state.pharmaciesOptions}
-                    defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
-                    className="react-select"
-                    placeholder="Choisir un hôpital"
-                    value={this.state.selectedPharmacy}
-                    onChange={this.handleSelectedPharmacy}
-                    classNamePrefix="react-select"></Select>
+                  <Label for="pharmacy">Hôpital dans lequel le stage a été effectué *</Label>
+                  {!this.state.areHospitalsLoaded ?
+                    <div>
+                      <Spinner key="2" className="m-2" color="primary" />
+                    </div> :
+                    <Select
+                      name="pharmacy"
+                      options={this.state.pharmaciesOptions}
+                      defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
+                      className="react-select"
+                      placeholder="Choisir un hôpital"
+                      value={this.state.selectedPharmacy}
+                      onChange={this.handleSelectedPharmacy}
+                      classNamePrefix="react-select"></Select>}
+                  {this.state.errorSelect &&
+                    <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.hospital}</p>}
                 </div>
 
                 <div>
                   <Label for="agrements" style={this.state.errorSelect && { border: 'red' }}>Agréments *</Label>
-                  <Select
-                    name="agrements"
-                    isMulti={true}
-                    options={this.state.agrementsOptions ? this.state.agrementsOptions :
-                      { value: 0, label: "Aucun agrément trouvé" }}
-                    className="react-select"
-                    styles={this.state.errorSelect && { border: '1px solid red' }}
-                    placeholder="Choisir des agréments"
-                    value={this.state.selectedAgrements}
-                    onChange={this.handleSelectedAgrement}
-                    classNamePrefix="react-select"></Select>
+                  {!this.state.areAgrementsLoaded ?
+                    <div>
+                      <Spinner key="2" className="m-2" color="primary" />
+                    </div> :
+                    <Select
+                      name="agrements"
+                      isMulti={true}
+                      options={this.state.agrementsOptions ? this.state.agrementsOptions :
+                        { value: 0, label: "Aucun agrément trouvé" }}
+                      className="react-select"
+                      styles={this.state.errorSelect && { border: '1px solid red' }}
+                      placeholder="Choisir des agréments"
+                      value={this.state.selectedAgrements}
+                      onChange={this.handleSelectedAgrement}
+                      classNamePrefix="react-select"></Select>}
                   {this.state.errorSelect &&
                     <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.agrement}</p>}
                 </div>
                 <Button color="primary" type="submit">
-                  Ajouter
+                  Ajouter le stage
                 </Button>
               </AvForm>
             </CardBody>
@@ -202,4 +204,4 @@ class Add extends Component {
   }
 }
 
-export default Add;
+export default AddInternship;

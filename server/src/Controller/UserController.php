@@ -12,10 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Repository\DisponibilityHourRepository;
-
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
- * @Route("/user")
+ * @Route("api/user")
  */
 class UserController extends AbstractController
 {
@@ -100,28 +100,69 @@ class UserController extends AbstractController
         return $response;
 
     }
+
     /**
-     * @Route("/guard/all", name="user_all", methods={"GET","POST"})
+     * @param User $user
+     * @Route("/{id}/internships", name="user_internships", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function all(): Response
+    public function internships(User $user): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $infos = [];
+        $infosAgr = [];
+        $array = [];
+        $agr = [];
 
-        $repository = $this->getDoctrine()->getRepository(Guard::class);
-
-        $array = $repository->findBy(['status' => 'accepted'],['user' => 'ASC','pharmacy' => 'ASC', 'hour' => 'ASC']);
-        $newArray = [];
-        foreach($array as $object){
-            array_push($newArray, $object->toString());
+        $colors = ['primary','success', 'danger', 'warning', 'info'];
+        foreach ($user->getInterships() as $intership){
+            foreach($intership->getAgrements() as $agrement)
+            {
+                shuffle($colors);
+                $agr = [
+                    "code" => $agrement->getCode(),
+                    "name" => $agrement->getName(),
+                    "color" => $colors[0]
+                ];
+                 array_push($infosAgr ,$agr); 
+            }
+            $infos = [
+                'id'  => $intership->getId(),
+                'position'  => $intership->getPosition(),
+                'hospital'  => $intership->getHospital()->getName(),
+                'agrement'  => $infosAgr,
+                'creation'  => $intership->getCreatedAt()
+            ];
+            array_push($array ,$infos); 
+            $infosAgr = [];
         }
-       
-        $response = new Response();
-        $response->setContent(json_encode(
-            $newArray
-        ));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-
+        
+        return $this->json([
+            "data" => $array
+        ]);
     }
-    
+
+    /**
+     * @param User $user
+     * @Route("/{id}/pharmacy", name="user_pharmacy", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function pharmacy(User $user): Response
+    {
+        $infos = [];
+
+        if($user->getPharmacy() != null)
+        {
+            $infos = [
+                'pharmacyId'  => $user->getPharmacy()->getId(),
+            ];
+        }
+        else
+        {
+            $infos = [
+                'pharmacyId'  => '',
+            ];
+        }
+
+        return $this->json([
+            "data" => $infos
+        ]);
+    }
 }    

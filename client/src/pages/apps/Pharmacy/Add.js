@@ -1,34 +1,75 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label, UncontrolledAlert, Spinner } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import Select from 'react-select';
+import { getLoggedInUser } from '../../../helpers/authUtils';
 
 import PageTitle from '../../../components/PageTitle';
-import Api from '../../../api/pharmacy';
+import Api from '../../../api/hospital';
 class Add extends Component {
   constructor(props) {
     super(props);
+    const loggedInUser = getLoggedInUser();
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      status: ''
+      status: '',
+      hospitalsOptions: {},
+      selectedHospital: '',
+      errorSelect: {},
+      errorApi: '',
+      hospital: '',
+      user: `api/users/${loggedInUser.id}`,
+      areHospitalsLoaded: false
     };
   }
 
   handleSubmit(event, errors, values) {
     this.setState({ errors, values });
-
     // API Call
     if (!errors.length) {
-      // TODO: Add logged in user's id to form (representative: the entire user entity)
-      let form = JSON.stringify(this.state.values, null, 2);
-      console.log(form);
-      Api.add(form).then(pharmacy => {
-        console.log(pharmacy);
-        this.setState({ status: 'La pharmacie a bien été ajoutée', name: '', hospitalName: '', email: '', phoneNumber: '' });
-      }).catch((error) => {
-        console.log(error);
-      });
+      if (this.state.hospital === '') {
+        this.setState({ errorSelect: { hospital: "vous devez sélectionner un hôpital" } });
+        return;
+      }
+      else {
+        let form = this.state.values;
+        let hospital = this.state.hospital;
+        form.representative = this.state.user;
+        form.hospital = hospital;
+        form = JSON.stringify(form, null, 2);
+        Api.addLinkedPharmacy(form).then(pharmacy => {
+          document.getElementById("pharmacy-form").reset();
+          this.setState({ status: 'La pharmacie a bien été ajoutée' });
+        }).catch((error) => {
+          console.log(error);
+          this.setState({ errorApi: error.error });
+        });
+      }
     }
+  }
+  handleselectedHospital = e => {
+    if (e) {
+      this.setState({ hospital: `api/hospitals/${e.value}`, selectedHospital: e, errorSelect: {} });
+    } else {
+      this.setState({ hospital: '', errorSelect: { hospital: "vous devez sélectionner un hôpital" }, selectedHospital: e });
+    }
+  }
+
+  loadPharmaciesFromServer() {
+    Api.getAll().then(pharmacyList => {
+      let options = [];
+      Object.keys(pharmacyList).forEach(function (key) {
+        options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
+      });
+      this.setState({ hospitalsOptions: options, areHospitalsLoaded: true });
+    }).catch((error) => {
+      this.setState({ hospitalsOptions: { value: 0, label: "Aucun hôpital trouvé" } });
+    });
+  }
+
+  componentWillMount() {
+    this.loadPharmaciesFromServer();
   }
 
   render() {
@@ -44,13 +85,16 @@ class Add extends Component {
           />
         </Col>
         {this.state.status &&
+          <Col md={12} className="mt-2">
+            <UncontrolledAlert color="success" key="1">
+              <strong>{this.state.status} </strong>
+            </UncontrolledAlert>
+          </Col>}
+        {this.state.errorApi &&
           <Col md={12}>
-            <div className="mt-2 p-2">
-              <div className="alert alert-success" role="alert" aria-label="Close">
-                <strong>{this.state.status}</strong>
-                <span aria-hidden="true">&times;</span>
-              </div>
-            </div>
+            <UncontrolledAlert color="danger" key="1">
+              <strong>{this.state.errorApi} </strong>
+            </UncontrolledAlert>
           </Col>}
       </Row>
 
@@ -58,8 +102,7 @@ class Add extends Component {
         <Col lg={12}>
           <Card>
             <CardBody>
-              <AvForm onSubmit={this.handleSubmit}>
-
+              <AvForm onSubmit={this.handleSubmit} id="pharmacy-form">
                 <AvGroup>
                   <Label for="name">Nom de la pharmacie *</Label>
                   <div className="input-group">
@@ -68,13 +111,24 @@ class Add extends Component {
                   </div>
                 </AvGroup>
 
-                <AvGroup>
-                  <Label for="hospitalName">Nom de l'hôpital relié *</Label>
-                  <div className="input-group">
-                    <AvInput type="text" name="hospitalName" required />
-                    <AvFeedback>Champ incorrect/requis.</AvFeedback>
-                  </div>
-                </AvGroup>
+                <div style={{ marginBottom: '15px' }}>
+                  <Label for="hospital">Nom de l'hôpital relié *</Label>
+                  {!this.state.areHospitalsLoaded ?
+                    <div>
+                      <Spinner key="2" className="m-2" color="primary" />
+                    </div> :
+                    <Select
+                      name="hospital"
+                      options={this.state.hospitalsOptions}
+                      defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
+                      className="react-select"
+                      placeholder="Choisir un hôpital"
+                      value={this.state.selectedHospital}
+                      onChange={this.handleselectedHospital}
+                      classNamePrefix="react-select"></Select>}
+                  {this.state.errorSelect &&
+                    <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.hospital}</p>}
+                </div>
 
                 <AvGroup>
                   <Label for="email">Adresse email (si défférente de celle du représent)</Label>
@@ -99,11 +153,6 @@ class Add extends Component {
             </CardBody>
           </Card>
         </Col>
-        {this.state.values && <div>
-          <h5>Submission values</h5>
-          Invalid: {this.state.errors.join(', ')}<br />
-          Values: <pre>{JSON.stringify(this.state.values, null, 2)}</pre>
-        </div>}
       </Row>
     </React.Fragment>
   }

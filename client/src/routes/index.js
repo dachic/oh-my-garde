@@ -8,7 +8,7 @@ import InternExport from '../pages/export/InternExport';
 
 
 
-const Matching = React.lazy(() => import ('../pages/matching/Matching'));
+const Matching = React.lazy(() => import('../pages/matching/Matching'));
 
 // auth
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -20,7 +20,10 @@ const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
-const InternApp = React.lazy(() => import('../pages/apps/Intern/Experiences'));
+const EditPharmacy = React.lazy(() => import('../pages/apps/Pharmacy/Edit'));
+const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'));
+const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
+const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
 const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
 
 // pages
@@ -53,7 +56,7 @@ const Editor = React.lazy(() => import('../pages/forms/Editor'));
 const BasicTables = React.lazy(() => import('../pages/tables/Basic'));
 const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 
-
+const loggedInUser = getLoggedInUser();
 // handle auth and authorization
 const PrivateRoute = ({ component: Component, roles, ...rest }) => (
     <Route
@@ -101,7 +104,7 @@ const dashboardRoutes = {
     route: PrivateRoute
 };
 
-// interns
+// Intern export for admin
 const internRoutes = {
     path: '/interns/export',
     name: 'Interns Export',
@@ -111,8 +114,6 @@ const internRoutes = {
     route: PrivateRoute
 };
 
-// apps
-// Switch this menu regarding the user logged in (intern or representative)
 const pharmacyAppRoutes = {
     path: 'pharmacy',
     name: 'Pharmacie',
@@ -129,12 +130,67 @@ const pharmacyAppRoutes = {
         {
             path: '/pharmacy/edit',
             name: 'Modifier',
-            // component: EmailDetail,
+            component: EditPharmacy,
             route: PrivateRoute,
             roles: ['ROLE_PHARMACY'],
         },
     ]
 };
+
+// Intern's routes
+const internAppRoutes = {
+    path: 'intern',
+    name: 'Interne',
+    header: 'Entités',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/intern/internship',
+            name: 'Expériences',
+            component: InternApp,
+            route: PrivateRoute,
+            children: [
+                {
+                    path: '/intern/internship/add',
+                    name: 'Ajouter',
+                    component: InternApp,
+                    route: PrivateRoute,
+                    roles: ['ROLE_INTERN'],
+                },
+                {
+                    path: '/intern/internship/all',
+                    name: 'Consulter',
+                    component: InternList,
+                    route: PrivateRoute,
+                    roles: ['ROLE_INTERN'],
+                }
+            ],
+            roles: ['ROLE_INTERN'],
+        },
+        {
+            path: '/intern/profile',
+            name: 'Profil',
+            // component: EmailDetail,
+            route: PrivateRoute,
+            roles: ['ROLE_INTERN'],
+        },
+    ]
+};
+
+const EditInternshipRoutes = {
+    path: '/internship/edit',
+    component: EditInternship,
+    route: PrivateRoute,
+    roles: ['ROLE_INTERN'],
+};
+// Guards and matching
+const matchingRoute = {
+    path: '/guards/matching',
+    name: 'Matching',
+    header: 'Apps',
+    component: Matching,
+    route: PrivateRoute,
+}
 
 const guardAppRoutes = {
     path: 'guard',
@@ -152,55 +208,21 @@ const guardAppRoutes = {
     ]
 };
 
-const internAppRoutes = {
-    path: 'intern',
-    name: 'Interne',
-    icon: FeatherIcon.FileText,
-    children: [
-        {
-            path: '/intern/internship',
-            name: 'Expériences',
-            component: InternApp,
-            route: PrivateRoute,
-            children: [
-                {
-                    path: '/intern/internship/add',
-                    name: 'Ajouter',
-                    component: InternApp,
-                    route: PrivateRoute,
-                    roles: ['ROLE_INTERN'],
-                },
-                {
-                    path: 'intern/internship/all',
-                    name: 'Consulter',
-                    // component: EmailDetail,
-                    route: PrivateRoute,
-                    roles: ['ROLE_INTERN'],
-                }
-            ],
-            roles: ['ROLE_INTERN'],
-        },
-        {
-            path: '/intern/profile',
-            name: 'Profil',
-            // component: EmailDetail,
-            route: PrivateRoute,
-            roles: ['ROLE_INTERN'],
-        },
-    ]
-};
-
-
-const matchingRoute = {
-    path: '/guards/matching',
-    name: 'Matching',
-    header: 'Apps',
-    component: Matching,
-    route: PrivateRoute,
+let appRoutes = [];
+if (loggedInUser !== null) {
+    if (loggedInUser.role === 'ROLE_PHARMACY') {
+        appRoutes = [pharmacyAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+    }
+    else if (loggedInUser.role === 'ROLE_INTERN') {
+        appRoutes = [internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+    }
+    else {
+        appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+    }
 }
-
-
-const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, guardAppRoutes];
+else {
+    appRoutes = [internRoutes, guardAppRoutes];
+}
 
 // pages
 const pagesRoutes = {
@@ -447,8 +469,9 @@ const allRoutes = [
     formsRoutes,
     tableRoutes,
     authRoutes,
+    EditInternshipRoutes
 ];
 
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, EditInternshipRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };
