@@ -26,6 +26,7 @@ class UserFixtures extends Fixture
     {
         $faker = Faker\Factory::create('fr_FR');
 
+        // Hospital & Region
         $regions = [];
         $hospitals = [];
         for ($i = 0; $i < 5; $i++) {
@@ -123,6 +124,7 @@ class UserFixtures extends Fixture
         $pharmacy->setHospital($hospitals[3]);
         $manager->persist($pharmacy);
 
+        // Job
         $job = new Job();
         $job->setTitle("CRPV");
         $manager->persist($job);
@@ -140,7 +142,7 @@ class UserFixtures extends Fixture
 
         // Internship
         $internship = new Intership();
-        $internship->setPharmacy($pharmacy);
+        $internship->setHospital($hospitals[3]);
         $internship->setUser($userIntern);
         $internship->addAgrement($agrement);
         $internship->setPosition("Intitulé du poste au sein de l'hôpital");

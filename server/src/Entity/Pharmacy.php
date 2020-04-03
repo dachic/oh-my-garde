@@ -9,11 +9,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\PharmacyRepository")
  * @ApiFilter(OrderFilter::class, properties={"hospitalName"="asc"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
+ * @ApiFilter(SearchFilter::class, properties={"hospital.region.id": "exact"})
  */
 class Pharmacy
 {
@@ -47,11 +51,6 @@ class Pharmacy
     private $guards;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Intership", mappedBy="pharmacy")
-     */
-    private $interships;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="pharmacy", cascade={"persist", "remove"})
      */
     private $representative;
@@ -65,7 +64,6 @@ class Pharmacy
     public function __construct()
     {
         $this->guards = new ArrayCollection();
-        $this->interships = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,37 +132,6 @@ class Pharmacy
             // set the owning side to null (unless already changed)
             if ($guard->getPharmacy() === $this) {
                 $guard->setPharmacy(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Intership[]
-     */
-    public function getInterships(): Collection
-    {
-        return $this->interships;
-    }
-
-    public function addIntership(Intership $intership): self
-    {
-        if (!$this->interships->contains($intership)) {
-            $this->interships[] = $intership;
-            $intership->setPharmacy($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIntership(Intership $intership): self
-    {
-        if ($this->interships->contains($intership)) {
-            $this->interships->removeElement($intership);
-            // set the owning side to null (unless already changed)
-            if ($intership->getPharmacy() === $this) {
-                $intership->setPharmacy(null);
             }
         }
 

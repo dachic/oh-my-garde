@@ -51,7 +51,7 @@ const expandRow = {
                 <div style={tabMargin}  class="list-group">
                     <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
                     <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
-                    
+
                 </div>
        </div>
     ),
@@ -72,11 +72,6 @@ const select = {
 const cardMargin = {
     margin: '30px',
 };
-const tabMargin = {
-    marginLeft: "40px",
-    marginRight: "40px",
-    marginBottom: "15px",
-}
 const spinner = {
     width: '15rem',
     height: '15rem',

@@ -8,5 +8,5 @@ import AppMenu from './appMenu/reducers';
 export default combineReducers({
     Auth,
     AppMenu,
-    Layout,
+    Layout
 });

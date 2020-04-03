@@ -16,6 +16,7 @@
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "jwt-decode": "^2.2.0",
+    "luxon": "^1.22.2",
     "metismenujs": "^1.1.0",
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
@@ -59,5 +60,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "terser": "3.14.1"
+  }
 }

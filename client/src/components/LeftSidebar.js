@@ -10,7 +10,6 @@ import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from
 import * as FeatherIcon from 'react-feather';
 
 import AppMenu from './AppMenu';
-import profilePic from '../assets/images/users/avatar-7.jpg';
 import { getLoggedInUser } from '../helpers/authUtils';
 
 /**
@@ -21,9 +20,6 @@ const UserProfile = () => {
 
     return <React.Fragment>
         <div className="media user-profile mt-2 mb-2">
-            <img src={profilePic} className="avatar-sm rounded-circle mr-2" alt="Shreyu" />
-            <img src={profilePic} className="avatar-xs rounded-circle mr-2" alt="Shreyu" />
-
             <div className="media-body">
                 <h6 className="pro-user-name mt-0 mb-0">{loggedInUser.firstname} {loggedInUser.lastname}</h6>
                 <span className="pro-user-desc">{loggedInUser.roleAsString}</span>
@@ -45,18 +41,10 @@ const UserProfile = () => {
                         <FeatherIcon.Settings className="icon-dual icon-xs mr-2" />
                         <span>Paramètres</span>
                     </Link>
-                    <Link to="/" className="dropdown-item notify-item">
-                        <FeatherIcon.HelpCircle className="icon-dual icon-xs mr-2" />
-                        <span>Support</span>
-                    </Link>
-                    <Link to="/" className="dropdown-item notify-item">
-                        <FeatherIcon.Lock className="icon-dual icon-xs mr-2" />
-                        <span>Lock Screen</span>
-                    </Link>
                     <DropdownItem divider />
                     <Link to="/account/logout" className="dropdown-item notify-item">
                         <FeatherIcon.LogOut className="icon-dual icon-xs mr-2" />
-                        <span>Se déconnecter</span>
+                        <span>Me déconnecter</span>
                     </Link>
                 </DropdownMenu>
             </UncontrolledDropdown>

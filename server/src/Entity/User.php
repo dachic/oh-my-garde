@@ -101,7 +101,7 @@ class User  implements UserInterface
      * @ORM\OneToOne(targetEntity="App\Entity\Pharmacy", inversedBy="representative", cascade={"persist", "remove"})
      */
     private $pharmacy;
-     /* 
+     /*
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $address;
@@ -109,6 +109,7 @@ class User  implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid
      */
     private $region;
 
@@ -339,7 +340,7 @@ class User  implements UserInterface
     {
         return $this->pharmacy;
     }
-    
+
     public function getFullname()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();

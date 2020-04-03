@@ -55,8 +55,8 @@ class Confirm extends Component {
                                             </a>
                                         </div>
 
-                                        <h6 className="h5 mb-0 mt-4">Validation de votre compte</h6>
-                                        <p className="text-muted mt-3 mb-3">Votre compte a été crée avec succès. Un mail a été envoyé à l'administrateur de l'application. Vous recevrez un mail dès qu'il aura validé votre compte.</p>
+                                        <h6 className="h5 mb-0 mt-4">Validation en cours</h6>
+                                        <p className="text-muted mt-3 mb-3">Votre compte a été crée avec succès. L'administrateur de l'application a été prévenu de votre inscription. Vous recevrez un mail de confirmation dès que votre compte aura été validé.</p>
                                     </CardBody>
                                 </Card>
                             </Col>

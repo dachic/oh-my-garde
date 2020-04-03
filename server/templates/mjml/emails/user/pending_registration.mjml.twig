@@ -2,7 +2,7 @@
   <mj-body>
     <mj-section background-color="#f0f0f0">
       <mj-column>
-        <mj-text font-style="italic" font-size="20px" color="#626262">Inscription sur Oh My Garde</mj-text>
+        <mj-text font-style="italic" font-size="20px" color="#626262">Inscription sur OhMyGarde</mj-text>
       </mj-column>
     </mj-section>
 
@@ -12,16 +12,16 @@
 
         <mj-text color="#525252">Bonjour {{ user.firstname }},</mj-text>
 
-        <mj-text color="#525252">Vous recevez ce message car vous venez de vous inscrire sur le site <mj-link href="{{ app.request.getSchemeAndHttpHost() }}" color="#626262">Oh My Garde</mj-link>.
+        <mj-text color="#525252" line-height="20px">Vous recevez ce message car vous venez de vous inscrire sur le site <mj-link href="{{ app.request.getSchemeAndHttpHost() }}" color="#626262">Oh My Garde</mj-link>.
         </mj-text>
 
-        <mj-text>Votre compte est en attente d'activation. Dès qu'il sera activé pour pourrez vous connecter à l'application. </mj-text>
+        <mj-text line-height="20px">Votre compte est en attente d'activation. Dès qu'il sera activé pour pourrez vous connecter à l'application. </mj-text>
       </mj-column>
     </mj-section>
 
     <mj-section background-color="#f0f0f0">
       <mj-column>
-        <mj-text font-style="italic" font-size="20px" color="#626262">Oh My Garde</mj-text>
+        <mj-text font-style="italic" font-size="10px" color="#626262">OhMyGarde - <a href="{{ clientAppUrl }}">{{ clientAppUrl }}</a> | {{ 'now'|date('d/m/Y') }}</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>

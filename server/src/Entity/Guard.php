@@ -61,6 +61,7 @@ class Guard
     public function __construct()
     {
         $this->agrements = new ArrayCollection();
+        $this->status = "pending";
     }
 
     public function getId(): ?int
@@ -155,7 +156,7 @@ class Guard
      */
     public function getAgrements(): Collection
     {
-        return $this->agrement;
+        return $this->agrements;
     }
 
     public function addAgrement(Agrement $agrement): self

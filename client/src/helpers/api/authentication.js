@@ -17,7 +17,7 @@ const loginApi = (endpoint, options) => {
                     // successfully logged in
                     resolve(user);
                 } else {
-                    reject("Désolé mais votre compte n'est pas encore activé 😅. Veuillez contacter l'administrateur");
+                    reject("Votre compte n'a pas encore été activé 😅");
                 }
             })
             .catch(() => {
@@ -27,6 +27,7 @@ const loginApi = (endpoint, options) => {
 }
 
 const registerApi = (endpoint, options) => {
+
     return new Promise((resolve, reject) => {
         fetch(`${process.env.REACT_APP_API_URL}${endpoint}`, options)
             .then(response => {
@@ -39,7 +40,7 @@ const registerApi = (endpoint, options) => {
                         .catch(() => {
                             // Couldn't parse the JSON
                             // throw new Error(response.status);
-                            reject("Une erreur inattendue s'est produite lors de la lectuer des données. Ré-essayez !");
+                            reject("Une erreur inattendue s'est produite lors de la lecture des données. Ré-essayez !");
                         }).then((data) => {
                             // Got valid JSON with error response, use it
                             if (data.success === false) {

@@ -12,8 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Repository\DisponibilityHourRepository;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\Request;
+
 
 
 /**
@@ -24,7 +23,7 @@ class UserController extends AbstractController
     /**
      * @Route("/guard/count", name="user_index", methods={"GET","POST"})
      */
-    public function index(Request $request, SerializerInterface $serializer): Response
+    public function index(/*Request $request*/ ): Response
     {
         $em = $this->getDoctrine()->getManager();
 
