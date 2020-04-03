@@ -225,6 +225,7 @@ const confirmGuardRoute = {
     name: 'Validateguard',
     component: GuardConfirm,
     route: Route
+}
 
 // users
 const usersRoutes = {
