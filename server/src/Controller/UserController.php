@@ -14,7 +14,7 @@ use App\Repository\DisponibilityHourRepository;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
- * @Route("/user")
+ * @Route("api/user")
  */
 class UserController extends AbstractController
 {

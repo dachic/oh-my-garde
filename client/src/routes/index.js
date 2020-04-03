@@ -262,11 +262,16 @@ const taskAppRoutes = {
 };
 
 let appRoutes = [];
-if (loggedInUser.role === 'ROLE_PHARMACY') {
-    appRoutes = [pharmacyAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
-}
-else if (loggedInUser.role === 'ROLE_INTERN') {
-    appRoutes = [internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+if (loggedInUser !== null) {
+    if (loggedInUser.role === 'ROLE_PHARMACY') {
+        appRoutes = [pharmacyAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+    }
+    else if (loggedInUser.role === 'ROLE_INTERN') {
+        appRoutes = [internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+    }
+    else {
+        appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+    }
 }
 else {
     appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];

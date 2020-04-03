@@ -1,16 +1,21 @@
 
-const url = "http://api.localhost/api/"
+import { getLoggedInUser } from '../helpers/authUtils';
+
+const url = process.env.REACT_APP_API_URL;
 let uri = (path) => { return url + path }
+
+const loggedInUser = getLoggedInUser();
 
 const headers = {
   "Content-Type": "application/json",
-  "Accept": "application/json"
+  "Accept": "application/json",
+  "Authorization": "Bearer " + loggedInUser.token
 }
 
 export default {
 
   getSpecific(id) {
-    return fetch(uri(`pharmacy/${id}`), {
+    return fetch(uri(`/pharmacy/${id}`), {
       method: 'GET',
       headers: headers
     }).then((response) => {
@@ -21,7 +26,7 @@ export default {
     }).catch(error => Promise.reject(error));
   },
   updateSpecific(form, id) {
-    return fetch(uri(`pharmacies/${id}`), {
+    return fetch(uri(`/pharmacies/${id}`), {
       method: 'PUT',
       headers: headers,
       body: form

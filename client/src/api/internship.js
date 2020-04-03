@@ -1,20 +1,20 @@
 
 import { getLoggedInUser } from '../helpers/authUtils';
 
-const url = "http://api.localhost/api/"
-let uri = (path) => { return url + path }
+const url = process.env.REACT_APP_API_URL;
+let uri = (path) => { return url + path };
 
 const loggedInUser = getLoggedInUser();
 
 const headers = {
   "Content-Type": "application/json",
-  "Accept": "application/json"
-  // "Bearer": loggedInUser.token
+  "Accept": "application/json",
+  "Authorization": "Bearer " + loggedInUser.token
 }
 
 export default {
   add(form) {
-    return fetch(uri('interships'), {
+    return fetch(uri('/interships'), {
       method: 'POST',
       headers: headers,
       body: form
@@ -39,7 +39,7 @@ export default {
     });
   },
   getAll(form) {
-    return fetch(uri('interships'), {
+    return fetch(uri('/interships'), {
       method: 'POST',
       headers: headers,
       body: form
@@ -64,8 +64,9 @@ export default {
     });
   },
   getUsersInternships() {
-    return fetch("http://api.localhost/user/" + loggedInUser.id + "/internships", {
-      method: 'GET'
+    return fetch(uri('/interships') + '/user/' + loggedInUser.id + '/internships', {
+      method: 'GET',
+      headers: headers
     }).then((response) => {
       if (response.status === 500) {
         return Promise.reject({ error: "Une erreur est survenue, veuillez réessayer." })
@@ -78,8 +79,9 @@ export default {
     });
   },
   getSpecific(id) {
-    return fetch(uri(`internship/${id}`), {
+    return fetch(uri(`/internship/${id}`), {
       method: 'GET',
+      headers: headers
     }).then((response) => {
       // convert data from ReadableStream to JSON
       return response.json();
@@ -88,7 +90,7 @@ export default {
     }).catch(error => Promise.reject(error));
   },
   updateSpecific(form, id) {
-    return fetch(uri(`interships/${id}`), {
+    return fetch(uri(`/interships/${id}`), {
       method: 'PUT',
       headers: headers,
       body: form
