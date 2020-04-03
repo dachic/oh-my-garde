@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label, FormGroup } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { Row, Col, Card, CardBody, Button, Label, FormGroup } from 'reactstrap';
+import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 
 import PageTitle from '../../../components/PageTitle';
 import Api from '../../../api/guard';
@@ -91,8 +91,8 @@ class Add extends Component {
     })
 
 
-    var url = new URL(process.env.REACT_APP_API_URL+"/disponibility_hours");
-    var opt = {
+    var url2 = new URL(process.env.REACT_APP_API_URL+"/disponibility_hours");
+    var opt2 = {
         method: "GET",
         headers: {
             'Accept': 'application/json',
@@ -100,7 +100,7 @@ class Add extends Component {
             'Authorization': 'Bearer ' + loggedInUser.token
         }
     };
-    fetch(url,opt).then((response) => {
+    fetch(url2,opt2).then((response) => {
         return response.json()
     }).then(hours => {
         const opts = [];
@@ -113,8 +113,8 @@ class Add extends Component {
         })
     })
 
-    var url = new URL(process.env.REACT_APP_API_URL+"/jobs");
-    var opt = {
+    var url3 = new URL(process.env.REACT_APP_API_URL+"/jobs");
+    var opt3 = {
         method: "GET",
         headers: {
             'Accept': 'application/json',
@@ -122,7 +122,7 @@ class Add extends Component {
             'Authorization': 'Bearer ' + loggedInUser.token
         }
     };
-    fetch(url,opt).then((response) => {
+    fetch(url3,opt3).then((response) => {
         return response.json()
     }).then(jobs => {
         const opts = [];
@@ -151,8 +151,9 @@ class Add extends Component {
         }, null, 2);
       console.log(form);
       Api.add(form).then(guard => {
-        console.log(guard);
+        //console.log(guard);
         this.setState({ status: 'La garde a bien été ajoutée', hour: null, day: null, pharmacy: null, job: null });
+        this.props.history.push('/guards/matching/'+guard.id);
       }).catch((error) => {
         console.log(error);
       });

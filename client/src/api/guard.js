@@ -4,7 +4,8 @@ const url = "http://api.localhost/api/"
 let uri = (path) => { return url + path }
 const loggedInUser = getLoggedInUser();
 
-const headers = { 
+const headers = {
+  'Accept': 'application/json', 
   'Content-Type': 'application/json',
   'Authorization': 'Bearer ' + loggedInUser.token
 }
@@ -17,7 +18,11 @@ export default {
       headers: headers,
       body: guard
     }).then((response) => {
-      Promise.resolve(response);
+      // convert data from ReadableStream to JSON
+      return response.json();
+    }).then((response) => {
+      //console.log('api', response);
+      return Promise.resolve(response);
     }).catch(error => Promise.reject(error.response));
   },
 
