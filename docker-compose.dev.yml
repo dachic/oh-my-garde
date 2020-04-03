@@ -61,7 +61,7 @@ services:
             - "traefik.http.routers.${PROJECT_NAME}_adminer.entrypoints=web"
 
     postgres:
-        image: postgres:11-alpine
+        image: postgres:12-alpine
         container_name: ${PROJECT_NAME}-postgres
         volumes:
             - ./docker/postgres/data:/var/lib/postgresql/data:rw
