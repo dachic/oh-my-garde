@@ -38,9 +38,9 @@ class GuardController extends AbstractController
             $em->flush();
 
             $mailerService->send($intern->getEmail(),"Demande d'attribution de garde",$this->render('mjml/emails/user/confirm_guard.html.twig', [
-                    'user' => $intern,
-                    'guard' => $guard
-                ]));
+                'user' => $intern,
+                'guard' => $guard
+            ]));
 
             return new Response("true");
         }
