@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Constants\Score;
 use App\Entity\User;
 use App\Repository\GuardRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -18,14 +19,25 @@ class MatchingController
 {
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/api/guard/matching/{id}", name="app_guard_matching", methods={"GET"}, defaults={"_format": "json"})
      */
     public function getInternRankingForPosition(GuardRepository $guardRepository,UserRepository $userRepository,$id)
     {
         $guard = $guardRepository->find($id);
         $interns = $userRepository->findByRole('ROLE_INTERN');
-
         $ranking = $this->getScorePerIntern($guard,$interns);
+
+        if ($guard->getUser()){
+            $rankingWithAffected = [];
+            foreach ($ranking as $i =>$rank){
+                if($rank['intern']->getId() == $guard->getUser()->getId()){
+                    $rank['score']['status'] = $guard->getStatus();
+                }
+                array_push($rankingWithAffected,$rank);
+            }
+            return new Response($this->castJson($rankingWithAffected), 200, ['Content-Type' => 'application/json']);
+        }
 
         return new Response($this->castJson($ranking), 200, ['Content-Type' => 'application/json']);
     }
@@ -123,15 +135,6 @@ class MatchingController
             }
             array_push($skills['heldPosition'], $internship->getPosition());
         }
-
-        /*
-        foreach ($intern->getGuards() as $guard){
-            array_push($skills['hospitalWhereWorked'],$guard->getPharmacy()->getId());
-
-            foreach($guard->getAgrements() as $agrement){
-                array_push($skills['approvals'] , $agrement->getName());
-            }
-        }*/
         return $skills;
     }
 

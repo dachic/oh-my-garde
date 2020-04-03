@@ -1,0 +1,39 @@
+<mjml>
+  <mj-body>
+    <mj-section background-color="#f0f0f0">
+      <mj-column>
+        <mj-text font-style="italic" font-size="20px" color="#626262">Demande d'attribution de garde</mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#fafafa">
+      <mj-column width="400px">
+
+        <mj-text color="#525252">Bonjour {{ user.firstname }},</mj-text>
+
+        <mj-text color="#525252" line-height="20px">Une garde vous a été attribué:.
+        </mj-text>
+        <mj-text>Le {{ guard.day }} de {{ guard.hour.name }}</mj-text>
+        <mj-text>{{ guard.pharmacy.name }} </mj-text>
+
+        <mj-text line-height="20px">Vous pouvez dès à présent confirmer votre garde</mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#fafafa">
+      <mj-column width="200px">
+        <mj-button background-color="green" href="#">Accepter</mj-button>
+      </mj-column>
+
+      <mj-column width="200px">
+        <mj-button background-color="red" href="#">Refuser</mj-button>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#f0f0f0">
+      <mj-column>
+        <mj-text font-style="italic" font-size="10px" color="#626262">OhMyGarde - <a href="{{ clientAppUrl }}">{{ clientAppUrl }}</a> | {{ 'now'|date('d/m/Y') }}</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
