@@ -89,7 +89,7 @@ class MatchingController
 
         $skills = $this->getSkills($intern);
 
-        if($this->hasSkills($guard->getId(),$skills['pharmacyWhereWorked'])){
+        if($this->hasSkills($guard->getPharmacy()->getId(),$skills['pharmacyWhereWorked'])){
             $score['total'] += Score::WORKED_AT_HOSPITAL;
             array_push($score['attribute'],'WORKED_AT_HOSPITAL');
         }

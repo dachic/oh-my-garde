@@ -1,5 +1,7 @@
 <?php
+
 namespace App\DataFixtures;
+
 use Faker;
 use App\Entity\Job;
 use App\Entity\User;
@@ -31,16 +33,16 @@ class UserFixtures extends Fixture
         $hospitals = [];
         for ($i = 0; $i < 5; $i++) {
             $region = new Region();
-            $region->setName('Region'.$i);
+            $region->setName('Region' . $i);
             $manager->persist($region);
-            array_push($regions,$region);
+            array_push($regions, $region);
 
             for ($j = 0; $j < 5; $j++) {
                 $hospital = new Hospital();
-                $hospital->setName('Hospital'.$i."-".$j);
+                $hospital->setName('Hospital' . $i . "-" . $j);
                 $hospital->setRegion($region);
                 $manager->persist($hospital);
-                array_push($hospitals,$hospital);
+                array_push($hospitals, $hospital);
             }
         }
 
@@ -54,8 +56,22 @@ class UserFixtures extends Fixture
         $userAdmin->setStatus('enabled');
         $userAdmin->setRegion($regions[1]);
         $userAdmin->setRoles(['ROLE_ADMIN']);
-
         $manager->persist($userAdmin);
+
+        for ($i = 0; $i < 50; $i++) {
+            // User
+            $userFixture = new User();
+            $userFixture->setLastname($faker->lastName);
+            $userFixture->setFirstname($faker->firstName);
+            $userFixture->setPassword($this->passwordEncoder->encodePassword($userFixture, 'admin'));
+            $userFixture->setEmail('admin' . $i . '@ohmygarde.app');
+            $userFixture->setPhoneNumber($faker->phoneNumber);
+            $userFixture->setStatus('enabled');
+            $userFixture->setRegion($regions[1]);
+            $userFixture->setRoles(['ROLE_ADMIN']);
+            $manager->persist($userFixture);
+        }
+
 
         $userPharmacy = new User();
         $userPharmacy->setLastname($faker->lastName);
@@ -103,9 +119,9 @@ class UserFixtures extends Fixture
 
         // Agrement
         $agrements = [
-            "108" => "Pharmacie clinique", 
-            "109" => "Economie & Vigilance", 
-            "110" => "Préparation et contrôles", 
+            "108" => "Pharmacie clinique",
+            "109" => "Economie & Vigilance",
+            "110" => "Préparation et contrôles",
             "111" => "Dispositifs médicaux stériles & stérilisation"
         ];
 

@@ -2,7 +2,7 @@
   <mj-body>
     <mj-section background-color="#f0f0f0">
       <mj-column>
-        <mj-text font-style="italic" font-size="20px" color="#626262">Confirmation de votre inscription</mj-text>
+        <mj-text font-style="italic" font-size="20px" color="#626262">Désactivation de votre inscription</mj-text>
       </mj-column>
     </mj-section>
 
@@ -12,12 +12,10 @@
 
         <mj-text color="#525252">Bonjour {{ user.firstname }},</mj-text>
 
-        <mj-text color="#525252" line-height="20px">Vous recevez ce message car votre compte vient d'être activé.
+        <mj-text color="#525252" line-height="20px">Vous recevez ce message car votre compte vient d'être désactivé.
         </mj-text>
 
-        <mj-text line-height="20px">Vous pouvez dès à présent vous connecter à l'application</mj-text>
-
-        <mj-button background-color="#858586" href="{{ app.request.getSchemeAndHttpHost() }}">Se connecter</mj-button>
+        <mj-text line-height="20px">Vous pouvez connectez un administrateur s'il s'agit d'une erreur</mj-text>
       </mj-column>
     </mj-section>
 

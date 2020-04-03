@@ -13,7 +13,8 @@ const headers = {
 
 export default {
     async get(guard){
-        const res = fetchJSON(url + '/guards/' + guard,{
+        const properties = "?properties[pharmacy]=name&properties[]=day&properties[]=status&properties[agrements]=name&properties[hour]=name&properties[job]=title"
+        const res = fetchJSON(url + '/guards/' + guard + properties,{
             method:'GET',
             headers:headers
         })
@@ -39,7 +40,7 @@ export default {
     },
 
   add(guard) {
-    return fetch(uri('guards'), {
+    return fetch(uri('/guards'), {
       method: 'POST',
       headers: headers,
       body: guard
@@ -49,11 +50,11 @@ export default {
     }).then((response) => {
       //console.log('api', response);
       return Promise.resolve(response);
-    }).catch(error => Promise.reject(error.response));
+    }).catch(error => console.log(error.response));
   },
 
   getAll() {
-    return fetch(uri('guard'), {
+    return fetch(uri('/guard'), {
       method: 'GET',
     }).then((response) => {
       // convert data from ReadableStream to JSON

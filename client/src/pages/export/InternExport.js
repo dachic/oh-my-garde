@@ -4,6 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import userApi from '../../api/user'
 
 const columns = [
     {
@@ -43,15 +44,15 @@ const expandRow = {
     renderer: row => (
         <div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.lastname} ${row.firstname}`} </p>
-                <div class="list-group">
-                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action">{`Email: ${row.email}`}</a>
-                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumber}`}</a>
+                <div class="list-group" style={tabMargin}>
+                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.email}`}</a>
+                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumber}`}</a>
                 </div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.namePharmacy}`}</p>
-                <div class="list-group">
-                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action">{`Email: ${row.emailPharmacy}`}</a>
-                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumberPharmacy}`}</a>
-                    <div class="list-group-item list-group-item-action">{`Hopital: ${row.nameHopistal}`} </div>
+                <div class="list-group" style={tabMargin}>
+                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
+                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
+
                 </div>
        </div>
     ),
@@ -85,6 +86,11 @@ const box = {
 const center = {
     textAlign: 'center',
 };
+const tabMargin = {
+    marginBottom: '15px',
+    marginLeft: '30px',
+    marginRight: '30px',
+};
 const sizePerPageRenderer = ({ options, currSizePerPage, onSizePerPageChange }) => (
     <React.Fragment>
         <label className="d-inline mr-1">Show</label>
@@ -108,25 +114,20 @@ export default class InternExport extends Component {
         };
     }
 
+
     componentDidMount() {
-        fetch("http://api.localhost/user/guard/count").then(response => {
-            return response.json()
-        }).then(response => {
-
-           this.setState({
-               interns: response
-           })
-        })
-        .catch(() => {
-
-        });
+       userApi.export().then(data=>{
+            this.setState({
+                interns: data
+            })
+       })
     }
 
     render() {
         if (this.state.interns.length === 0) {
             return (<div style={box}>
-                        <div class="spinner-border" style={spinner} role="status">
-                        <span class="sr-only">Loading...</span>
+                        <div className="spinner-border" style={spinner} role="status">
+                        <span className="sr-only">Loading...</span>
                         </div>
                      </div>
                     );

@@ -4,6 +4,7 @@
  * @param {*} options
  */
 const fetchJSON = (url, options = {}) => {
+
     return fetch(url, options)
         .then(response => {
             if (!response.status === 200) {

@@ -4,9 +4,6 @@ import { Route } from 'react-router-dom';
 import * as FeatherIcon from 'react-feather';
 
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
-import InternExport from '../pages/export/InternExport';
-
-
 
 const Matching = React.lazy(() => import('../pages/matching/Matching'));
 
@@ -56,6 +53,11 @@ const Editor = React.lazy(() => import('../pages/forms/Editor'));
 // tables
 const BasicTables = React.lazy(() => import('../pages/tables/Basic'));
 const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
+
+// users
+const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
+const EditUser = React.lazy(() => import('../pages/users/Edit/EditUser'));
+const InternExport = React.lazy(() => import('../pages/export/InternExport'));
 
 const loggedInUser = getLoggedInUser();
 // handle auth and authorization
@@ -108,7 +110,7 @@ const dashboardRoutes = {
 // Intern export for admin
 const internRoutes = {
     path: '/interns/export',
-    name: 'Interns Export',
+    name: 'Export des gardes',
     icon: FeatherIcon.DownloadCloud,
     component: InternExport,
     roles: ['ROLE_ADMIN'],
@@ -208,7 +210,7 @@ const guardAppRoutes = {
     icon: FeatherIcon.FileText,
     children: [
         {
-            path: '/guard/add',
+            path: '/guards/add',
             name: 'Ajouter',
             component: GuardApp,
             route: PrivateRoute,
@@ -217,23 +219,47 @@ const guardAppRoutes = {
     ]
 };
 
+
 const confirmGuardRoute = {
     path: '/guard/confirm',
     name: 'Validateguard',
     component: GuardConfirm,
     route: Route
+
+// users
+const usersRoutes = {
+    path: '/users',
+    name: 'Utilisateurs',
+    header: 'Entités',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/users/all',
+            name: 'Liste des utilisateurs',
+            component: ListAllUser,
+            route: PrivateRoute,
+            roles: ['ROLE_ADMIN'],
+        },
+        {
+            path: '/users/edit',
+            name: 'Edition un utilisateur',
+            component: EditUser,
+            route: PrivateRoute,
+            roles: ['ROLE_ADMIN'],
+        }
+    ]
 };
 
 let appRoutes = [];
 if (loggedInUser !== null) {
     if (loggedInUser.role === 'ROLE_PHARMACY') {
-        appRoutes = [pharmacyAppRoutes, guardAppRoutes, matchingRoute];
+        appRoutes = [pharmacyAppRoutes, guardAppRoutes];
     }
     else if (loggedInUser.role === 'ROLE_INTERN') {
         appRoutes = [internAppRoutes];
     }
-    else {
-        appRoutes = [internRoutes, guardAppRoutes];
+    else if (loggedInUser.role === 'ROLE_ADMIN'){
+        appRoutes = [internRoutes, guardAppRoutes, usersRoutes];
     }
 }
 

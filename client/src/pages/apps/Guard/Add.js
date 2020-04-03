@@ -28,6 +28,7 @@ class Add extends Component {
       pharmacies:[],
       hours:[],
       jobs: [],
+      aggrements:[],
       day: null,
       hour: null,
       pharmacy: null,
@@ -62,6 +63,12 @@ class Add extends Component {
             () => console.log(`Option selected:`, this.state.hour.value)
         );
     };
+
+    handleChangeAggrements = aggrement => {
+      this.setState(
+          { aggrement }
+      );
+  };
 
   componentDidMount() {
     const loggedInUser = getLoggedInUser();
@@ -134,6 +141,28 @@ class Add extends Component {
             jobs: opts
         })
     })
+
+    var url4 = new URL(process.env.REACT_APP_API_URL+"/agrements");
+    var opt4 = {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + loggedInUser.token
+        }
+    };
+    fetch(url4,opt4).then((response) => {
+        return response.json()
+    }).then(aggrements => {
+        const opts = [];
+        aggrements.forEach(agrement => {
+            opts.push({ value: agrement.id, label: agrement.code })
+        });
+
+        this.setState({
+            aggrements: opts
+        })
+    })
   }
 
   handleSubmit(event, errors, values) {
@@ -147,12 +176,12 @@ class Add extends Component {
         'day': this.state.day.value,
         'hour': 'api/disponibility_hours/'+this.state.hour.value,
         'pharmacy': 'api/pharmacies/'+this.state.pharmacy.value,
-        'job': 'api/jobs/'+this.state.job.value
+        'job': 'api/jobs/'+this.state.job.value,
+        'agrements': ['api/agrements/'+this.state.aggrement.value],
         }, null, 2);
-      console.log(form);
+
       Api.add(form).then(guard => {
-        //console.log(guard);
-        this.setState({ status: 'La garde a bien été ajoutée', hour: null, day: null, pharmacy: null, job: null });
+        this.setState({ status: 'La garde a bien été ajoutée', hour: null, day: null, pharmacy: null, job: null,aggrement: null });
         this.props.history.push('/guards/matching/'+guard.id);
       }).catch((error) => {
         console.log(error);
@@ -165,6 +194,7 @@ class Add extends Component {
     const { pharmacy } = this.state;
     const { hour } = this.state;
     const { job } = this.state;
+    const { aggrement } = this.state
 
     return <React.Fragment>
       <Row className="page-title">
@@ -255,6 +285,21 @@ class Add extends Component {
                     </FormGroup>
                 </AvGroup>
 
+                <AvGroup className="mb-3">
+                    <FormGroup>
+                    <Label for="roleUser">Aggrements *</Label>
+                        <Select
+                            placeholder="Choisir un aggrement"
+                            isSearchable="true"
+                            name="job"
+                            value={aggrement}
+                            onChange={this.handleChangeAggrements}
+                            options={this.state.aggrements}
+                            required
+                        />
+                    </FormGroup>
+                </AvGroup>
+
                 <Button color="primary" type="submit">
                   Ajouter
                 </Button>
@@ -262,11 +307,6 @@ class Add extends Component {
             </CardBody>
           </Card>
         </Col>
-        {this.state.values && <div>
-          <h5>Submission values</h5>
-          Invalid: {this.state.errors.join(', ')}<br />
-          Values: <pre>{JSON.stringify(this.state.values, null, 2)}</pre>
-        </div>}
       </Row>
     </React.Fragment>
   }
