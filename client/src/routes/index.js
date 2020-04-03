@@ -21,6 +21,8 @@ const Dashboard = React.lazy(() => import('../pages/dashboard'));
 // apps
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
 const InternApp = React.lazy(() => import('../pages/apps/Intern/Experiences'));
+const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
+
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
 const Profile = React.lazy(() => import('../pages/other/Profile/'));
@@ -134,6 +136,22 @@ const pharmacyAppRoutes = {
     ]
 };
 
+const guardAppRoutes = {
+    path: 'guard',
+    name: 'Gardes',
+    header: 'Gardes',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/guard/add',
+            name: 'Ajouter',
+            component: GuardApp,
+            route: PrivateRoute,
+            roles: ['ROLE_PHARMACY'],
+        }
+    ]
+};
+
 const internAppRoutes = {
     path: 'intern',
     name: 'Interne',
@@ -172,6 +190,7 @@ const internAppRoutes = {
     ]
 };
 
+
 const matchingRoute = {
     path: '/guards/matching',
     name: 'Matching',
@@ -181,7 +200,7 @@ const matchingRoute = {
 }
 
 
-const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes];
+const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, guardAppRoutes];
 
 // pages
 const pagesRoutes = {

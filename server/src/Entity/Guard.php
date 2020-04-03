@@ -61,6 +61,7 @@ class Guard
     public function __construct()
     {
         $this->agrements = new ArrayCollection();
+        $this->status = "pending";
     }
 
     public function getId(): ?int
