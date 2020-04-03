@@ -53,7 +53,7 @@ export default {
   },
 
   getAll() {
-    return fetch(uri('guard'), {
+    return fetch(uri('/guard'), {
       method: 'GET',
     }).then((response) => {
       // convert data from ReadableStream to JSON
