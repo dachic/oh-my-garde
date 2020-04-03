@@ -56,6 +56,12 @@ make db-create
 make db-update
 ```
 
+Reload database
+
+```shell
+make db-reload
+```
+
 ## App base url
 
 - [Server - http://api.localhost](http://api.localhost)

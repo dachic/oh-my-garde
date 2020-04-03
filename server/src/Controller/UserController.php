@@ -29,11 +29,12 @@ class UserController extends AbstractController
 
         
         $repository_guard = $this->getDoctrine()->getRepository(Guard::class);
+
         
         //$page = $request->query->get('page',1);
         //$limit = $request->query->get('limit',10);
        
-    $array = $repository_guard->findAllGroup(/*$page,$limit*/);
+        $array = $repository_guard->findAllGroup(/*$page,$limit*/);
         
         $newArray = [];
        foreach($array as $k => $value){
@@ -56,14 +57,70 @@ class UserController extends AbstractController
            
        }
 
-    
-        $response = new Response();
-        $response->setContent(json_encode(
+        return $this->json([
             $newArray
-        ));
-        $response->headers->set('Content-Type', 'application/json');
+        ]);
         return $response;
 
+    }
+   /**
+     * @param User $user
+     * @Route("/{id}/internships", name="user_internships", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function internships(User $user): Response
+    {
+        $infos = [];
+        $infosAgr = [];
+        $array = [];
+        $agr = [];
+        $colors = ['primary','success', 'danger', 'warning', 'info'];
+        foreach ($user->getInterships() as $intership){
+            foreach($intership->getAgrements() as $agrement)
+            {
+                shuffle($colors);
+                $agr = [
+                    "code" => $agrement->getCode(),
+                    "name" => $agrement->getName(),
+                    "color" => $colors[0]
+                ];
+                 array_push($infosAgr ,$agr); 
+            }
+            $infos = [
+                'id'  => $intership->getId(),
+                'position'  => $intership->getPosition(),
+                'hospital'  => $intership->getHospital()->getName(),
+                'agrement'  => $infosAgr,
+                'creation'  => $intership->getCreatedAt()
+            ];
+            array_push($array ,$infos); 
+            $infosAgr = [];
+        }
+        return $this->json([
+            "data" => $array
+        ]);
+    }
+    /**
+     * @param User $user
+     * @Route("/{id}/pharmacy", name="user_pharmacy", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function pharmacy(User $user): Response
+    {
+        $infos = [];
+        if($user->getPharmacy() != null)
+        {
+            $infos = [
+                'pharmacyId'  => $user->getPharmacy()->getId(),
+            ];
+        }
+        else
+        {
+            $infos = [
+                'pharmacyId'  => '',
+            ];
+        }
+        return $this->json([
+            "data" => $infos
+        ]);
     }
     /**
      * @Route("/guard/all", name="user_all", methods={"GET","POST"})
@@ -89,4 +146,4 @@ class UserController extends AbstractController
 
     }
     
-}    
+}

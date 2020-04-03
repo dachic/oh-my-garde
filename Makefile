@@ -42,6 +42,8 @@ cache-clear:
 	docker-compose exec -T apache php bin/console cache:warmup
 db-fix-load:
 	docker-compose exec apache php bin/console doctrine:fixtures:load
+db-reload:
+	make db-drop && make db-create && make migrate && make db-fix-load
 deploy:
 	chmod +x ./script/deploy.sh && ./script/deploy.sh
 assets-install:
