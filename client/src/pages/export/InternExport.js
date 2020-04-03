@@ -43,15 +43,15 @@ const expandRow = {
     renderer: row => (
         <div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.lastname} ${row.firstname}`} </p>
-                <div class="list-group">
-                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action">{`Email: ${row.email}`}</a>
-                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumber}`}</a>
+                <div style={tabMargin} class="list-group">
+                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.email}`}</a>
+                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumber}`}</a>
                 </div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.namePharmacy}`}</p>
-                <div class="list-group">
-                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action">{`Email: ${row.emailPharmacy}`}</a>
-                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumberPharmacy}`}</a>
-                    <a class="list-group-item list-group-item-action">{`Hopital: ${row.nameHopistal}`} </a>
+                <div style={tabMargin}  class="list-group">
+                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
+                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
+                    
                 </div>
        </div>
     ),
@@ -72,6 +72,11 @@ const select = {
 const cardMargin = {
     margin: '30px',
 };
+const tabMargin = {
+    marginLeft: "40px",
+    marginRight: "40px",
+    marginBottom: "15px",
+}
 const spinner = {
     width: '15rem',
     height: '15rem',
