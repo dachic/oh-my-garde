@@ -211,7 +211,7 @@ const guardAppRoutes = {
 let appRoutes = [];
 if (loggedInUser !== null) {
     if (loggedInUser.role === 'ROLE_PHARMACY') {
-        appRoutes = [pharmacyAppRoutes];
+        appRoutes = [pharmacyAppRoutes, guardAppRoutes, matchingRoute];
     }
     else if (loggedInUser.role === 'ROLE_INTERN') {
         appRoutes = [internAppRoutes];
