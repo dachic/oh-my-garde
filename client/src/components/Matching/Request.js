@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import guardAPI from '../../api/guard'
-import {Card,CardBody,Media} from 'reactstrap'
-import GuardMedia from './Request/GuardMedia'
+import { Card, CardBody, Media } from 'reactstrap'
 
 const Request = (props) => {
-    const [guard,setGuard] = useState(null)
+    const [guard, setGuard] = useState(null)
 
-        const items = [
-        {'title':'Pharmacie','description':'Pharmacie des internes'},
-        {'title':'Jour','description':'01/04/2020'},
-        {'title':'Heure','description':'6h à 8h'},
-        {'title':'Poste','description':'CRPV'},
-        {'title':'Aggrements','description':'106'}]
+    const items = [
+        { 'title': 'Pharmacie', 'description': 'Pharmacie des internes' },
+        { 'title': 'Jour', 'description': '01/04/2020' },
+        { 'title': 'Heure', 'description': '6h à 8h' },
+        { 'title': 'Poste', 'description': 'CRPV' },
+        { 'title': 'Aggrements', 'description': '106' }]
 
-    useEffect(()=>{
+    useEffect(() => {
         guardAPI.get(props.guard).then(data => setGuard(data))
-    },[])
+    }, [])
 
-    return ( 
+    return (
         <Card>
-        <CardBody>
-            <h4 className="p-2 card-title mb-0">Ma demande</h4>
+            <CardBody>
+                <h4 className="p-2 card-title mb-0">Ma demande</h4>
                 <Media className="border-bottom px-3 py-4">
                     <Media body>
                         <h5 className="mt-0 mb-1 font-weight-normal">Pharmacie</h5>

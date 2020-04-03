@@ -113,7 +113,7 @@ const internRoutes = {
     roles: ['ROLE_ADMIN'],
     route: PrivateRoute
 };
-
+// Routes for pharmacy
 const pharmacyAppRoutes = {
     path: 'pharmacy',
     name: 'Pharmacie',
@@ -137,7 +137,7 @@ const pharmacyAppRoutes = {
     ]
 };
 
-// Intern's routes
+// Routes for intern
 const internAppRoutes = {
     path: 'intern',
     name: 'Interne',
@@ -211,17 +211,14 @@ const guardAppRoutes = {
 let appRoutes = [];
 if (loggedInUser !== null) {
     if (loggedInUser.role === 'ROLE_PHARMACY') {
-        appRoutes = [pharmacyAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+        appRoutes = [pharmacyAppRoutes];
     }
     else if (loggedInUser.role === 'ROLE_INTERN') {
-        appRoutes = [internAppRoutes, calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+        appRoutes = [internAppRoutes];
     }
     else {
-        appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+        appRoutes = [internRoutes, guardAppRoutes];
     }
-}
-else {
-    appRoutes = [internRoutes, guardAppRoutes];
 }
 
 // pages

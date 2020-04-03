@@ -9,25 +9,25 @@ const AffectButton = props => {
 
     useEffect(() => {
         if (props.score.status) {
-            if(props.score.status === "accepted") {
+            if (props.score.status === "accepted") {
                 updateButtonState("Accepté");
             }
-            if(props.score.status === "pending") {
+            if (props.score.status === "pending") {
                 updateButtonState("En attente");
             }
         }
     }, [props.score.status]);
 
     function affectIntern() {
-        guardAPI.assignInternToGuard(props.guard,props.intern).then(response => {
-            console.log(response == true)
-            if(response == true){
+        guardAPI.assignInternToGuard(props.guard, props.intern).then(response => {
+            console.log(response === true)
+            if (response === true) {
                 updateButtonState("En attente")
             }
         })
     }
 
-    function updateButtonState(status){
+    function updateButtonState(status) {
         setDisabled(true);
         setColor("success");
         setTitle(status);
