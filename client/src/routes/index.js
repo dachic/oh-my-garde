@@ -22,6 +22,7 @@ const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'))
 const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
 const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
 const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
+const GuardConfirm = React.lazy(() => import('../pages/apps/Guard/Confirm'));
 
 // pages
 const Starter = React.lazy(() => import('../pages/other/Starter'));
@@ -136,6 +137,13 @@ const pharmacyAppRoutes = {
             route: PrivateRoute,
             roles: ['ROLE_PHARMACY'],
         },
+        {
+            path: '/pharmacy/test',
+            name: 'Test',
+            component: GuardConfirm,
+            route: PrivateRoute,
+            roles: ['ROLE_PHARMACY'],
+        },
     ]
 };
 
@@ -183,7 +191,7 @@ const EditInternshipRoutes = {
     path: '/internship/edit',
     component: EditInternship,
     route: PrivateRoute,
-    roles: ['ROLE_INTERN'],
+    roles: ['ROLE_INTERN']
 };
 // Guards and matching
 const matchingRoute = {
@@ -192,6 +200,7 @@ const matchingRoute = {
     header: 'Apps',
     component: Matching,
     route: PrivateRoute,
+    roles: ['ROLE_PHARMACY']
 }
 
 const guardAppRoutes = {
@@ -209,6 +218,13 @@ const guardAppRoutes = {
         }
     ]
 };
+
+
+const confirmGuardRoute = {
+    path: '/guard/confirm',
+    name: 'Validateguard',
+    component: GuardConfirm,
+    route: Route
 
 // users
 const usersRoutes = {
@@ -231,7 +247,7 @@ const usersRoutes = {
             route: PrivateRoute,
             roles: ['ROLE_ADMIN'],
         }
-    ],
+    ]
 };
 
 let appRoutes = [];
@@ -492,7 +508,8 @@ const allRoutes = [
     formsRoutes,
     tableRoutes,
     authRoutes,
-    EditInternshipRoutes
+    EditInternshipRoutes,
+    confirmGuardRoute
 ];
 
 const authProtectedRoutes = [dashboardRoutes, ...appRoutes, EditInternshipRoutes];

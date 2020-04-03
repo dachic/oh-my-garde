@@ -11,22 +11,18 @@
 
         <mj-text color="#525252">Bonjour {{ user.firstname }},</mj-text>
 
-        <mj-text color="#525252" line-height="20px">Une garde vous a été attribué:.
+        <mj-text color="#525252" line-height="20px">Une demande de garde vous a été faite :.
         </mj-text>
-        <mj-text>Le {{ guard.day }} de {{ guard.hour.name }}</mj-text>
-        <mj-text>{{ guard.pharmacy.name }} </mj-text>
+        <mj-text>Horaires : {{ guard.day }} de {{ guard.hour.name }}</mj-text>
+        <mj-text>Pharmacie : {{ guard.pharmacy.name }} </mj-text>
 
-        <mj-text line-height="20px">Vous pouvez dès à présent confirmer votre garde</mj-text>
+        <mj-text line-height="20px">Vous pouvez dès à présent confirmer cette demande de garde :</mj-text>
       </mj-column>
     </mj-section>
 
     <mj-section background-color="#fafafa">
       <mj-column width="200px">
-        <mj-button background-color="green" href="#">Accepter</mj-button>
-      </mj-column>
-
-      <mj-column width="200px">
-        <mj-button background-color="red" href="#">Refuser</mj-button>
+        <mj-button background-color="green" href="{{ clientAppUrl }}/guard/confirm?id={{user.id}}&guard={{guard.id}}">Accepter</mj-button>
       </mj-column>
     </mj-section>
 

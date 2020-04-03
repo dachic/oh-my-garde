@@ -6,14 +6,15 @@ use App\Entity\User;
 use App\Entity\Guard;
 use App\Entity\Pharmacy;
 use App\Entity\DisponibilityHour;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
+use App\Repository\GuardRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use App\Repository\DisponibilityHourRepository;
 
-
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/api/user")
