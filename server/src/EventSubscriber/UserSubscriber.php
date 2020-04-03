@@ -69,21 +69,29 @@ class UserSubscriber implements EventSubscriberInterface
     }
 
 
-    public function sendMail(ViewEvent $event)
+    /**
+     * Inform admin user that a user has registered to applications
+     *
+     * @param UserRegisteredEvent $event
+     * @return void
+     */
+    public function sendRegistrationMail(UserRegisteredEvent $event)
     {
-        $book = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
+        $user = $event->getUser();
+        $subject = "Nouvel utilisateur sur OhMyGarde";
 
-        if (!$book instanceof Book || Request::METHOD_POST !== $method) {
-            return;
+        $users = $this->entityManager
+            ->getRepository(User::class)
+            ->findByRoleAndRegionAsEmailKey(UserRole::ROLE_ADMIN, $user->getRegion());
+
+        $emails = array_keys($users);
+        $view = $this->twig->render('mjml/emails/user/validate_user.html.twig', [
+            'user' => $user,
+        ]);
+
+        foreach ($emails as $email) {
+            $this->mailerService->send($email, $subject, $view);
         }
-
-        $message = (new \Swift_Message('A new book has been added'))
-            ->setFrom('system@example.com')
-            ->setTo('contact@les-tilleuls.coop')
-            ->setBody(sprintf('The book #%d has been added.', $book->getId()));
-
-        $this->mailer->send($message);
     }
 
     /**
