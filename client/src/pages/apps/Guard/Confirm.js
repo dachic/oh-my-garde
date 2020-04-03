@@ -42,7 +42,7 @@ class Confirm extends Component {
           <Col md={8} className="mx-auto mt-5">
             <div>
               <div className="mt-2 p-2">
-                {this.state.isValid == 'success' ?
+                {this.state.isValid === 'success' ?
                   <div className="alert alert-success" role="alert">
                     <p className="text-center">Votre acceptation de garde a bien été prise en compte !</p>
                     <div className="mt-3 d-flex justify-content-center">

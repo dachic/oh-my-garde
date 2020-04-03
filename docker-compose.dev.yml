@@ -61,10 +61,10 @@ services:
             - "traefik.http.routers.${PROJECT_NAME}_adminer.entrypoints=web"
 
     postgres:
-        image: postgres:12-alpine
+        image: postgres:11-alpine
         container_name: ${PROJECT_NAME}-postgres
         volumes:
-            - ./docker/postgresql/data:/var/lib/postgresql/data:rw
+            - ./docker/postgres/data:/var/lib/postgresql/data:rw
         networks:
             - proxy
         environment:

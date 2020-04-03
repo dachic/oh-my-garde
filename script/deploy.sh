@@ -21,6 +21,9 @@ make assets-install
 echo -e "==> Update JWT private/public key"
 make jwt
 
+echo -e "==> Compiling emails"
+make compile
+
 echo -e "==> Clearing cache for production"
 make cache-clear
 
