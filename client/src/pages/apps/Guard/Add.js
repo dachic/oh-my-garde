@@ -151,7 +151,6 @@ class Add extends Component {
         }, null, 2);
       console.log(form);
       Api.add(form).then(guard => {
-        //console.log(guard);
         this.setState({ status: 'La garde a bien été ajoutée', hour: null, day: null, pharmacy: null, job: null });
         this.props.history.push('/guards/matching/'+guard.id);
       }).catch((error) => {

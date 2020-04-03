@@ -13,7 +13,8 @@ const headers = {
 
 export default {
     async get(guard){
-        const res = fetchJSON(url + '/guards/' + guard,{
+        const properties = "?properties[pharmacy]=name&properties[]=day&properties[]=status&properties[agrements]=name&properties[hour]=name&properties[job]=title"
+        const res = fetchJSON(url + '/guards/' + guard + properties,{
             method:'GET',
             headers:headers
         })
