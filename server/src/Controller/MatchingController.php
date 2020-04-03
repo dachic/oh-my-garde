@@ -114,9 +114,6 @@ class MatchingController
 
     public function hasAllAgrements($requests,$agrements){
         foreach($requests as $agrement){
-            dump($agrement->getCode());
-            dump($agrements);
-            die();
             if(!(in_array($agrement->getCode(),$agrements))){
                 return false;
             }

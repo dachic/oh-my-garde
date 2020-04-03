@@ -50,7 +50,7 @@ export default {
     }).then((response) => {
       //console.log('api', response);
       return Promise.resolve(response);
-    }).catch(error => Promise.reject(error.response));
+    }).catch(error => console.log(error.response));
   },
 
   getAll() {
