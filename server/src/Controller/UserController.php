@@ -27,15 +27,15 @@ class UserController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        
+
         $repository_guard = $this->getDoctrine()->getRepository(Guard::class);
 
-        
+
         //$page = $request->query->get('page',1);
         //$limit = $request->query->get('limit',10);
-       
+
         $array = $repository_guard->findAllGroup(/*$page,$limit*/);
-        
+
         $newArray = [];
        foreach($array as $k => $value){
            array_push($newArray,[
@@ -54,13 +54,10 @@ class UserController extends AbstractController
                'page'=> $page,*/
 
            ]);
-           
+
        }
 
-        return $this->json([
-            $newArray
-        ]);
-        return $response;
+        return $this->json($newArray);
 
     }
    /**
@@ -83,7 +80,7 @@ class UserController extends AbstractController
                     "name" => $agrement->getName(),
                     "color" => $colors[0]
                 ];
-                 array_push($infosAgr ,$agr); 
+                 array_push($infosAgr ,$agr);
             }
             $infos = [
                 'id'  => $intership->getId(),
@@ -92,7 +89,7 @@ class UserController extends AbstractController
                 'agrement'  => $infosAgr,
                 'creation'  => $intership->getCreatedAt()
             ];
-            array_push($array ,$infos); 
+            array_push($array ,$infos);
             $infosAgr = [];
         }
         return $this->json([
@@ -136,7 +133,7 @@ class UserController extends AbstractController
         foreach($array as $object){
             array_push($newArray, $object->toString());
         }
-       
+
         $response = new Response();
         $response->setContent(json_encode(
             $newArray
@@ -145,5 +142,5 @@ class UserController extends AbstractController
         return $response;
 
     }
-    
+
 }

@@ -44,12 +44,12 @@ const expandRow = {
     renderer: row => (
         <div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.lastname} ${row.firstname}`} </p>
-                <div  class="list-group">
+                <div class="list-group" style={tabMargin}>
                     <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.email}`}</a>
                     <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumber}`}</a>
                 </div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.namePharmacy}`}</p>
-                <div  class="list-group">
+                <div class="list-group" style={tabMargin}>
                     <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
                     <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
 
@@ -86,6 +86,11 @@ const box = {
 const center = {
     textAlign: 'center',
 };
+const tabMargin = {
+    marginBottom: '15px',
+    marginLeft: '30px',
+    marginRight: '30px',
+};
 const sizePerPageRenderer = ({ options, currSizePerPage, onSizePerPageChange }) => (
     <React.Fragment>
         <label className="d-inline mr-1">Show</label>
@@ -108,8 +113,8 @@ export default class InternExport extends Component {
             interns: []
         };
     }
-    
-    
+
+
     componentDidMount() {
        userApi.export().then(data=>{
             this.setState({
@@ -127,7 +132,7 @@ export default class InternExport extends Component {
                      </div>
                     );
         }
-          
+
         return (
             <div>
                 <Card style={cardMargin}>
@@ -168,7 +173,7 @@ export default class InternExport extends Component {
                         </ToolkitProvider>
                     </CardBody>
                 </Card>
-            </div>   
+            </div>
         )
     }
 }
