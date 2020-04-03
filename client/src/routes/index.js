@@ -4,6 +4,11 @@ import { Route } from 'react-router-dom';
 import * as FeatherIcon from 'react-feather';
 
 import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
+import InternExport from '../pages/export/InternExport';
+
+
+
+const Matching = React.lazy(() => import('../pages/matching/Matching'));
 
 // auth
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -106,6 +111,16 @@ const dashboardRoutes = {
     route: PrivateRoute
 };
 
+// interns
+const internRoutes = {
+    path: '/interns/export',
+    name: 'Interns Export',
+    icon: FeatherIcon.DownloadCloud,
+    component: InternExport,
+    roles: ['ROLE_ADMIN'],
+    route: PrivateRoute
+};
+
 // apps
 // Switch this menu regarding the user logged in (intern or representative)
 
@@ -187,6 +202,14 @@ const calendarAppRoutes = {
     route: PrivateRoute,
     roles: ['Admin'],
 };
+
+const matchingRoute = {
+    path: '/guards/matching',
+    name: 'Matching',
+    header: 'Apps',
+    component: Matching,
+    route: PrivateRoute,
+}
 
 const emailAppRoutes = {
     path: '/apps/email',
@@ -274,7 +297,7 @@ if (loggedInUser !== null) {
     }
 }
 else {
-    appRoutes = [calendarAppRoutes, emailAppRoutes, projectAppRoutes, taskAppRoutes];
+    appRoutes = [calendarAppRoutes];
 }
 
 // pages
@@ -514,6 +537,7 @@ const flattenRoutes = routes => {
 const allRoutes = [
     rootRoute,
     dashboardRoutes,
+    matchingRoute,
     ...appRoutes,
     pagesRoutes,
     componentsRoutes,
@@ -524,6 +548,6 @@ const allRoutes = [
     EditInternshipRoutes
 ];
 
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, pagesRoutes, componentsRoutes, chartRoutes, formsRoutes, tableRoutes, EditInternshipRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, EditInternshipRoutes];
 const allFlattenRoutes = flattenRoutes(allRoutes);
 export { allRoutes, authProtectedRoutes, allFlattenRoutes };

@@ -91,9 +91,9 @@ class ForgetPassword extends Component {
                                                     </a>
                                                 </div>
 
-                                                <h6 className="h5 mb-0 mt-4">Reset Password</h6>
+                                                <h6 className="h5 mb-0 mt-4">Réinitialiser un mot de passe</h6>
                                                 <p className="text-muted mt-1 mb-4">
-                                                    Enter your email address and we'll send you an email with instructions to reset your password.
+                                                Veuillez saisir votre adresse e-mail et nous vous enverrons des instructions pour réinitialiser votre mot de passe
                                                 </p>
 
 
@@ -103,14 +103,14 @@ class ForgetPassword extends Component {
 
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
                                                     <AvGroup className="">
-                                                        <Label for="email">Email Address</Label>
+                                                        <Label for="email">Adresse e-mail</Label>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="text" name="email" id="email" placeholder="hello@coderthemes.com" 
+                                                            <AvInput type="text" name="email" id="email" placeholder="Votre adresse e-mail" 
                                                                 value={this.state.email} required />
                                                         </InputGroup>
                                                         
@@ -119,7 +119,7 @@ class ForgetPassword extends Component {
 
 
                                                     <FormGroup className="form-group mb-0 text-center">
-                                                        <Button color="primary" className="btn-block">Submit</Button>
+                                                        <Button color="primary" className="btn-block">Réinitialiser</Button>
                                                     </FormGroup>
                                                 </AvForm>
                                             </Col>
@@ -128,9 +128,6 @@ class ForgetPassword extends Component {
                                                 <div className="auth-page-sidebar">
                                                     <div className="overlay"></div>
                                                     <div className="auth-user-testimonial">
-                                                        <p className="font-size-24 font-weight-bold text-white mb-1">I simply love it!</p>
-                                                        <p className="lead">"It's a elegent templete. I love it very much!"</p>
-                                                        <p>- Admin User</p>
                                                     </div>
                                                 </div>
                                             </Col>
@@ -142,7 +139,7 @@ class ForgetPassword extends Component {
 
                         <Row className="mt-1">
                             <Col className="col-12 text-center">
-                                <p className="texttext-muted">Back to <Link to="/account/login" className="text-primary font-weight-bold ml-1">Login</Link></p>
+                                <p className="texttext-muted">Revenir à la page de <Link to="/account/login" className="text-primary font-weight-bold ml-1">Connexion</Link></p>
                             </Col>
                         </Row>
                     </Container>

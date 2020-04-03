@@ -78,7 +78,7 @@ class Login extends Component {
                                                 </div>
 
                                                 <h6 className="h5 mb-0 mt-4">Connexion</h6>
-                                                <p className="text-muted mt-1 mb-4">Entrez votre adresse e-mail et mot de passe pour accéder au panneau d’administration.</p>
+                                                <p className="text-muted mt-1 mb-4">Veuillez saisir votre adresse e-mail et votre mot de passe pour accéder à votre espace personnel</p>
 
 
                                                 {this.props.error && <Alert color="danger" isOpen={this.props.error ? true : false}>
@@ -87,14 +87,14 @@ class Login extends Component {
 
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
                                                     <AvGroup className="">
-                                                        <Label for="username">Adresse email</Label>
+                                                        <Label for="username">Adresse e-mail</Label>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="text" name="username" id="username" placeholder="hello@coderthemes.com" value={this.state.username} required />
+                                                            <AvInput type="text" name="username" id="username" placeholder="Adresse e-mail" value={this.state.username} required />
                                                         </InputGroup>
 
                                                         <AvFeedback>This field is invalid</AvFeedback>
@@ -103,20 +103,20 @@ class Login extends Component {
 
                                                     <AvGroup className="mb-3">
                                                         <Label for="password">Mot de passe</Label>
-                                                        <Link to="/account/forget-password" className="float-right text-muted text-unline-dashed ml-1">Mot de passe oublié?</Link>
+                                                        <Link to="/account/forget-password" className="float-right text-muted text-unline-dashed ml-1">Mot de passe oublié ?</Link>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
                                                                     <Lock className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="password" name="password" id="password" placeholder="Enter your password" value={this.state.password} required />
+                                                            <AvInput type="password" name="password" id="password" placeholder="Mot de passe" value={this.state.password} required />
                                                         </InputGroup>
                                                         <AvFeedback>Saisissez un mot de passe</AvFeedback>
                                                     </AvGroup>
 
                                                     <FormGroup className="form-group mb-0 text-center">
-                                                        <Button color="primary" className="btn-block">Connectez-vous</Button>
+                                                        <Button color="primary" className="btn-block">Me connecter</Button>
                                                     </FormGroup>
                                                 </AvForm>
                                             </Col>
@@ -125,9 +125,6 @@ class Login extends Component {
                                                 <div className="auth-page-sidebar">
                                                     <div className="overlay"></div>
                                                     <div className="auth-user-testimonial">
-                                                        <p className="font-size-24 font-weight-bold text-white mb-1">I simply love it!</p>
-                                                        <p className="lead">"It's a elegent templete. I love it very much!"</p>
-                                                        <p>- Admin User</p>
                                                     </div>
                                                 </div>
                                             </Col>
@@ -141,7 +138,7 @@ class Login extends Component {
 
                         <Row className="mt-3">
                             <Col className="col-12 text-center">
-                                <p className="text-muted">Vous n'avez pas encore de compte? <Link to="/account/register" className="text-primary font-weight-bold ml-1">Inscrivez-vous</Link></p>
+                                <p className="text-muted">Vous n'avez pas encore de compte ? <Link to="/account/register" className="text-primary font-weight-bold ml-1">Inscrivez-vous</Link></p>
                             </Col>
                         </Row>
 

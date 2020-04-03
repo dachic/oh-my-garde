@@ -128,6 +128,16 @@ class Guard
         return $this;
     }
 
+    public function toString()
+    {
+        return [
+            'user' => $this->user->getLastName().' '.$this->user->getFirstName(),
+            'pharmacie' => $this->pharmacy->getName(),
+            'horaire' => $this->hour->getName(),
+            'jour' => $this->day
+        ];
+    }
+    
     public function getJob(): ?Job
     {
         return $this->job;

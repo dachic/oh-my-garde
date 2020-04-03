@@ -24,7 +24,7 @@ class AuthenticationSuccessListener
         }
 
         $payload['id'] = $user->getId();
-        $payload['username'] = $user->getEmail();
+        $payload['email'] = $user->getEmail();
         $payload['firstname'] = $user->getFirstname();
         $payload['lastname'] = $user->getLastname();
         $payload['role'] = $user->getRoles()[0];
