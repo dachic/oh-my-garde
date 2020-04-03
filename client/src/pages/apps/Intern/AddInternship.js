@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, Label } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button, Label, UncontrolledAlert, Spinner } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import { getLoggedInUser } from '../../../helpers/authUtils';
@@ -25,7 +25,9 @@ class AddInternship extends Component {
       selectedPharmacy: '',
       errorSelect: {},
       errorApi: '',
-      user: `api/users/${loggedInUser.id}`
+      user: `api/users/${loggedInUser.id}`,
+      areHospitalsLoaded: false,
+      areAgrementsLoaded: false
     };
   }
 
@@ -65,7 +67,7 @@ class AddInternship extends Component {
       Object.keys(pharmacyList).forEach(function (key) {
         options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
       });
-      this.setState({ pharmaciesOptions: options });
+      this.setState({ pharmaciesOptions: options, areHospitalsLoaded: true });
     }).catch((error) => {
       console.log(error.error);
       this.setState({ pharmaciesOptions: { value: 0, label: "Aucun hôpital trouvé" } });
@@ -78,7 +80,7 @@ class AddInternship extends Component {
       Object.keys(pharmacyList).forEach(function (key) {
         options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
       });
-      this.setState({ agrementsOptions: options });
+      this.setState({ agrementsOptions: options, areAgrementsLoaded: true });
     }).catch((error) => {
       console.log(error);
       this.setState({ pharmaciesOptions: { value: 0, label: "Aucun agrément trouvé" } });
@@ -108,7 +110,7 @@ class AddInternship extends Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.loadPharmaciesFromServer();
     this.loadAgrementsFromServer();
   }
@@ -122,24 +124,20 @@ class AddInternship extends Component {
               { label: 'Forms', path: '/forms/validation' },
               { label: '', path: '/forms/validation', active: true },
             ]}
-            title={'Mes stages'}
+            title={'Ajouter un stage'}
           />
         </Col>
         {this.state.status &&
-          <Col md={12}>
-            <div className="mt-2 p-2">
-              <div className="alert alert-success" role="alert" aria-label="Close">
-                <strong>{this.state.status}</strong>
-              </div>
-            </div>
+          <Col md={12} className="mt-2">
+            <UncontrolledAlert color="success" key="1">
+              <strong>{this.state.status} </strong>
+            </UncontrolledAlert>
           </Col>}
         {this.state.errorApi &&
           <Col md={12}>
-            <div className="mt-2 p-2">
-              <div className="alert alert-danger" role="alert" aria-label="Close">
-                <strong>{this.state.errorApi}</strong>
-              </div>
-            </div>
+            <UncontrolledAlert color="danger" key="1">
+              <strong>{this.state.errorApi} </strong>
+            </UncontrolledAlert>
           </Col>}
       </Row>
 
@@ -157,32 +155,40 @@ class AddInternship extends Component {
                 </AvGroup>
                 <div style={{ marginBottom: '15px' }}>
                   <Label for="pharmacy">Hôpital dans lequel le stage a été effectué *</Label>
-                  <Select
-                    name="pharmacy"
-                    options={this.state.pharmaciesOptions}
-                    defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
-                    className="react-select"
-                    placeholder="Choisir un hôpital"
-                    value={this.state.selectedPharmacy}
-                    onChange={this.handleSelectedPharmacy}
-                    classNamePrefix="react-select"></Select>
+                  {!this.state.areHospitalsLoaded ?
+                    <div>
+                      <Spinner key="2" className="m-2" color="primary" />
+                    </div> :
+                    <Select
+                      name="pharmacy"
+                      options={this.state.pharmaciesOptions}
+                      defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
+                      className="react-select"
+                      placeholder="Choisir un hôpital"
+                      value={this.state.selectedPharmacy}
+                      onChange={this.handleSelectedPharmacy}
+                      classNamePrefix="react-select"></Select>}
                   {this.state.errorSelect &&
                     <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.hospital}</p>}
                 </div>
 
                 <div>
                   <Label for="agrements" style={this.state.errorSelect && { border: 'red' }}>Agréments *</Label>
-                  <Select
-                    name="agrements"
-                    isMulti={true}
-                    options={this.state.agrementsOptions ? this.state.agrementsOptions :
-                      { value: 0, label: "Aucun agrément trouvé" }}
-                    className="react-select"
-                    styles={this.state.errorSelect && { border: '1px solid red' }}
-                    placeholder="Choisir des agréments"
-                    value={this.state.selectedAgrements}
-                    onChange={this.handleSelectedAgrement}
-                    classNamePrefix="react-select"></Select>
+                  {!this.state.areAgrementsLoaded ?
+                    <div>
+                      <Spinner key="2" className="m-2" color="primary" />
+                    </div> :
+                    <Select
+                      name="agrements"
+                      isMulti={true}
+                      options={this.state.agrementsOptions ? this.state.agrementsOptions :
+                        { value: 0, label: "Aucun agrément trouvé" }}
+                      className="react-select"
+                      styles={this.state.errorSelect && { border: '1px solid red' }}
+                      placeholder="Choisir des agréments"
+                      value={this.state.selectedAgrements}
+                      onChange={this.handleSelectedAgrement}
+                      classNamePrefix="react-select"></Select>}
                   {this.state.errorSelect &&
                     <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.agrement}</p>}
                 </div>

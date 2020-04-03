@@ -139,4 +139,30 @@ class UserController extends AbstractController
             "data" => $array
         ]);
     }
+
+    /**
+     * @param User $user
+     * @Route("/{id}/pharmacy", name="user_pharmacy", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function pharmacy(User $user): Response
+    {
+        $infos = [];
+
+        if($user->getPharmacy() != null)
+        {
+            $infos = [
+                'pharmacyId'  => $user->getPharmacy()->getId(),
+            ];
+        }
+        else
+        {
+            $infos = [
+                'pharmacyId'  => '',
+            ];
+        }
+
+        return $this->json([
+            "data" => $infos
+        ]);
+    }
 }    

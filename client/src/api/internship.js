@@ -58,13 +58,13 @@ export default {
             }
           });
       }
-      Promise.resolve(response);
+      return Promise.resolve(response);
     }).catch(function (errors) {
       return Promise.reject({ error: "Une erreur est survenue, veuillez réessayer." })
     });
   },
   getUsersInternships() {
-    return fetch(uri('/interships') + '/user/' + loggedInUser.id + '/internships', {
+    return fetch(uri(`/user/${loggedInUser.id}/internships`), {
       method: 'GET',
       headers: headers
     }).then((response) => {

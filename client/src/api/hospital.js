@@ -36,7 +36,7 @@ export default {
       // convert data from ReadableStream to JSON
       return response.json();
     }).then(function (data) {
-      return Promise.resolve(data['hydra:member']);
+      return Promise.resolve(data);
     }).catch(error => Promise.reject(error));
   },
   getSpecific(id) {

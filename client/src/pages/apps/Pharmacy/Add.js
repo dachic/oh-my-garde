@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label, UncontrolledAlert, Spinner } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import { getLoggedInUser } from '../../../helpers/authUtils';
@@ -19,7 +19,8 @@ class Add extends Component {
       errorSelect: {},
       errorApi: '',
       hospital: '',
-      user: `api/users/${loggedInUser.id}`
+      user: `api/users/${loggedInUser.id}`,
+      areHospitalsLoaded: false
     };
   }
 
@@ -37,7 +38,6 @@ class Add extends Component {
         form.representative = this.state.user;
         form.hospital = hospital;
         form = JSON.stringify(form, null, 2);
-        console.log(form);
         Api.addLinkedPharmacy(form).then(pharmacy => {
           document.getElementById("pharmacy-form").reset();
           this.setState({ status: 'La pharmacie a bien été ajoutée' });
@@ -48,7 +48,6 @@ class Add extends Component {
       }
     }
   }
-
   handleselectedHospital = e => {
     if (e) {
       this.setState({ hospital: `api/hospitals/${e.value}`, selectedHospital: e, errorSelect: {} });
@@ -63,13 +62,13 @@ class Add extends Component {
       Object.keys(pharmacyList).forEach(function (key) {
         options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
       });
-      this.setState({ hospitalsOptions: options });
+      this.setState({ hospitalsOptions: options, areHospitalsLoaded: true });
     }).catch((error) => {
       this.setState({ hospitalsOptions: { value: 0, label: "Aucun hôpital trouvé" } });
     });
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.loadPharmaciesFromServer();
   }
 
@@ -86,20 +85,16 @@ class Add extends Component {
           />
         </Col>
         {this.state.status &&
-          <Col md={12}>
-            <div className="mt-2 p-2">
-              <div className="alert alert-success" role="alert" aria-label="Close">
-                <strong>{this.state.status}</strong>
-              </div>
-            </div>
+          <Col md={12} className="mt-2">
+            <UncontrolledAlert color="success" key="1">
+              <strong>{this.state.status} </strong>
+            </UncontrolledAlert>
           </Col>}
         {this.state.errorApi &&
           <Col md={12}>
-            <div className="mt-2 p-2">
-              <div className="alert alert-danger" role="alert" aria-label="Close">
-                <strong>{this.state.errorApi}</strong>
-              </div>
-            </div>
+            <UncontrolledAlert color="danger" key="1">
+              <strong>{this.state.errorApi} </strong>
+            </UncontrolledAlert>
           </Col>}
       </Row>
 
@@ -118,15 +113,19 @@ class Add extends Component {
 
                 <div style={{ marginBottom: '15px' }}>
                   <Label for="hospital">Nom de l'hôpital relié *</Label>
-                  <Select
-                    name="hospital"
-                    options={this.state.hospitalsOptions}
-                    defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
-                    className="react-select"
-                    placeholder="Choisir un hôpital"
-                    value={this.state.selectedHospital}
-                    onChange={this.handleselectedHospital}
-                    classNamePrefix="react-select"></Select>
+                  {!this.state.areHospitalsLoaded ?
+                    <div>
+                      <Spinner key="2" className="m-2" color="primary" />
+                    </div> :
+                    <Select
+                      name="hospital"
+                      options={this.state.hospitalsOptions}
+                      defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
+                      className="react-select"
+                      placeholder="Choisir un hôpital"
+                      value={this.state.selectedHospital}
+                      onChange={this.handleselectedHospital}
+                      classNamePrefix="react-select"></Select>}
                   {this.state.errorSelect &&
                     <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.hospital}</p>}
                 </div>
