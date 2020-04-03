@@ -6,7 +6,7 @@ import TooltipCriteria from "./Answers/TooltipCriteria";
 import AffectButton from './Answers/AffectButton'
 
 const Answers = props => {
-    const [ranking, setRanking] = useState([]);
+    const [ranking, setRanking] = useState(null);
 
     useEffect(() => {
         guardAPI
@@ -62,12 +62,15 @@ const Answers = props => {
                         </tr>
                     </thead>
                     <tbody>
-                        {!ranking.length ? (
-                            <tr>
+                        {ranking == null ?
+                        <tr>
                                 <td colSpan="7" style={{ textAlign: "center" }}>
                                     En cours de chargement...
                                 </td>
-                            </tr>
+                            </tr> : !ranking.length ? (
+                                    <td colSpan="7" style={{ textAlign: "center" }}>
+                                                                Aucun interne à proposer
+                                      </td>
                         ) : (
                             ranking.map((rank, index) => {
                                 return (

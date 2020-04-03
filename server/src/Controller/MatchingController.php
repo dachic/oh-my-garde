@@ -89,7 +89,7 @@ class MatchingController
 
         $skills = $this->getSkills($intern);
 
-        if($this->hasSkills($guard->getId(),$skills['pharmacyWhereWorked'])){
+        if($this->hasSkills($guard->getPharmacy()->getId(),$skills['pharmacyWhereWorked'])){
             $score['total'] += Score::WORKED_AT_HOSPITAL;
             array_push($score['attribute'],'WORKED_AT_HOSPITAL');
         }
@@ -114,6 +114,9 @@ class MatchingController
 
     public function hasAllAgrements($requests,$agrements){
         foreach($requests as $agrement){
+            dump($agrement->getCode());
+            dump($agrements);
+            die();
             if(!(in_array($agrement->getCode(),$agrements))){
                 return false;
             }

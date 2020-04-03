@@ -3,8 +3,8 @@ import {Container,Row,Col} from 'reactstrap';
 import Request from '../../components/Matching/Request'
 import Answers from '../../components/Matching/Answers'
 
-const Matching = (props) => {
-    const guard = 1
+const Matching = () => {
+    const guard = window.location.href.split('/').slice(-1)[0];
 
     return (
         <Container>

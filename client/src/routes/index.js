@@ -201,7 +201,7 @@ const guardAppRoutes = {
     icon: FeatherIcon.FileText,
     children: [
         {
-            path: '/guard/add',
+            path: '/guards/add',
             name: 'Ajouter',
             component: GuardApp,
             route: PrivateRoute,
@@ -237,7 +237,7 @@ const usersRoutes = {
 let appRoutes = [];
 if (loggedInUser !== null) {
     if (loggedInUser.role === 'ROLE_PHARMACY') {
-        appRoutes = [pharmacyAppRoutes, guardAppRoutes, matchingRoute];
+        appRoutes = [pharmacyAppRoutes, guardAppRoutes];
     }
     else if (loggedInUser.role === 'ROLE_INTERN') {
         appRoutes = [internAppRoutes];
