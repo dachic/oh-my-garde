@@ -15,7 +15,7 @@ services:
             - 80:80
     # MySQL
     postgres:
-        image: postgres:12-alpine
+        image: postgres:11-alpine
         container_name: ${PROJECT_NAME}-postgres
         environment:
             - POSTGRES_DB=${DB_DATABASE}
