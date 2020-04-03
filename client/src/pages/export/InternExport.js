@@ -4,6 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import userApi from '../../api/user'
 
 const columns = [
     {
@@ -43,15 +44,15 @@ const expandRow = {
     renderer: row => (
         <div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.lastname} ${row.firstname}`} </p>
-                <div class="list-group">
-                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action">{`Email: ${row.email}`}</a>
-                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumber}`}</a>
+                <div  class="list-group">
+                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.email}`}</a>
+                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumber}`}</a>
                 </div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.namePharmacy}`}</p>
-                <div class="list-group">
-                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action">{`Email: ${row.emailPharmacy}`}</a>
-                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action">{`Téléphone: ${row.phoneNumberPharmacy}`}</a>
-                    <div class="list-group-item list-group-item-action">{`Hopital: ${row.nameHopistal}`} </div>
+                <div  class="list-group">
+                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
+                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
+
                 </div>
        </div>
     ),
@@ -107,19 +108,14 @@ export default class InternExport extends Component {
             interns: []
         };
     }
-
+    
+    
     componentDidMount() {
-        fetch("http://api.localhost/user/guard/count").then(response => {
-            return response.json()
-        }).then(response => {
-
-           this.setState({
-               interns: response
-           })
-        })
-        .catch(() => {
-
-        });
+       userApi.export().then(data=>{
+            this.setState({
+                interns: data
+            })
+       })
     }
 
     render() {
@@ -131,7 +127,7 @@ export default class InternExport extends Component {
                      </div>
                     );
         }
-
+          
         return (
             <div>
                 <Card style={cardMargin}>
@@ -172,7 +168,7 @@ export default class InternExport extends Component {
                         </ToolkitProvider>
                     </CardBody>
                 </Card>
-            </div>
+            </div>   
         )
     }
 }

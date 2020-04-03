@@ -1,5 +1,6 @@
 
 import { getLoggedInUser } from '../helpers/authUtils';
+import {fetchJSON} from '../helpers/api'
 
 const url = process.env.REACT_APP_API_URL;
 let uri = (path) => { return url + path };
@@ -13,6 +14,13 @@ const headers = {
 }
 
 export default {
+  async export(){
+    const res = fetchJSON(url + '/user/guard/count',{
+        method:'GET',
+        headers:headers
+    })
+    return await res
+  },
   getPharmacy() {
     return fetch(uri(`/user/${loggedInUser.id}/pharmacy`), {
       method: 'GET',

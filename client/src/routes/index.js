@@ -112,7 +112,7 @@ const dashboardRoutes = {
 // Intern export for admin
 const internRoutes = {
     path: '/interns/export',
-    name: 'Interns Export',
+    name: 'Export des gardes',
     icon: FeatherIcon.DownloadCloud,
     component: InternExport,
     roles: ['ROLE_ADMIN'],

@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Guard;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Guard|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +16,12 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class GuardRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $em;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Guard::class);
+        $this->em = $manager;
     }
 
     // /**
@@ -48,5 +53,29 @@ class GuardRepository extends ServiceEntityRepository
     }
     */
 
+    public function findAllGroup(/*$page, $limit*/)
+    {   
+        return $this->em->createQuery("
+        select u.id as IdUtilisateur,u.firstname, u.lastname,u.phoneNumber, u.email, d.name as hour , p.name,p.email as emailPharmacy,p.phoneNumber as phoneNumberPharmacy ,count(g.id) as nbJour
+        from App\Entity\Guard g, App\Entity\Pharmacy p, App\Entity\User u, App\Entity\DisponibilityHour d
+        Where g.pharmacy = p.id
+        And   g.user = u.id 
+        And  g.hour = d.id
+        And g.status = 'accepted'
+        group by u.id, p.id, d.id
+        ")->getResult();
+
+        /*return $this->em->createQuery("
+        select u.id as IdUtilisateur,u.firstname, u.lastname,u.phoneNumber, u.email, d.name as hour , p.name,p.email as emailPharmacy,p.phoneNumber as phoneNumberPharmacy ,count(g.id) as nbJour
+        from App\Entity\Guard g, App\Entity\Pharmacy p, App\Entity\User u, App\Entity\DisponibilityHour d
+        Where g.pharmacy = p.id
+        And   g.user = u.id 
+        And  g.hour = d.id
+        And g.status = 'accepted'
+        group by u.id, p.id, d.id
+        ")->setFirstResult(($page - 1) * $limit)
+          ->setMaxResults($limit)
+          ->getResult();*/
+    }
 
 }
