@@ -39,7 +39,7 @@ export default {
     },
 
   add(guard) {
-    return fetch(uri('guards'), {
+    return fetch(uri('/guards'), {
       method: 'POST',
       headers: headers,
       body: guard
