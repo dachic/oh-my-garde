@@ -11,11 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Repository\DisponibilityHourRepository;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-
 
 /**
  * @Route("/user")
@@ -92,10 +88,6 @@ class UserController extends AbstractController
      */
     public function internships(User $user): Response
     {
-        $encoders = array(new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-
         $infos = [];
         $infosAgr = [];
         $array = [];

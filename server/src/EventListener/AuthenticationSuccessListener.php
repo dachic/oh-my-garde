@@ -30,6 +30,7 @@ class AuthenticationSuccessListener
         $payload['role'] = $user->getRoles()[0];
         $payload['roleAsString'] = $user->getRoleAsString();
         $payload['status'] = $user->getStatus();
+        $payload['pharmacy'] = $user->getPharmacy()->getId();
 
         $event->setData($payload);
     }

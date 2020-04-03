@@ -31,4 +31,15 @@ export default {
       return Promise.resolve(data['hydra:member']);
     }).catch(error => Promise.reject(error));
   },
+
+  getSpecific(id) {
+    return fetch(uri(`hospitals/${id}`), {
+      method: 'GET',
+    }).then((response) => {
+      // convert data from ReadableStream to JSON
+      return response.json();
+    }).then(function (data) {
+      return Promise.resolve(data);
+    }).catch(error => Promise.reject(error));
+  }
 };

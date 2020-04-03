@@ -6,7 +6,9 @@ import { getLoggedInUser } from '../../../helpers/authUtils';
 
 import PageTitle from '../../../components/PageTitle';
 import Api from '../../../api/hospital';
-class Add extends Component {
+import pharmacyApi from '../../../api/pharmacy';
+
+class Edit extends Component {
   constructor(props) {
     super(props);
     const loggedInUser = getLoggedInUser();
@@ -19,7 +21,9 @@ class Add extends Component {
       errorSelect: {},
       errorApi: '',
       hospital: '',
-      user: `api/users/${loggedInUser.id}`
+      user: `api/users/${loggedInUser.id}`,
+      pharmacyId: loggedInUser.pharmacy,
+      currentPharmacy: {}
     };
   }
 
@@ -27,37 +31,42 @@ class Add extends Component {
     this.setState({ errors, values });
     // API Call
     if (!errors.length) {
-      if (this.state.hospital === '') {
-        this.setState({ errorSelect: { hospital: "vous devez sélectionner un hôpital" } });
-        return;
+      let form = this.state.values;
+      let hospital = this.state.hospital;
+
+      // hospital
+      if (this.state.hospital !== '') {
+        console.log("not empty state");
+        hospital = this.state.hospital;
       }
       else {
-        let form = this.state.values;
-        let hospital = this.state.hospital;
-        form.representative = this.state.user;
-        form.hospital = hospital;
-        form = JSON.stringify(form, null, 2);
-        console.log(form);
-        Api.addLinkedPharmacy(form).then(pharmacy => {
-          document.getElementById("pharmacy-form").reset();
-          this.setState({ status: 'La pharmacie a bien été ajoutée' });
-        }).catch((error) => {
-          console.log(error);
-          this.setState({ errorApi: error.error });
-        });
+        hospital = `api/hospitals/${this.state.currentPharmacy.hospital.id}`;
       }
+
+      form.representative = this.state.user;
+      form.hospital = hospital;
+      form = JSON.stringify(form, null, 2);
+      console.log(form);
+      pharmacyApi.updateSpecific(form, this.state.pharmacyId).then(pharmacy => {
+        document.getElementById("pharmacy-form").reset();
+        this.setState({ status: 'Les informations de la pharmacie ont bien été mises à jour' });
+      }).catch((error) => {
+        console.log(error);
+        this.setState({ errorApi: error.error });
+      });
     }
   }
 
   handleselectedHospital = e => {
     if (e) {
-      this.setState({ hospital: `api/hospitals/${e.value}`, selectedHospital: e, errorSelect: {} });
-    } else {
-      this.setState({ hospital: '', errorSelect: { hospital: "vous devez sélectionner un hôpital" }, selectedHospital: e });
+      console.log(e.value);
+      this.setState({
+        hospital: `api/hospitals/${e.value}`, selectedHospital: e
+      });
     }
   }
 
-  loadPharmaciesFromServer() {
+  loadHospitalsFromServer() {
     Api.getAll().then(pharmacyList => {
       let options = [];
       Object.keys(pharmacyList).forEach(function (key) {
@@ -69,12 +78,29 @@ class Add extends Component {
     });
   }
 
+  loadPharmacy() {
+    pharmacyApi.getSpecific(this.state.pharmacyId).then(pharmacy => {
+      this.setState({
+        selectedHospital: { label: pharmacy.hospital.name, value: pharmacy.hospital.id },
+        currentPharmacy: {
+          name: pharmacy.name,
+          email: pharmacy.email,
+          phone: pharmacy.phone,
+          hospital: pharmacy.hospital
+        }
+      });
+    }).catch((error) => {
+      this.setState({ hospitalsOptions: { value: 0, label: "Aucun hôpital trouvé" } });
+    });
+  }
+
   componentDidMount() {
-    this.loadPharmaciesFromServer();
+    this.loadPharmacy();
+    this.loadHospitalsFromServer();
   }
 
   render() {
-    return <React.Fragment>
+    return <React.Fragment >
       <Row className="page-title">
         <Col md={12}>
           <PageTitle
@@ -82,7 +108,7 @@ class Add extends Component {
               { label: 'Forms', path: '/forms/validation' },
               { label: '', path: '/forms/validation', active: true },
             ]}
-            title={'Ajouter une nouvelle pharmacie'}
+            title={'Mettre à jour ma pharmacie'}
           />
         </Col>
         {this.state.status &&
@@ -111,7 +137,7 @@ class Add extends Component {
                 <AvGroup>
                   <Label for="name">Nom de la pharmacie *</Label>
                   <div className="input-group">
-                    <AvInput type="text" name="name" required />
+                    <AvInput type="text" name="name" value={this.state.currentPharmacy.name} required />
                     <AvFeedback>Champ incorrect/requis.</AvFeedback>
                   </div>
                 </AvGroup>
@@ -121,7 +147,6 @@ class Add extends Component {
                   <Select
                     name="hospital"
                     options={this.state.hospitalsOptions}
-                    defaultValue={{ label: "L'hôpital ne figure pas dans la liste", value: 0 }}
                     className="react-select"
                     placeholder="Choisir un hôpital"
                     value={this.state.selectedHospital}
@@ -135,7 +160,7 @@ class Add extends Component {
                   <Label for="email">Adresse email (si défférente de celle du représent)</Label>
                   <div className="input-group">
                     <InputGroupAddon addonType="prepend">@</InputGroupAddon>
-                    <AvInput type="email" placeholder="Email" name="email" />
+                    <AvInput type="email" placeholder="Email" name="email" value={this.state.currentPharmacy.email} />
                     <AvFeedback>Champ incorrect/requis.</AvFeedback>
                   </div>
                 </AvGroup>
@@ -143,7 +168,7 @@ class Add extends Component {
                 <AvGroup>
                   <Label for="phoneNumber">Numéro de téléphone (si défférent de celui du représent)</Label>
                   <div className="input-group">
-                    <AvInput type="text" name="phoneNumber" />
+                    <AvInput type="text" name="phoneNumber" value={this.state.currentPharmacy.phone} />
                     <AvFeedback>Champ incorrect/requis.</AvFeedback>
                   </div>
                 </AvGroup>
@@ -155,9 +180,9 @@ class Add extends Component {
           </Card>
         </Col>
       </Row>
-    </React.Fragment>
+    </React.Fragment >
   }
 }
 
 
-export default Add;
+export default Edit;

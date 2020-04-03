@@ -51,7 +51,7 @@ class EditInternship extends Component {
         });
       }
       // hospital
-      if (!this.state.hospital === '') {
+      if (this.state.hospital !== '') {
         hospital = this.state.hospital;
       }
       else {
@@ -81,9 +81,8 @@ class EditInternship extends Component {
 
   handleSelectedPharmacy = e => {
     if (e) {
-      console.log(e.value);
       this.setState({
-        hospital: `api/hospitals/${e.value}`, selectedPharmacy: e, errorSelect: {}
+        hospital: `api/hospitals/${e.value}`, selectedPharmacy: e
       });
     }
   }
