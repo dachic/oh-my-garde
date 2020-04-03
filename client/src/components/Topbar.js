@@ -7,7 +7,6 @@ import { Menu, X, Search, Settings, User, HelpCircle, Lock, LogOut } from 'react
 import { showRightSidebar } from '../redux/actions';
 import NotificationDropdown from './NotificationDropdown';
 import ProfileDropdown from './ProfileDropdown';
-import LanguageDropdown from './LanguageDropdown';
 
 import logo from '../assets/images/logo_horizontal.svg';
 import profilePic from '../assets/images/users/avatar-7.jpg';
