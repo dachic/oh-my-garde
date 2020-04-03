@@ -19,7 +19,6 @@ class MatchingController
 {
 
     /**
-     * @IsGranted("ROLE_ADMIN")
      * @Route("/api/guard/matching/{id}", name="app_guard_matching", methods={"GET"}, defaults={"_format": "json"})
      */
     public function getInternRankingForPosition(GuardRepository $guardRepository,UserRepository $userRepository,$id)
@@ -38,7 +37,6 @@ class MatchingController
             }
             return new Response($this->castJson($rankingWithAffected), 200, ['Content-Type' => 'application/json']);
         }
-
         return new Response($this->castJson($ranking), 200, ['Content-Type' => 'application/json']);
     }
 

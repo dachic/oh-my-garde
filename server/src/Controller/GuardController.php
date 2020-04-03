@@ -47,12 +47,4 @@ class GuardController extends AbstractController
 
         return new Response("false");
     }
-
-    /**
-     * @Route("/api/guard/{id}/{status}", name="app_guard_update", methods={"GET"})
-     */
-    public function update()
-    {
-        return true;
-    }
 }

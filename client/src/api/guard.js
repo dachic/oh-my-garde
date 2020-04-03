@@ -13,12 +13,18 @@ const headers = {
 
 export default {
     async get(guard){
-        const res = fetchJSON(url + '/guards/' + guard)
+        const res = fetchJSON(url + '/guards/' + guard,{
+            method:'GET',
+            headers:headers
+        })
         return await res
     },
 
     async getInternsRankingForGuard(guard){
-        const res = fetchJSON(url + '/guard/matching/' + guard)
+        const res = fetchJSON(url + '/guard/matching/' + guard,{
+            method:'GET',
+            headers:headers
+        })
         return await res
     },
 
