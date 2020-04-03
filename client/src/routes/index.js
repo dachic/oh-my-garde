@@ -62,6 +62,7 @@ const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 
 // users
 const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
+const EditUser = React.lazy(() => import('../pages/users/Edit/EditUser'));
 
 
 // handle auth and authorization
@@ -284,12 +285,19 @@ const usersRoutes = {
     children: [
         {
             path: '/users/all',
-            name: 'Tous les utilisateurs',
+            name: 'Liste des utilisateurs',
             component: ListAllUser,
             route: PrivateRoute,
             roles: ['ROLE_ADMIN'],
         },
-    ]
+        {
+            path: '/users/edit',
+            name: 'Edition un utilisateur',
+            component: EditUser,
+            route: PrivateRoute,
+            roles: ['ROLE_ADMIN'],
+        }
+    ],
 };
 
 const appRoutes = [internRoutes, pharmacyAppRoutes, internAppRoutes, usersRoutes];

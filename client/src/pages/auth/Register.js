@@ -82,6 +82,7 @@ class Register extends Component {
         );
     };
 
+
     render() {
         const isAuthTokenValid = isUserAuthenticated();
         const { region } = this.state;
@@ -116,9 +117,9 @@ class Register extends Component {
                                                 {this.props.error && <Alert color="danger" isOpen={this.props.error ? true : false}>
                                                     <div>{this.props.error}</div>
                                                 </Alert>}
-                                                
+
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
-                                                   
+
                                                     <AvGroup className="">
                                                         <Label for="firstname">Prénom</Label>
                                                         <InputGroup>
@@ -132,7 +133,7 @@ class Register extends Component {
 
                                                         <AvFeedback>Veuillez saisir votre prénom</AvFeedback>
                                                     </AvGroup>
-                                                
+
                                                     <AvGroup className="">
                                                         <Label for="lastname">Nom</Label>
                                                         <InputGroup>
@@ -146,7 +147,7 @@ class Register extends Component {
 
                                                         <AvFeedback>Veuillez saisir votre nom de famille</AvFeedback>
                                                     </AvGroup>
-                                            
+
                                                     <AvGroup className="">
                                                         <Label for="email">E-mail</Label>
                                                         <InputGroup>
@@ -188,7 +189,7 @@ class Register extends Component {
                                                         <AvFeedback>Saisissez votre numéro de téléphone</AvFeedback>
                                                     </AvGroup>
 
-                                                
+
                                                     <AvGroup className="mb-3">
                                                         <FormGroup>
                                                             <Label for="roleUser">Vous êtes</Label>
@@ -199,7 +200,7 @@ class Register extends Component {
                                                         </FormGroup>
                                                         <AvFeedback>Veuillez choisir votre status</AvFeedback>
                                                     </AvGroup>
-                                                
+
                                                     <AvGroup className="mb-3">
                                                         <FormGroup>
                                                         <Label for="roleUser">Région associée</Label>
@@ -212,7 +213,7 @@ class Register extends Component {
                                                             />
                                                         </FormGroup>
                                                     </AvGroup>
-                                                   
+
                                                     <AvGroup check className="mb-4">
                                                         <CustomInput type="checkbox" id="terms" defaultChecked="false" className="pl-1" label="J’accepte les Conditions d'Utilisation de la plateforme" />
                                                     </AvGroup>
