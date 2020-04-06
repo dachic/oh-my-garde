@@ -2,24 +2,24 @@
 
 echo -e 'Checking environment variables file `.env`'
 if [ ! -f ".env" ]; then
-    echo -e "==> App environment variables are not set"
-    echo -e "==> Copy environment variable '.env'"
-    echo -e "==> Make sure to have all environment variables set"
+    echo -e "=> App environment variables are not set"
+    echo -e "=> Copy environment variable '.env'"
+    echo -e "=> Make sure to have all environment variables set"
     exit 2
 fi
 
 echo -e 'Checking docker-compose.yml'
 if [ -f docker-compose.yml ]; then
     while true; do
-        echo -e "==> docker-compose.yml already exists 😅."
+        echo -e "=> docker-compose.yml already exists 😅."
         read -p "Do you want to override it anyway ? [y/N] : " REP
         case $REP in
         [Yy]*)
-            echo -e "==> Well, docker-compose.$1.yml will be copied into docker-compose.yml"
+            echo -e "=> Well, docker-compose.$1.yml will be copied into docker-compose.yml"
             break
             ;;
         [N]*)
-            echo -e "==> Installation cancelled ❌"
+            echo -e "=> Installation cancelled ❌"
             exit
             ;;
         *) echo "Please answer yes(y or Y) or no(N)." ;;
@@ -28,11 +28,11 @@ if [ -f docker-compose.yml ]; then
 fi
 
 echo -e 'Copying appropriate docker-compose.yml'
-if [ "$1" == "dev" ]; then
+if [ "$1" = "dev" ]; then
     cp docker-compose.dev.yml docker-compose.yml
-elif [ "$1" == "prod" ]; then
+elif [ "$1" = "prod" ]; then
     cp docker-compose.prod.yml docker-compose.yml
-elif [ "$1" == "server" ]; then
+elif [ "$1" = "server" ]; then
     cp docker-compose.server.yml docker-compose.yml
 else
     echo "The option 'dev' or 'prod' or 'server' is missing"
@@ -42,31 +42,31 @@ fi
 echo -e 'Building docker environment'
 make build
 
-if [ "$1" == "prod" ]; then
-    echo -e "==> Installing composer dependencies for $1"
+if [ "$1" = "prod" ]; then
+    echo -e "=> Installing composer dependencies for $1"
     make cinstall-prod
 else
-    echo -e "==> Installing composer dependencies for $1"
+    echo -e "=> Installing composer dependencies for $1"
     make cinstall
 fi
 
-echo -e "==> Running migrations"
+echo -e "=> Running migrations"
 make migrate
 
-echo -e "==> Installing assets"
+echo -e "=> Installing assets"
 make assets-install
 
-echo -e "==> Clearing cache"
+echo -e "=> Clearing cache"
 make cache-clear
 
-echo -e "==> Compiling cache"
+echo -e "=> Compiling cache"
 make compile
 
-echo -e "==> Installing node_modules"
+echo -e "=> Installing node_modules"
 make yinstall
 
-echo -e "==> Update JWT private/public key"
+echo -e "=> Update JWT private/public key"
 make jwt
 
-echo -e "==> Installation done ✅"
+echo -e "=> Installation done ✅"
 exit 0
