@@ -41,7 +41,7 @@ class Dashboard extends Component {
 
                     <Row className="page-title align-items-center">
                         <Col sm={4} xl={6}>
-                            <h4 className="mb-1 mt-0">Dashboard</h4>
+                            <h4 className="mb-1 mt-0">Tableau de board</h4>
                         </Col>
                         <Col sm={8} xl={6}>
                             <form className="form-inline float-sm-right mt-3 mt-sm-0">

@@ -12,7 +12,7 @@ class UserRole
     public static $choices = [
         self::ROLE_USER => 'Utilisateur',
         self::ROLE_ADMIN => 'Administrateur',
-        self::ROLE_PHARMACY => "Chef de l'hôpital",
+        self::ROLE_PHARMACY => "Chef de service",
         self::ROLE_INTERN => 'Interne',
     ];
 
