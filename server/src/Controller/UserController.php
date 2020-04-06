@@ -61,6 +61,39 @@ class UserController extends AbstractController
         return $this->json($newArray);
 
     }
+     /**
+     * @Route("/guard/pending", name="user_pending", methods={"GET","POST"})
+     */
+    public function pending(): Response
+        {
+            $em = $this->getDoctrine()->getManager();
+    
+    
+            $repository_guard = $this->getDoctrine()->getRepository(Guard::class);
+    
+    
+            $array = $repository_guard->findPending(/*$page,$limit*/);
+    
+            $newArray = [];
+           foreach($array as $k => $value){
+               array_push($newArray,[
+                   'id'         => $k+1,
+                   'firstname' => $value['firstname'],
+                   'IdUtilisateur' => $value['IdUtilisateur'],
+                   'lastname'=> $value['lastname'],
+                   'namePharmacy'=> $value['name'],
+                   'horaire'=> $value['hour'],
+                   'phoneNumber'=> $value['phoneNumber'],
+                   'email'=> $value['email'],
+                   'emailPharmacy'=> $value['emailPharmacy'],
+                   'phoneNumberPharmacy'=> $value['phoneNumberPharmacy']
+               ]);
+    
+           }
+    
+            return $this->json($newArray);
+    
+        }
    /**
      * @param User $user
      * @Route("/{id}/internships", name="user_internships", requirements={"id"="\d+"}, methods={"GET"})
@@ -121,9 +154,9 @@ class UserController extends AbstractController
         ]);
     }
     /**
-     * @Route("/guard/all", name="user_all", methods={"GET","POST"})
+     * @Route("/guard/allGuard", name="user_allguard", methods={"GET","POST"})
      */
-    public function all(): Response
+    public function allGuard(): Response
     {
         $em = $this->getDoctrine()->getManager();
 

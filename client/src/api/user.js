@@ -21,6 +21,20 @@ export default {
     })
     return await res
   },
+  async pending(){
+    const res = fetchJSON(url + '/user/guard/pending',{
+        method:'GET',
+        headers:headers
+    })
+    return await res
+  },
+  async allGuard(){
+    const res = fetchJSON(url + '/user/guard/allGuard',{
+        method:'GET',
+        headers:headers
+    })
+    return await res
+  },
   getPharmacy() {
     return fetch(uri(`/user/${loggedInUser.id}/pharmacy`), {
       method: 'GET',

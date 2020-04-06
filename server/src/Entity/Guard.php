@@ -136,7 +136,8 @@ class Guard
     public function toString()
     {
         return [
-            'user' => $this->user->getLastName().' '.$this->user->getFirstName(),
+            'lastname' => $this->user->getLastName(),
+            'firstname' => $this->user->getFirstName(),
             'pharmacie' => $this->pharmacy->getName(),
             'horaire' => $this->hour->getName(),
             'jour' => $this->day
