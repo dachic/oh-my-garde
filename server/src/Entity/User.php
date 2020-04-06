@@ -15,7 +15,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 

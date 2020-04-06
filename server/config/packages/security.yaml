@@ -50,6 +50,7 @@ security:
         ROLE_INTERN: [ROLE_USER]
 
     access_control:
+    - { path: ^/forgot_password, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allows accessing the Swagger UI
     - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }

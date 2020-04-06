@@ -103,6 +103,7 @@ class MatchingController
             array_push($score['attribute'], 'HAS_REQUIRED_APPROVALS');
         }
 
+        // TODO: see if keep this field
         if ($this->hasSkills($guard->getJob()->getTitle(), $skills['heldPosition'])) {
             $score['total'] += Score::WORKED_IN_A_SAME_POSITION;
             array_push($score['attribute'], 'WORKED_IN_A_SAME_POSITION');
