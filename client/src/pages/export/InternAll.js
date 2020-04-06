@@ -8,6 +8,11 @@ import userApi from '../../api/user'
 
 const columns = [
     {
+        dataField: 'IdUtilisateur',
+        text: 'Id',
+        sort: true,
+    },
+    {
         dataField: 'lastname',
         text: 'Nom',
         sort: true,
@@ -23,8 +28,18 @@ const columns = [
         sort: true,
     },
     {
-        dataField: 'namePharmacy',
-        text: 'Pharmacie',
+        dataField: 'hospital',
+        text: 'Hopital',
+        sort: true,
+    },
+    {
+        dataField: 'date',
+        text: 'Date',
+        sort: true,
+    },
+    {
+        dataField: 'jour',
+        text: 'Jour',
         sort: true,
     }
 ];
@@ -47,7 +62,7 @@ const expandRow = {
                 <div class="list-group" style={tabMargin}>
                     <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
                     <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
-
+                    <p  class="list-group-item list-group-item-action"><b>Pharmacie: </b>{`${row.namePharmacy}`}</p>
                 </div>
        </div>
     ),
@@ -111,7 +126,7 @@ export default class InternPending extends Component {
 
 
     componentDidMount() {
-       userApi.pending().then(data=>{
+       userApi.allGuard().then(data=>{
             this.setState({
                 interns: data
             })
@@ -132,8 +147,8 @@ export default class InternPending extends Component {
             <div>
                 <Card style={cardMargin}>
                     <CardBody>
-                        <h4 className="header-title mt-0 mb-1">Tableau des gardes en attente</h4>
-                        <p className="sub-header">Ce tableau recapitule toutes les gardes des internes en attente</p>
+                        <h4 className="header-title mt-0 mb-1">Tableau des gardes acceptés</h4>
+                        <p className="sub-header">Ce tableau recapitule toutes les gardes des internes acceptés</p>
 
                         <ToolkitProvider
                             bootstrap4

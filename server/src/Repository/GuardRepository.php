@@ -56,13 +56,14 @@ class GuardRepository extends ServiceEntityRepository
     public function findAllGroup(/*$page, $limit*/)
     {   
         return $this->em->createQuery("
-        select u.id as IdUtilisateur,u.firstname, u.lastname,u.phoneNumber, u.email, d.name as hour , p.name,p.email as emailPharmacy,p.phoneNumber as phoneNumberPharmacy ,count(g.id) as nbJour
-        from App\Entity\Guard g, App\Entity\Pharmacy p, App\Entity\User u, App\Entity\DisponibilityHour d
+        select u.id as IdUtilisateur,u.firstname, u.lastname,u.phoneNumber, u.email, d.name as hour ,h.name as hospital, p.name,p.email as emailPharmacy,p.phoneNumber as phoneNumberPharmacy ,count(g.id) as nbJour
+        from App\Entity\Guard g, App\Entity\Pharmacy p, App\Entity\User u, App\Entity\DisponibilityHour d,App\Entity\Hospital h
         Where g.pharmacy = p.id
         And   g.user = u.id 
         And  g.hour = d.id
+        And  p.hospital = h.id
         And g.status = 'accepted'
-        group by u.id, p.id, d.id
+        group by u.id, p.id, d.id,h.id
         ")->getResult();
 
         /*return $this->em->createQuery("
@@ -80,13 +81,13 @@ class GuardRepository extends ServiceEntityRepository
     public function findPending()
         {   
             return $this->em->createQuery("
-            select u.id as IdUtilisateur,u.firstname, u.lastname,u.phoneNumber, u.email, d.name as hour , p.name,p.email as emailPharmacy,p.phoneNumber as phoneNumberPharmacy 
-            from App\Entity\Guard g, App\Entity\Pharmacy p, App\Entity\User u, App\Entity\DisponibilityHour d
+            select u.id as IdUtilisateur,u.firstname, u.lastname,u.phoneNumber, u.email, d.name as hour , p.name,p.email as emailPharmacy,p.phoneNumber as phoneNumberPharmacy ,h.name as hospital
+            from App\Entity\Guard g, App\Entity\Pharmacy p, App\Entity\User u, App\Entity\DisponibilityHour d,App\Entity\Hospital h
             Where g.pharmacy = p.id
             And   g.user = u.id 
             And  g.hour = d.id
+            And  p.hospital = h.id
             And g.status = 'pending'
-            group by u.id, p.id, d.id
             ")->getResult();
     
         }

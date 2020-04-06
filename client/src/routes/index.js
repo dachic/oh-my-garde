@@ -121,8 +121,8 @@ const internRoutes = {
 // Intern pending for admin
 const internPendingRoutes = {
     path: '/interns/pending',
-    name: 'Export en attente',
-    icon: FeatherIcon.DownloadCloud,
+    name: 'Garde en attente',
+    icon: FeatherIcon.AlertTriangle,
     component: InternPending,
     roles: ['ROLE_ADMIN'],
     route: PrivateRoute
@@ -131,7 +131,7 @@ const internPendingRoutes = {
 const internAllRoutes = {
     path: '/interns/all',
     name: 'Tous les gardes',
-    icon: FeatherIcon.DownloadCloud,
+    icon: FeatherIcon.List,
     component: InternAll,
     roles: ['ROLE_ADMIN'],
     route: PrivateRoute

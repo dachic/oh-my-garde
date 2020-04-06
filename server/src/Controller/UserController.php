@@ -50,6 +50,7 @@ class UserController extends AbstractController
                'email'=> $value['email'],
                'emailPharmacy'=> $value['emailPharmacy'],
                'phoneNumberPharmacy'=> $value['phoneNumberPharmacy'],
+               'hospital'=> $value['hospital'],
                'nbGarde'=> $value['nbJour'],
                /*'limit'=> $limit ,
                'page'=> $page,*/
@@ -86,7 +87,8 @@ class UserController extends AbstractController
                    'phoneNumber'=> $value['phoneNumber'],
                    'email'=> $value['email'],
                    'emailPharmacy'=> $value['emailPharmacy'],
-                   'phoneNumberPharmacy'=> $value['phoneNumberPharmacy']
+                   'phoneNumberPharmacy'=> $value['phoneNumberPharmacy'],
+                   'hospital'=> $value['hospital']
                ]);
     
            }
