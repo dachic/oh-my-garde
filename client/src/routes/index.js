@@ -11,7 +11,7 @@ import authRoutes from './_authRoutes';
 import nonAuthRoutes from './_nonAuthRoutes';
 import internRoutes from './_internRoutes';
 import pharmacyRoutes from './_pharmacyRoutes';
-import dashboardRoutes from './_dashboardRoutes';
+import accountRoutes from './_accountRoutes';
 
 const loggedInUser = getLoggedInUser();
 
@@ -26,13 +26,13 @@ const rootRoute = {
 let appRoutes = [];
 if (loggedInUser !== null) {
     if (loggedInUser.role === 'ROLE_PHARMACY') {
-        appRoutes = [pharmacyRoutes.pharmacyAppRoutes, pharmacyRoutes.guardAppRoutes];
+        appRoutes = [pharmacyRoutes.pharmacyAppRoutes, pharmacyRoutes.guard];
     }
     else if (loggedInUser.role === 'ROLE_INTERN') {
         appRoutes = [internRoutes.internAppRoutes];
     }
     else if (loggedInUser.role === 'ROLE_ADMIN') {
-        appRoutes = [adminRoutes.guard, pharmacyRoutes.guardAppRoutes, adminRoutes.usersRoutes];
+        appRoutes = [adminRoutes.guard, adminRoutes.usersRoutes];
     }
 }
 
@@ -54,16 +54,16 @@ const flattenRoutes = routes => {
 // All routes
 const allRoutes = [
     rootRoute,
-    dashboardRoutes.dashboardRoutes,
-    pharmacyRoutes.matchingRoute,
+    accountRoutes.dashboard,
+    accountRoutes.accountProfile,
     ...appRoutes,
     authRoutes.authRoutes,
-    internRoutes.EditInternshipRoutes,
     nonAuthRoutes.confirmGuardRoute
 ];
 
 const authProtectedRoutes = [
-    dashboardRoutes.dashboardRoutes,
+    accountRoutes.dashboard,
+    accountRoutes.accountProfile,
     ...appRoutes,
     internRoutes.EditInternshipRoutes
 ];

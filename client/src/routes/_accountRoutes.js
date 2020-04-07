@@ -6,7 +6,7 @@ import PrivateRoute from './PrivateRoute';
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
 
 // dashboards
-const dashboardRoutes = {
+const dashboard = {
     path: '/dashboard',
     name: 'Tableau de bord',
     icon: FeatherIcon.Home,
@@ -16,4 +16,12 @@ const dashboardRoutes = {
     route: PrivateRoute
 };
 
-export default { dashboardRoutes }
+const accountProfile = {
+    path: '/account/profile',
+    name: 'Profil',
+    // component: EmailDetail,
+    route: PrivateRoute,
+    roles: ['ROLE_ADMIN', 'ROLE_PHARMACY', 'ROLE_INTERN'],
+};
+
+export default { dashboard, accountProfile }

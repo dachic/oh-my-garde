@@ -4,16 +4,13 @@ import PrivateRoute from './PrivateRoute';
 
 const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
 const GuardsList = React.lazy(() => import('../pages/apps/Guard/List'));
-const InternPending = React.lazy(() => import('../pages/export/InternPending'));
-const InternAll = React.lazy(() => import('../pages/export/InternAll'));
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
 const EditPharmacy = React.lazy(() => import('../pages/apps/Pharmacy/Edit'));
 const Matching = React.lazy(() => import('../pages/matching/Matching'));
 
-const guardAppRoutes = {
+const guard = {
     path: 'guard',
     name: 'Gardes',
-    header: 'Gardes',
     icon: FeatherIcon.FileText,
     children: [
         {
@@ -31,18 +28,12 @@ const guardAppRoutes = {
             roles: ['ROLE_PHARMACY'],
         },
         {
-            path: '/interns/pending',
-            name: 'Garde en attente',
-            component: InternPending,
-            roles: ['ROLE_ADMIN'],
-            route: PrivateRoute
-        },
-        {
-            path: '/interns/all',
-            name: 'Tous les gardes',
-            component: InternAll,
-            roles: ['ROLE_ADMIN'],
-            route: PrivateRoute
+            path: '/guards/matching',
+            name: 'Matching',
+            header: 'Apps',
+            component: Matching,
+            route: PrivateRoute,
+            roles: ['ROLE_PHARMACY']
         }
     ]
 };
@@ -51,7 +42,7 @@ const guardAppRoutes = {
 const pharmacyAppRoutes = {
     path: 'pharmacy',
     name: 'Pharmacie',
-    header: 'Entitée',
+    header: 'Entitées',
     icon: FeatherIcon.FileText,
     children: [
         {
@@ -71,15 +62,5 @@ const pharmacyAppRoutes = {
     ]
 };
 
-// Guards and matching
-const matchingRoute = {
-    path: '/guards/matching',
-    name: 'Matching',
-    header: 'Apps',
-    component: Matching,
-    route: PrivateRoute,
-    roles: ['ROLE_PHARMACY']
-}
 
-
-export default { guardAppRoutes, pharmacyAppRoutes, matchingRoute }
+export default { guard, pharmacyAppRoutes }

@@ -8,42 +8,26 @@ const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInterns
 
 // Routes for intern
 const internAppRoutes = {
-    path: 'intern',
-    name: 'Interne',
+    path: 'internship',
+    name: 'Stages',
     header: 'Entités',
     icon: FeatherIcon.FileText,
     children: [
         {
-            path: '/intern/internship',
-            name: 'Expériences',
+            path: '/internship/add',
+            name: 'Ajouter',
             component: InternApp,
             route: PrivateRoute,
-            children: [
-                {
-                    path: '/intern/internship/add',
-                    name: 'Ajouter',
-                    component: InternApp,
-                    route: PrivateRoute,
-                    roles: ['ROLE_INTERN'],
-                },
-                {
-                    path: '/intern/internship/all',
-                    name: 'Consulter',
-                    component: InternList,
-                    route: PrivateRoute,
-                    roles: ['ROLE_INTERN'],
-                }
-            ],
             roles: ['ROLE_INTERN'],
         },
         {
-            path: '/intern/profile',
-            name: 'Profil',
-            // component: EmailDetail,
+            path: '/internship/all',
+            name: 'Consulter',
+            component: InternList,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],
         },
-    ]
+    ],
 };
 
 const EditInternshipRoutes = {
