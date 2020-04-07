@@ -38,15 +38,21 @@ const usersRoutes = {
     ]
 };
 
-// Intern export for admin
-const guardExportRoute = {
-    path: '/interns/export',
-    name: 'Export des gardes',
-    icon: FeatherIcon.DownloadCloud,
-    component: InternExport,
-    roles: ['ROLE_ADMIN'],
-    route: PrivateRoute
+const guard = {
+    path: 'pharmacy',
+    name: 'Gardes',
+    header: 'Entitées',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/interns/export',
+            name: 'Export des gardes',
+            component: InternExport,
+            roles: ['ROLE_ADMIN'],
+            route: PrivateRoute
+        }
+    ]
 };
 
 
-export default { usersRoutes, guardExportRoute }
+export default { usersRoutes, guard }
