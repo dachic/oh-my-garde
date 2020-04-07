@@ -13,7 +13,6 @@ import Loader from '../../components/Loader';
 import logo from '../../assets/images/logo_horizontal.svg';
 
 class ForgetPassword extends Component {
-    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -27,13 +26,7 @@ class ForgetPassword extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
         document.body.classList.add('authentication-bg');
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-        document.body.classList.remove('authentication-bg');
     }
 
     /**

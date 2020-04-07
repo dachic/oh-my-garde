@@ -106,7 +106,7 @@ class Edit extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadPharmacy();
   }
 

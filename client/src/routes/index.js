@@ -27,39 +27,10 @@ const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInterns
 const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
 const GuardConfirm = React.lazy(() => import('../pages/apps/Guard/Confirm'));
 
-// pages
-const Starter = React.lazy(() => import('../pages/other/Starter'));
-const Profile = React.lazy(() => import('../pages/other/Profile/'));
-const Activity = React.lazy(() => import('../pages/other/Activity'));
-const Invoice = React.lazy(() => import('../pages/other/Invoice'));
-const Pricing = React.lazy(() => import('../pages/other/Pricing'));
-const Error404 = React.lazy(() => import('../pages/other/Error404'));
-const Error500 = React.lazy(() => import('../pages/other/Error500'));
-
-// ui
-const BSComponents = React.lazy(() => import('../pages/uikit/BSComponents/'));
-const FeatherIcons = React.lazy(() => import('../pages/uikit/Icons/Feather'));
-const UniconsIcons = React.lazy(() => import('../pages/uikit/Icons/Unicons'));
-const Widgets = React.lazy(() => import('../pages/uikit/Widgets/'));
-
-// charts
-const Charts = React.lazy(() => import('../pages/charts/'));
-
-// forms
-const BasicForms = React.lazy(() => import('../pages/forms/Basic'));
-const FormAdvanced = React.lazy(() => import('../pages/forms/Advanced'));
-const FormValidation = React.lazy(() => import('../pages/forms/Validation'));
-const FormWizard = React.lazy(() => import('../pages/forms/Wizard'));
-const FileUpload = React.lazy(() => import('../pages/forms/FileUpload'));
-const Editor = React.lazy(() => import('../pages/forms/Editor'));
-
-// tables
-const BasicTables = React.lazy(() => import('../pages/tables/Basic'));
-const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
-
 // users
 const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
 const EditUser = React.lazy(() => import('../pages/users/Edit/EditUser'));
+const AddUser = React.lazy(() => import('../pages/users/Edit/AddUser'));
 const InternExport = React.lazy(() => import('../pages/export/InternExport'));
 const InternPending = React.lazy(() => import('../pages/export/InternPending'));
 const InternAll = React.lazy(() => import('../pages/export/InternAll'));
@@ -261,8 +232,15 @@ const usersRoutes = {
             roles: ['ROLE_ADMIN'],
         },
         {
-            path: '/users/edit',
-            name: 'Edition un utilisateur',
+            path: '/users/add',
+            name: 'Ajouter un utilisateur',
+            component: AddUser,
+            route: PrivateRoute,
+            roles: ['ROLE_ADMIN'],
+        },
+        {
+            path: '/users/edit/:id',
+            hide: true,
             component: EditUser,
             route: PrivateRoute,
             roles: ['ROLE_ADMIN'],
@@ -282,185 +260,6 @@ if (loggedInUser !== null) {
         appRoutes = [internRoutes, guardAppRoutes, usersRoutes, internPendingRoutes, internAllRoutes];
     }
 }
-
-// pages
-const pagesRoutes = {
-    path: '/pages',
-    name: 'Pages',
-    header: 'Custom',
-    icon: FeatherIcon.FileText,
-    children: [
-        {
-            path: '/pages/starter',
-            name: 'Starter',
-            component: Starter,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/pages/profile',
-            name: 'Profile',
-            component: Profile,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/pages/activity',
-            name: 'Activity',
-            component: Activity,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/pages/invoice',
-            name: 'Invoice',
-            component: Invoice,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/pages/pricing',
-            name: 'Pricing',
-            component: Pricing,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/pages/error-404',
-            name: 'Error 404',
-            component: Error404,
-            route: Route
-        },
-        {
-            path: '/pages/error-500',
-            name: 'Error 500',
-            component: Error500,
-            route: Route
-        },
-    ]
-};
-
-
-// components
-const componentsRoutes = {
-    path: '/ui',
-    name: 'UI Elements',
-    header: 'Components',
-    icon: FeatherIcon.Package,
-    children: [
-        {
-            path: '/ui/bscomponents',
-            name: 'Bootstrap UI',
-            component: BSComponents,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-        {
-            path: '/ui/icons',
-            name: 'Icons',
-            children: [
-                {
-                    path: '/ui/icons/feather',
-                    name: 'Feather Icons',
-                    component: FeatherIcons,
-                    route: PrivateRoute,
-                    roles: ['Admin'],
-                },
-                {
-                    path: '/ui/icons/unicons',
-                    name: 'Unicons Icons',
-                    component: UniconsIcons,
-                    route: PrivateRoute,
-                    roles: ['Admin'],
-                },
-            ]
-        },
-        {
-            path: '/ui/widgets',
-            name: 'Widgets',
-            component: Widgets,
-            route: PrivateRoute,
-            roles: ['Admin'],
-        },
-
-    ]
-};
-
-// charts
-const chartRoutes = {
-    path: '/charts',
-    name: 'Charts',
-    component: Charts,
-    icon: FeatherIcon.PieChart,
-    roles: ['Admin'],
-    route: PrivateRoute
-}
-
-
-// forms
-const formsRoutes = {
-    path: '/forms',
-    name: 'Forms',
-    icon: FeatherIcon.FileText,
-    children: [
-        {
-            path: '/forms/basic',
-            name: 'Basic Elements',
-            component: BasicForms,
-            route: PrivateRoute,
-        },
-        {
-            path: '/forms/advanced',
-            name: 'Advanced',
-            component: FormAdvanced,
-            route: PrivateRoute,
-        },
-        {
-            path: '/forms/validation',
-            name: 'Validation',
-            component: FormValidation,
-            route: PrivateRoute,
-        },
-        {
-            path: '/forms/wizard',
-            name: 'Wizard',
-            component: FormWizard,
-            route: PrivateRoute,
-        },
-        {
-            path: '/forms/editor',
-            name: 'Editor',
-            component: Editor,
-            route: PrivateRoute,
-        },
-        {
-            path: '/forms/upload',
-            name: 'File Upload',
-            component: FileUpload,
-            route: PrivateRoute,
-        }
-    ]
-};
-
-
-const tableRoutes = {
-    path: '/tables',
-    name: 'Tables',
-    icon: FeatherIcon.Grid,
-    children: [
-        {
-            path: '/tables/basic',
-            name: 'Basic',
-            component: BasicTables,
-            route: PrivateRoute,
-        },
-        {
-            path: '/tables/advanced',
-            name: 'Advanced',
-            component: AdvancedTables,
-            route: PrivateRoute,
-        }]
-};
 
 
 // auth
@@ -536,11 +335,6 @@ const allRoutes = [
     dashboardRoutes,
     matchingRoute,
     ...appRoutes,
-    pagesRoutes,
-    componentsRoutes,
-    chartRoutes,
-    formsRoutes,
-    tableRoutes,
     authRoutes,
     EditInternshipRoutes,
     confirmGuardRoute

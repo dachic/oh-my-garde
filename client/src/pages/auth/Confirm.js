@@ -8,7 +8,6 @@ import { isUserAuthenticated } from '../../helpers/authUtils';
 import logo from '../../assets/images/logo_horizontal.svg';
 
 class Confirm extends Component {
-    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -17,13 +16,7 @@ class Confirm extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
         document.body.classList.add('authentication-bg');
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-        document.body.classList.remove('authentication-bg');
     }
 
     /**
@@ -43,7 +36,7 @@ class Confirm extends Component {
 
                 {this.renderRedirectToRoot()}
 
-                {(this._isMounted || !isAuthTokenValid) && <div className="account-pages my-5">
+                {(!isAuthTokenValid) && <div className="account-pages my-5">
                     <Container>
                         <Row className="justify-content-center">
                             <Col md={8} lg={6} xl={5}>
