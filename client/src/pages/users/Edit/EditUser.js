@@ -63,7 +63,7 @@ const EditUser = (props) => {
     }
 
     const { id } = props.match.params
-    if (user === null && id !== undefined || loader) {
+    if ((user === null && id !== undefined) || loader) {
         return <Loader />;
     }
 

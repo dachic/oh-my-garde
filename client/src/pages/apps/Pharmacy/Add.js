@@ -6,6 +6,7 @@ import { getLoggedInUser, setLoggedInUser } from '../../../helpers/authUtils';
 
 import PageTitle from '../../../components/PageTitle';
 import Api from '../../../api/hospital';
+
 class Add extends Component {
     constructor(props) {
         super(props);
@@ -40,9 +41,12 @@ class Add extends Component {
                 form.hospital = hospital;
                 form = JSON.stringify(form, null, 2);
                 Api.addLinkedPharmacy(form).then(pharmacy => {
-                    document.getElementById("pharmacy-form").reset();
-                    this.setState({ status: 'La pharmacie a bien été ajoutée', user: { pharmacy: pharmacy.id } });
+                    this.setState({
+                        status: 'La pharmacie a bien été ajoutée',
+                        user: { ...this.state.user, pharmacy: pharmacy.id }
+                    });
                     setLoggedInUser(this.state.user);
+                    document.getElementById("pharmacy-form").reset();
                 }).catch((error) => {
                     console.log(error);
                     this.setState({ errorApi: error.error });

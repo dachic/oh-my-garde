@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Row, Col, UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap';
-import Flatpickr from 'react-flatpickr'
-import { ChevronDown, Mail, Printer, File, Users, Image, ShoppingBag } from 'react-feather';
+import { Row, Col, /*UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle*/ } from 'reactstrap';
+// import Flatpickr from 'react-flatpickr'
+// import { ChevronDown, Mail, Printer, File, Users, Image, ShoppingBag } from 'react-feather';
 
 import { getLoggedInUser } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
-import OverviewWidget from '../../components/OverviewWidget';
+// import OverviewWidget from '../../components/OverviewWidget';
 
-import Statistics from './Statistics';
-import RevenueChart from './RevenueChart';
-import TargetChart from './TargetChart';
+// import Statistics from './Statistics';
+// import RevenueChart from './RevenueChart';
+// import TargetChart from './TargetChart';
 // import SalesChart from './SalesChart';
 // import Orders from './Orders';
 // import Performers from './Performers';
@@ -43,7 +43,7 @@ class Dashboard extends Component {
                         <Col sm={4} xl={6}>
                             <h4 className="mb-1 mt-0">Tableau de board</h4>
                         </Col>
-                        <Col sm={8} xl={6}>
+                        {/* <Col sm={8} xl={6}>
                             <form className="form-inline float-sm-right mt-3 mt-sm-0">
                                 <div className="form-group mb-sm-0 mr-2">
                                     <Flatpickr value={this.state.filterDate}
@@ -72,14 +72,14 @@ class Dashboard extends Component {
                                     </DropdownMenu>
                                 </UncontrolledButtonDropdown>
                             </form>
-                        </Col>
+                        </Col> */}
                     </Row>
 
                     {/* stats */}
-                    <Statistics></Statistics>
+                    {/* <Statistics></Statistics> */}
 
                     {/* charts */}
-                    <Row>
+                    {/* <Row>
                         <Col xl={3}>
                             <OverviewWidget items={[
                                 { title: '121,000', description: 'Total Visitors', icon: Users },
@@ -94,7 +94,7 @@ class Dashboard extends Component {
                         <Col xl={3}>
                             <TargetChart />
                         </Col>
-                    </Row>
+                    </Row> */}
 
                     {/* charts */}
                     {/* <Row>

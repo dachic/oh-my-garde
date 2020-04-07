@@ -14,14 +14,14 @@ const internship = {
     children: [
         {
             path: '/internship/add',
-            name: 'Ajouter',
+            name: 'Ajouter un stage',
             component: InternApp,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],
         },
         {
             path: '/internship/all',
-            name: 'Consulter',
+            name: 'Tous mes stages',
             component: InternList,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],
@@ -30,7 +30,8 @@ const internship = {
             path: '/internship/edit',
             component: EditInternship,
             route: PrivateRoute,
-            roles: ['ROLE_INTERN']
+            roles: ['ROLE_INTERN'],
+            hidden: true
         }
     ],
 };

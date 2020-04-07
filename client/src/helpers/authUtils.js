@@ -32,7 +32,7 @@ const getLoggedInUser = () => {
 /**
  * Update the logged in user
  */
-const setLoggedInUser = (user) => {
+const setLoggedInUser = user => {
     let cookies = new Cookies();
     cookies.set('user', JSON.stringify(user), { path: '/' });
 };
