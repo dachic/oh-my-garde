@@ -6,13 +6,14 @@ import { Container, Row, Col, Card, CardBody, FormGroup, Button, Alert, Label, I
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { Mail } from 'react-feather';
 
-import { forgetPassword } from '../../redux/actions';
+import { resetPassword } from '../../redux/actions';
 
 import { isUserAuthenticated } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
 import logo from '../../assets/images/logo_horizontal.svg';
+import Error404 from '../other/Error404';
 
-class ForgetPassword extends Component {
+class ResetPassword extends Component {
     _isMounted = false;
 
     constructor(props) {
@@ -22,7 +23,8 @@ class ForgetPassword extends Component {
         this.onDismiss = this.onDismiss.bind(this);
         this.state = {
             passwordResetSuccessful: false,
-            isLoading: false
+            isLoading: false,
+            token: null
         }
     }
 
@@ -47,9 +49,13 @@ class ForgetPassword extends Component {
      * Handles the submit
      */
     handleValidSubmit = (event, values) => {
+        console.log(values);
+
         this.setState({ isLoading: true });
+        const { token } = this.props.match.params
+        this.props.resetPassword(token, values.password)
+
         // You can make actual api call to register here
-        this.props.forgetPassword(values.email)
 
         window.setTimeout(() => {
             this.setState({ isLoading: false, passwordResetSuccessful: true });
@@ -67,6 +73,11 @@ class ForgetPassword extends Component {
     }
 
     render() {
+        const { token } = this.props.match.params
+        if (token === undefined) {
+            return <Error404 />
+        }
+
         const isAuthTokenValid = isUserAuthenticated();
         return (
             <React.Fragment>
@@ -90,38 +101,33 @@ class ForgetPassword extends Component {
                                                     </a>
                                                 </div>
 
-                                                <h6 className="h5 mb-0 mt-4">Réinitialiser un mot de passe</h6>
+                                                <h6 className="h5 mb-0 mt-4">Modification de votre mot de passe</h6>
                                                 <p className="text-muted mt-1 mb-4">
-                                                    Veuillez saisir votre adresse e-mail et nous vous enverrons des instructions pour réinitialiser votre mot de passe
+                                                    Veuillez saisir un nouveau mot de passe pour remplacer l'ancien
                                                 </p>
 
                                                 {this.props.error && <Alert color="danger" isOpen={this.props.error ? true : false}>
                                                     <div>{this.props.error}</div>
                                                 </Alert>}
 
-                                                {this.props.passwordResetStatus && <Alert color="success" isOpen={this.props.passwordResetStatus ? true : false}>
-                                                    <div>{this.props.passwordResetStatus}</div>
-                                                </Alert>}
-
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
                                                     <AvGroup className="">
-                                                        <Label for="email">Adresse e-mail</Label>
+                                                        <Label for="password">Nouveau mot de passe</Label>
                                                         <InputGroup>
                                                             <InputGroupAddon addonType="prepend">
                                                                 <span className="input-group-text">
                                                                     <Mail className="icon-dual" />
                                                                 </span>
                                                             </InputGroupAddon>
-                                                            <AvInput type="text" name="email" id="email" placeholder="Votre adresse e-mail"
-                                                                value={this.state.email} required />
+                                                            <AvInput type="password" name="password" id="password" placeholder="Votre nouveau mot de apasse"
+                                                                value={this.state.password} required />
                                                         </InputGroup>
 
                                                         <AvFeedback>This field is invalid</AvFeedback>
                                                     </AvGroup>
 
-
                                                     <FormGroup className="form-group mb-0 text-center">
-                                                        <Button color="primary" className="btn-block">Réinitialiser</Button>
+                                                        <Button color="primary" className="btn-block">Réinitialiser mon mot de passe</Button>
                                                     </FormGroup>
                                                 </AvForm>
                                             </Col>
@@ -152,8 +158,8 @@ class ForgetPassword extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { user, loading, error, passwordResetStatus } = state.Auth;
-    return { user, loading, error, passwordResetStatus };
+    const { user, loading, error } = state.Auth;
+    return { user, loading, error };
 };
 
-export default connect(mapStateToProps, { forgetPassword })(ForgetPassword);
+export default connect(mapStateToProps, { resetPassword })(ResetPassword);

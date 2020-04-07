@@ -12,6 +12,7 @@ const Login = React.lazy(() => import('../pages/auth/Login'));
 const Logout = React.lazy(() => import('../pages/auth/Logout'));
 const Register = React.lazy(() => import('../pages/auth/Register'));
 const ForgetPassword = React.lazy(() => import('../pages/auth/ForgetPassword'));
+const ResetPassword = React.lazy(() => import('../pages/auth/ResetPassword'));
 const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
 
 // dashboard
@@ -475,6 +476,20 @@ const authRoutes = {
             path: '/account/forget-password',
             name: 'Forget Password',
             component: ForgetPassword,
+            route: Route,
+        },
+        {
+            path: '/account/reset-password',
+            name: 'Reset Password',
+            exact: true,
+            component: ResetPassword,
+            route: Route,
+        },
+        {
+            path: '/account/reset-password/:token',
+            exact: true,
+            name: 'Reset Password',
+            component: ResetPassword,
             route: Route,
         },
     ],

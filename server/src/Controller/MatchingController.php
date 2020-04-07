@@ -2,7 +2,7 @@
 // src/Controller/MatchingController.php
 namespace App\Controller;
 
-use App\Constants\Score;
+use App\Constant\Score;
 use App\Entity\User;
 use App\Repository\GuardRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
