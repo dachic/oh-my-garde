@@ -73,7 +73,6 @@ const forgetPasswordApi = (endpoint, options) => {
     return new Promise((resolve, reject) => {
         fetch(`${process.env.REACT_APP_API_URL}${endpoint}`, options)
             .then(response => {
-                console.log("ok =>", response)
                 if (response.status === 401) {
                     reject('Unauthorized');
                 }

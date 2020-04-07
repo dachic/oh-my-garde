@@ -132,15 +132,15 @@ function* forgetPassword({ payload: { email } }) {
 /**
  * Reset password
  */
-function* resetPassword({ payload: { token } }) {
+function* resetPassword({ payload: { token, password } }) {
     const options = {
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ token, password }),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     };
 
     try {
-        const response = yield call(resetPasswordApi, `/reset-password/`, options);
+        const response = yield call(resetPasswordApi, `/reset-password`, options);
         yield put(resetPasswordSuccess(response));
     } catch (error) {
         let message;

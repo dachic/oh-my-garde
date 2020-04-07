@@ -49,13 +49,11 @@ class ResetPassword extends Component {
      * Handles the submit
      */
     handleValidSubmit = (event, values) => {
-        console.log(values);
-
         this.setState({ isLoading: true });
         const { token } = this.props.match.params
-        this.props.resetPassword(token, values.password)
 
         // You can make actual api call to register here
+        this.props.resetPassword(token, values.password)
 
         window.setTimeout(() => {
             this.setState({ isLoading: false, passwordResetSuccessful: true });
@@ -110,6 +108,10 @@ class ResetPassword extends Component {
                                                     <div>{this.props.error}</div>
                                                 </Alert>}
 
+                                                {this.props.passwordResetStatus && <Alert color="success" isOpen={this.props.passwordResetStatus ? true : false}>
+                                                    <div>{this.props.passwordResetStatus}</div>
+                                                </Alert>}
+
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
                                                     <AvGroup className="">
                                                         <Label for="password">Nouveau mot de passe</Label>
@@ -158,8 +160,8 @@ class ResetPassword extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { user, loading, error } = state.Auth;
-    return { user, loading, error };
+    const { user, loading, error, passwordResetStatus } = state.Auth;
+    return { user, loading, error, passwordResetStatus };
 };
 
 export default connect(mapStateToProps, { resetPassword })(ResetPassword);

@@ -4,12 +4,14 @@ namespace App\Controller\Api;
 
 use App\Repository\UserRepository;
 use App\Event\UserPasswordRequestEvent;
+use App\Event\UserPasswordResettedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ForgotPasswordController extends AbstractController
 {
@@ -65,8 +67,13 @@ class ForgotPasswordController extends AbstractController
     /**
      * @Route("/api/reset-password", name="api_reset_password", methods={"POST"})
      */
-    public function resetUserPassword(Request $request)
-    {
+    public function resetUserPassword(
+        Request $request,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        UserPasswordEncoderInterface $encoder
+    ) {
         $content = $request->getContent();
         if (empty($content)) {
             return $this->json([
@@ -75,5 +82,35 @@ class ForgotPasswordController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        $json = json_decode($content, true);
+        if (!array_key_exists('password', $json) || !array_key_exists('token', $json)) {
+            return $this->json([
+                'success' => false,
+                "message" => sprintf("Vous devez fournir votre nouveau mot de passe et un jeton de ré-initialisation")
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $userRepository->findOneBy(['tokenCode' => $json['token']]);
+        if (!$user) {
+            return $this->json([
+                "success" => false,
+                "message" => sprintf("Votre lien de ré-initialisation est peut-être invalide. Réessayez avec un nouveau lien de ré-initialisation")
+            ]);
+        }
+
+        $user->setTokenCode(null);
+        $user->setPassword($encoder->encodePassword($user, $json['password']));
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $eventDispatcher->dispatch(
+            new UserPasswordResettedEvent($user),
+            UserPasswordResettedEvent::NAME
+        );
+
+        return $this->json([
+            "success" => true,
+            "message" => sprintf("Votre mot de passe a été correctement modifié 🔥")
+        ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Constant\UserStatus;
 use App\Service\MailerService;
 use App\Event\UserRegisteredEvent;
 use App\Event\UserPasswordRequestEvent;
+use App\Event\UserPasswordResettedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -49,6 +50,9 @@ class UserSubscriber implements EventSubscriberInterface
             ],
             UserPasswordRequestEvent::NAME => [
                 ['sendPasswordResetLink', 0],
+            ],
+            UserPasswordResettedEvent::NAME => [
+                ['sendPasswordResetConfirmation', 0],
             ]
         ];
     }
@@ -153,15 +157,15 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * Send password reset confirmation to user
      *
-     * @param UserPasswordRequestEvent $event
+     * @param UserPasswordResettedEvent $event
      * @return void
      */
-    public function confirmPasswordReset(UserPasswordRequestEvent $event)
+    public function sendPasswordResetConfirmation(UserPasswordResettedEvent $event)
     {
         $user = $event->getUser();
         $subject = "Mot de passe modifié";
 
-        $view = $this->twig->render('mjml/emails/user/forgot_password.html.twig', [
+        $view = $this->twig->render('mjml/emails/user/confirm_forgot_password.html.twig', [
             'user' => $user,
         ]);
 

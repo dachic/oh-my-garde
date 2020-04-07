@@ -66,9 +66,9 @@ export const forgetPasswordFailed = (error) => ({
     payload: error,
 });
 
-export const resetPassword = (token) => ({
+export const resetPassword = (token, password) => ({
     type: RESET_PASSWORD,
-    payload: { token },
+    payload: { token, password },
 });
 
 export const resetPasswordSuccess = (passwordResetStatus) => ({
