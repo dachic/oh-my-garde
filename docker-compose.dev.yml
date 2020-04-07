@@ -65,6 +65,7 @@ services:
         container_name: ${PROJECT_NAME}-postgres
         volumes:
             - ./docker/postgres/data:/var/lib/postgresql/data:rw
+            - ./docker/backup:/data
         networks:
             - proxy
         environment:

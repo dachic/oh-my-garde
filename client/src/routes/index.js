@@ -12,9 +12,12 @@ const Login = React.lazy(() => import('../pages/auth/Login'));
 const Logout = React.lazy(() => import('../pages/auth/Logout'));
 const Register = React.lazy(() => import('../pages/auth/Register'));
 const ForgetPassword = React.lazy(() => import('../pages/auth/ForgetPassword'));
+const ResetPassword = React.lazy(() => import('../pages/auth/ResetPassword'));
 const Confirm = React.lazy(() => import('../pages/auth/Confirm'));
+
 // dashboard
 const Dashboard = React.lazy(() => import('../pages/dashboard'));
+
 // apps
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
 const EditPharmacy = React.lazy(() => import('../pages/apps/Pharmacy/Edit'));
@@ -97,13 +100,9 @@ const rootRoute = {
 // dashboards
 const dashboardRoutes = {
     path: '/dashboard',
-    name: 'Dashboard',
+    name: 'Tableau de bord',
     icon: FeatherIcon.Home,
     header: 'Navigation',
-    badge: {
-        variant: 'success',
-        text: '1',
-    },
     component: Dashboard,
     roles: ['ROLE_ADMIN', 'ROLE_PHARMACY', 'ROLE_INTERN'],
     route: PrivateRoute
@@ -497,6 +496,20 @@ const authRoutes = {
             path: '/account/forget-password',
             name: 'Forget Password',
             component: ForgetPassword,
+            route: Route,
+        },
+        {
+            path: '/account/reset-password',
+            name: 'Reset Password',
+            exact: true,
+            component: ResetPassword,
+            route: Route,
+        },
+        {
+            path: '/account/reset-password/:token',
+            exact: true,
+            name: 'Reset Password',
+            component: ResetPassword,
             route: Route,
         },
     ],
