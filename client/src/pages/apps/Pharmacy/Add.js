@@ -19,7 +19,8 @@ class Add extends Component {
             errorSelect: {},
             errorApi: '',
             hospital: '',
-            user: `api/users/${loggedInUser.id}`,
+            userRelation: `api/users/${loggedInUser.id}`,
+            user: loggedInUser,
             areHospitalsLoaded: false
         };
     }
@@ -35,14 +36,13 @@ class Add extends Component {
             else {
                 let form = this.state.values;
                 let hospital = this.state.hospital;
-                form.representative = this.state.user;
+                form.representative = this.state.userRelation;
                 form.hospital = hospital;
                 form = JSON.stringify(form, null, 2);
                 Api.addLinkedPharmacy(form).then(pharmacy => {
-                    this.state.user.pharmacy = pharmacy.id
-                    setLoggedInUser(this.state.user)
                     document.getElementById("pharmacy-form").reset();
-                    this.setState({ status: 'La pharmacie a bien été ajoutée' });
+                    this.setState({ status: 'La pharmacie a bien été ajoutée', user: { pharmacy: pharmacy.id } });
+                    setLoggedInUser(this.state.user);
                 }).catch((error) => {
                     console.log(error);
                     this.setState({ errorApi: error.error });

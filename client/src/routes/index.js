@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 // utils
 import PrivateRoute from './PrivateRoute';
-import { isUserAuthenticated, getLoggedInUser } from '../helpers/authUtils';
+import { getLoggedInUser } from '../helpers/authUtils';
 
 // All routes
 import adminRoutes from './_adminRoutes';

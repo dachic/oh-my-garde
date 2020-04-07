@@ -68,6 +68,5 @@ export default {
     else {
       return Promise.resolve([]);
     }
-
   },
 };
