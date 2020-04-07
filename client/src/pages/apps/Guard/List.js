@@ -131,10 +131,10 @@ class List extends Component {
                               <td>{record.user ? record.user.firstname : 'Non affecté'}</td>
                               <td>
                                 {record.status === 'pending' && !record.user ?
-                                  <Button href={`guards/matching/${record.id}`} color="outline-primary" key="1">
+                                  <Button href={`/matching/${record.id}`} color="outline-primary" key="1">
                                     Affecter
                                 </Button> :
-                                  <Button href={`guards/matching/${record.id}`} color="outline-primary" key="1" disabled={true}>
+                                  <Button href={`/matching/${record.id}`} color="outline-primary" key="1" disabled={true}>
                                     Affecter
                                 </Button>}
                               </td>

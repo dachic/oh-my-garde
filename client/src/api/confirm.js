@@ -1,4 +1,4 @@
-
+const url = process.env.REACT_APP_API_URL;
 const headers = {
   "Content-Type": "application/json",
   "Accept": "application/json"
@@ -6,7 +6,7 @@ const headers = {
 
 export default {
   checkUserGuard(userId, guardid) {
-    return fetch(`user/${userId}/check/${guardid}`, {
+    return fetch(`http://api.localhost/user/${userId}/check/${guardid}`, {
       method: 'GET',
       headers: headers
     }).then((response) => {
