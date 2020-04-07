@@ -73,7 +73,6 @@ class UserFixtures extends Fixture
             $manager->persist($userFixture);
         }
 
-
         $userPharmacy = new User();
         $userPharmacy->setLastname($faker->lastName);
         $userPharmacy->setFirstname($faker->firstName);

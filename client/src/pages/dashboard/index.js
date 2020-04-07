@@ -10,11 +10,11 @@ import OverviewWidget from '../../components/OverviewWidget';
 import Statistics from './Statistics';
 import RevenueChart from './RevenueChart';
 import TargetChart from './TargetChart';
-import SalesChart from './SalesChart';
-import Orders from './Orders';
-import Performers from './Performers';
-import Tasks from './Tasks';
-import Chat from './Chat';
+// import SalesChart from './SalesChart';
+// import Orders from './Orders';
+// import Performers from './Performers';
+// import Tasks from './Tasks';
+// import Chat from './Chat';
 
 
 class Dashboard extends Component {
@@ -97,16 +97,16 @@ class Dashboard extends Component {
                     </Row>
 
                     {/* charts */}
-                    <Row>
+                    {/* <Row>
                         <Col xl={5}>
                             <SalesChart />
                         </Col>
                         <Col xl={7}>
                             <Orders />
                         </Col>
-                    </Row>
+                    </Row> */}
 
-                    <Row>
+                    {/* <Row>
                         <Col xl={4}>
                             <Performers />
                         </Col>
@@ -116,7 +116,7 @@ class Dashboard extends Component {
                         <Col xl={4}>
                             <Chat />
                         </Col>
-                    </Row>
+                    </Row> */}
                 </div>
             </React.Fragment>
         )

@@ -25,6 +25,7 @@ const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'))
 const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
 const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
 const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
+const GuardsList = React.lazy(() => import('../pages/apps/Guard/List'));
 const GuardConfirm = React.lazy(() => import('../pages/apps/Guard/Confirm'));
 
 // users
@@ -110,7 +111,7 @@ const internAllRoutes = {
 const pharmacyAppRoutes = {
     path: 'pharmacy',
     name: 'Pharmacie',
-    header: 'Entités',
+    header: 'Entitée',
     icon: FeatherIcon.FileText,
     children: [
         {
@@ -126,14 +127,7 @@ const pharmacyAppRoutes = {
             component: EditPharmacy,
             route: PrivateRoute,
             roles: ['ROLE_PHARMACY'],
-        },
-        {
-            path: '/pharmacy/test',
-            name: 'Test',
-            component: GuardConfirm,
-            route: PrivateRoute,
-            roles: ['ROLE_PHARMACY'],
-        },
+        }
     ]
 };
 
@@ -205,10 +199,16 @@ const guardAppRoutes = {
             component: GuardApp,
             route: PrivateRoute,
             roles: ['ROLE_PHARMACY'],
-        }
+        },
+        {
+            path: '/guards/list',
+            name: 'Consulter',
+            component: GuardsList,
+            route: PrivateRoute,
+            roles: ['ROLE_PHARMACY'],
+        },
     ]
 };
-
 
 const confirmGuardRoute = {
     path: '/guard/confirm',
@@ -256,7 +256,7 @@ if (loggedInUser !== null) {
     else if (loggedInUser.role === 'ROLE_INTERN') {
         appRoutes = [internAppRoutes];
     }
-    else if (loggedInUser.role === 'ROLE_ADMIN'){
+    else if (loggedInUser.role === 'ROLE_ADMIN') {
         appRoutes = [internRoutes, guardAppRoutes, usersRoutes, internPendingRoutes, internAllRoutes];
     }
 }
