@@ -41,6 +41,7 @@ class UserFixtures extends Fixture
                 $hospital = new Hospital();
                 $hospital->setName('Hospital' . $i . "-" . $j);
                 $hospital->setRegion($region);
+                $hospital->setPostalCode("6600".$i);
                 $manager->persist($hospital);
                 array_push($hospitals, $hospital);
             }
