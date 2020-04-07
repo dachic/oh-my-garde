@@ -16,7 +16,7 @@ const Request = (props) => {
                 <Media className="border-bottom px-3 py-4">
                     <Media body>
                         <h5 className="mt-0 mb-1 font-weight-normal">Pharmacie</h5>
-                        <span className="text-muted">{guard? guard.pharmacy.name : ''}</span>
+                        <span className="text-muted">{guard ? guard.pharmacy.name : ''}</span>
                     </Media>
                 </Media>
                 <Media className="border-bottom px-3 py-4">
@@ -39,10 +39,10 @@ const Request = (props) => {
                 </Media>
                 <Media className="border-bottom px-3 py-4">
                     <Media body>
-                        <h5 className="mt-0 mb-1 font-weight-normal">Aggrements</h5>
-                        {guard? guard.agrements.map( agrement =>  <span key={agrement.id} className="text-muted">{agrement.code}</span>
-                        ):'Chargement...'}
-                        
+                        <h5 className="mt-0 mb-1 font-weight-normal">Agréments</h5>
+                        {guard ? guard.agrements.map(agrement => <span key={agrement.id} className="text-muted">{agrement.code}</span>
+                        ) : 'Chargement...'}
+
                     </Media>
                 </Media>
             </CardBody>

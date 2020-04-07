@@ -26,7 +26,7 @@ class Confirm extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.checkValidity();
   }
 

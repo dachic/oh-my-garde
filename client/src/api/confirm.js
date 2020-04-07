@@ -1,7 +1,4 @@
 
-const url = process.env.REACT_APP_API_URL;
-let uri = (path) => { return url + path };
-
 const headers = {
   "Content-Type": "application/json",
   "Accept": "application/json"

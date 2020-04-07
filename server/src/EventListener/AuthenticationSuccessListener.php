@@ -32,6 +32,12 @@ class AuthenticationSuccessListener
         $payload['status'] = $user->getStatus();
         $payload['region'] = ['id' => $user->getRegion()->getId(), 'name' => $user->getRegion()->getName()];
 
+        $roles = $user->getRoles();
+        if(in_array('ROLE_PHARMACY',$roles) && $user->getPharmacy() != null)
+        {
+            $payload['pharmacy'] = $user->getPharmacy()->getId();
+        }
+
         $event->setData($payload);
     }
 }

@@ -1,5 +1,5 @@
 import { getLoggedInUser } from '../helpers/authUtils';
-import {fetchJSON} from '../helpers/api'
+import { fetchJSON } from '../helpers/api'
 
 const url = process.env.REACT_APP_API_URL;
 let uri = (path) => { return url + path };
@@ -12,32 +12,32 @@ const headers = {
 }
 
 export default {
-    async get(guard){
-        const properties = "?properties[pharmacy]=name&properties[]=day&properties[]=status&properties[agrements]=name&properties[hour]=name&properties[job]=title"
-        const res = fetchJSON(url + '/guards/' + guard + properties,{
-            method:'GET',
-            headers:headers
-        })
-        return await res
-    },
+  async get(guard) {
+    const properties = "?properties[pharmacy]=name&properties[]=day&properties[]=status&properties[agrements]=name&properties[hour]=name&properties[job]=title"
+    const res = fetchJSON(url + '/guards/' + guard + properties, {
+      method: 'GET',
+      headers: headers
+    })
+    return await res
+  },
 
-    async getInternsRankingForGuard(guard){
-        const res = fetchJSON(url + '/guard/matching/' + guard,{
-            method:'GET',
-            headers:headers
-        })
-        return await res
-    },
+  async getInternsRankingForGuard(guard) {
+    const res = fetchJSON(url + '/guard/matching/' + guard, {
+      method: 'GET',
+      headers: headers
+    })
+    return await res
+  },
 
-    async assignInternToGuard(guard,intern){
-        const res = fetchJSON(url + '/guard/assign/',{
-            method:'POST',
-            headers:headers,
-            body: JSON.stringify({guard:guard,intern:intern.id})
-        })
+  async assignInternToGuard(guard, intern) {
+    const res = fetchJSON(url + '/guard/assign/', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ guard: guard, intern: intern.id })
+    })
 
-        return await res
-    },
+    return await res
+  },
 
   add(guard) {
     return fetch(uri('/guards'), {
@@ -54,14 +54,15 @@ export default {
   },
 
   getAll() {
-    return fetch(uri('/guard'), {
+    const properties = "&properties[pharmacy]=hospital&properties[]=day&properties[]=status&properties[]=id&properties[agrements]=name&properties[hour]=name&properties[job]=title&properties[user]=firstname"
+    return fetch(uri(`/guards?pharmacy=2${properties}`), {
       method: 'GET',
+      headers: headers
     }).then((response) => {
       // convert data from ReadableStream to JSON
       return response.json();
     }).then(function (data) {
-      // console.log("api response", data['hydra:member']);
-      return Promise.resolve(data['hydra:member']);
+      return Promise.resolve(data);
     }).catch(error => Promise.reject(error));
   },
 };

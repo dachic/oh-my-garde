@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -15,6 +16,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\GuardRepository")
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
+ * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact"})
  */
 class Guard
 {
