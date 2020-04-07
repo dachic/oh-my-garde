@@ -11,13 +11,9 @@ import { isUserAuthenticated } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
 import logo from '../../assets/images/logo_horizontal.svg';
 import Select from 'react-select';
-
-const options = [
-    { value: '1', label: 'Rhône-Alpes' }
-];
+import regionApi from '../../api/region';
 
 class Register extends Component {
-    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -31,17 +27,24 @@ class Register extends Component {
             phoneNumber: '',
             role: '',
             region: null,
+            regions: []
         }
     }
 
     componentDidMount() {
-        this._isMounted = true;
         document.body.classList.add('authentication-bg');
-    }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-        document.body.classList.remove('authentication-bg');
+        regionApi.getAllRegions()
+        .then(regions => {
+            let rg = regions.map(region => {
+                return { value: region.id, label: region.name }
+            });
+            this.setState({
+                regions: rg
+            })
+        }).catch((error) => {
+            console.warn("Error getting all regions");
+        })
     }
 
     /**
@@ -94,7 +97,7 @@ class Register extends Component {
 
                 {Object.keys(this.props.user || {}).length > 0 && this.renderRedirectToConfirm()}
 
-                {(this._isMounted || !isAuthTokenValid) && <div className="account-pages mt-5 mb-5">
+                {(!isAuthTokenValid) && <div className="account-pages mt-5 mb-5">
                     <Container>
                         <Row className="justify-content-center">
                             <Col xl={10}>
@@ -209,7 +212,7 @@ class Register extends Component {
                                                                 isSearchable="true"
                                                                 value={region}
                                                                 onChange={this.handleChange}
-                                                                options={options}
+                                                                options={this.state.regions}
                                                             />
                                                         </FormGroup>
                                                     </AvGroup>

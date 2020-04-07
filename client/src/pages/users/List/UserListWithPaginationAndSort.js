@@ -1,8 +1,10 @@
 import React from 'react';
-import { Card, CardBody, Input, Row, Col } from 'reactstrap';
-import BootstrapTable from 'react-bootstrap-table-next';
+import { Card, CardBody, Input, Row, Col, Button } from 'reactstrap';
+import BootstrapTable, { TableHeaderColumn } from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
+import { Link } from 'react-router-dom';
+import { formatDateForTable } from '../../../helpers/dateUtils';
 
 const sizePerPageRenderer = ({ options, currSizePerPage, onSizePerPageChange }) => (
     <React.Fragment>
@@ -19,11 +21,11 @@ const sizePerPageRenderer = ({ options, currSizePerPage, onSizePerPageChange }) 
 );
 
 const columns = [
-    {
-        dataField: 'id',
-        text: 'ID',
-        sort: true,
-    },
+    // {
+    //     dataField: 'id',
+    //     text: 'ID',
+    //     sort: true,
+    // },
     {
         dataField: 'firstname',
         text: 'Prénom',
@@ -53,11 +55,27 @@ const columns = [
         dataField: "createdAt",
         text: "Date d'inscription",
         sort: true,
+        formatter: (cell, row) => {
+            return formatDateForTable(row.createdAt)
+        }
     },
     {
         dataField: 'updatedAt',
         text: 'Dernière modificaiton',
         sort: true,
+        formatter: (cell, row) => {
+            return formatDateForTable(row.updatedAt)
+        }
+    },
+    {
+        dataField: 'id',
+        text: 'Modifier',
+        sort: false,
+        formatter: (cell, row) => {
+            return <Link to={{ pathname: `/users/edit/${row.id}` }}>
+                <Button color="primary">Modifier </Button>
+            </Link>
+        }
     }
 ];
 
@@ -112,13 +130,6 @@ const UserListWithPaginationAndSort = ({ users }) => {
         ], // A numeric array is also available. the purpose of above example is custom the text
     };
 
-    const rowEvents = {
-        onClick: (e, row, rowIndex) => {
-            console.log(row)
-            window.location.replace(`http://localhost/users/edit?id=${row.id}`);
-        }
-    };
-
     return (
         <Card>
             <CardBody>
@@ -152,8 +163,9 @@ const UserListWithPaginationAndSort = ({ users }) => {
                                 columns={columns}
                                 pagination={paginationFactory(paginationOptions)}
                                 wrapperClasses="table-responsive"
-                                rowEvents={rowEvents}
-                            />
+                            >
+                                <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
+                            </BootstrapTable>
                         </React.Fragment>
                     )}
                 </ToolkitProvider>

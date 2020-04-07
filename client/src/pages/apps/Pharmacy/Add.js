@@ -68,7 +68,7 @@ class Add extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadPharmaciesFromServer();
   }
 

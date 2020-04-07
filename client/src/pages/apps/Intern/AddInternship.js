@@ -110,7 +110,7 @@ class AddInternship extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadPharmaciesFromServer();
     this.loadAgrementsFromServer();
   }

@@ -2,34 +2,42 @@ import React, { useState, useEffect } from 'react';
 
 import { Row, Col, Card, CardBody, Button, Label, FormGroup, InputGroup, UncontrolledAlert } from 'reactstrap';
 import Select from 'react-select';
-import { findAllUserByIdApi, saveUserInfoApi } from '../../../helpers/api/usersApi';
+import { AddUserInfoApi } from '../../../helpers/api/usersApi';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import PageTitle from '../../../components/PageTitle';
 import Loader from '../../../components/Loader';
-import Error404 from '../../../pages/other/Error404';
+import regionApi from '../../../api/region';
 
-const EditUser = (props) => {
+const AddUser = (props) => {
     const statusLabels = {};
     statusLabels['enabled'] = 'Activé';
     statusLabels['disabled'] = 'Désactivé';
 
-    const [user, setUser] = useState(null);
+    const userInitial = {
+        firstname: '',
+        lastname: '',
+        email: '',
+        region: '',
+        role: ''
+    }
+
+    const [user, setUser] = useState(userInitial);
     const [alertColor, setAlertColor] = useState();
     const [alertMessage, setAlertMessage] = useState();
     const [hasMessage, setHasMessage] = useState(false);
+    const [regions, setRegions] = useState(false);
 
     useEffect(() => { // ComponentDidMount
-        const { id } = props.match.params
-
-        if (id !== null) {
-            findAllUserByIdApi(id)
-                .then(user => {
-                    setUser(user)
-                }).catch((error) => {
-                    setAlertMessage("Un erreur s'est produite lors de la recherche de l'utilisateur")
-                })
-        }
-    }, [props]);
+        regionApi.getAllRegions()
+            .then(regions => {
+                let rg = regions.map(region => {
+                    return { value: region.id, label: region.name }
+                });
+                setRegions(rg)
+            }).catch((error) => {
+                setAlertMessage("Un erreur s'est produite lors de la recherche de l'utilisateur")
+            })
+    }, []);
 
     const changeStatus = ({ value }) => {
         user.status = value
@@ -42,13 +50,13 @@ const EditUser = (props) => {
     const handleValidSubmit = (event, values) => {
 
         if (user !== null) {
-            saveUserInfoApi({
+            AddUserInfoApi({
                 id: user.id,
                 firstname: values.firstname,
                 lastname: values.lastname,
                 status: user.status
             }).then(response => {
-                setAlertMessage("Les informations ont été correctement mises à jour")
+                setAlertMessage("Les informations ont été correctement enregistrées")
                 setAlertColor("success")
                 setHasMessage(true)
 
@@ -59,13 +67,8 @@ const EditUser = (props) => {
         }
     }
 
-    const { id } = props.match.params
-    if (user === null && id !== undefined) {
+    if (!regions) {
         return <Loader />;
-    }
-
-    if (id === undefined) {
-        return <Error404 />
     }
 
     return (
@@ -76,9 +79,9 @@ const EditUser = (props) => {
                         <PageTitle
                             breadCrumbItems={[
                                 { label: 'Utilisateurs', path: '/users/all' },
-                                { label: "Modification d'un utilisateur", path: "/user/", active: true },
+                                { label: "Ajouter un utilisateur", path: "/users/add", active: true },
                             ]}
-                            title={"Modification d'un utilisateur"}
+                            title={"Ajouter un utilisateur"}
                         />
                     </Col>
                 </Row>
@@ -112,6 +115,28 @@ const EditUser = (props) => {
 
                                             <AvFeedback>Saisissez un nom de famille</AvFeedback>
                                         </AvGroup>
+
+                                        <AvGroup className="">
+                                            <Label for="email">Email</Label>
+                                            <InputGroup>
+                                                <AvInput type="text" name="email" id="email" placeholder="Email" value={user.email} required />
+                                            </InputGroup>
+
+                                            <AvFeedback>Saisissez un email</AvFeedback>
+                                        </AvGroup>
+
+                                        <AvGroup className="">
+                                            <Label for="region">Région</Label>
+                                            <Select
+                                                className="react-select"
+                                                classNamePrefix="react-select"
+                                                isClearable="true"
+                                                placeholder="Status"
+                                                onChange={changeStatus}
+                                                options={regions}></Select>
+
+                                            <AvFeedback>Saisissez un email</AvFeedback>
+                                        </AvGroup>
                                     </Col>
                                 </Row>
                             </CardBody>
@@ -138,7 +163,7 @@ const EditUser = (props) => {
                         <Card>
                             <CardBody>
                                 <FormGroup className="form-group mb-0 text-center">
-                                    <Button color="primary" className="btn-block">Enregistrer les modifications</Button>
+                                    <Button color="primary" className="btn-block">Enregistrer l'utilisateur</Button>
                                 </FormGroup>
                             </CardBody>
                         </Card>
@@ -149,4 +174,4 @@ const EditUser = (props) => {
     );
 };
 
-export default EditUser;
+export default AddUser;
