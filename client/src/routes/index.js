@@ -58,6 +58,8 @@ const AdvancedTables = React.lazy(() => import('../pages/tables/Advanced'));
 const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
 const EditUser = React.lazy(() => import('../pages/users/Edit/EditUser'));
 const InternExport = React.lazy(() => import('../pages/export/InternExport'));
+const InternPending = React.lazy(() => import('../pages/export/InternPending'));
+const InternAll = React.lazy(() => import('../pages/export/InternAll'));
 
 const loggedInUser = getLoggedInUser();
 // handle auth and authorization
@@ -113,6 +115,24 @@ const internRoutes = {
     name: 'Export des gardes',
     icon: FeatherIcon.DownloadCloud,
     component: InternExport,
+    roles: ['ROLE_ADMIN'],
+    route: PrivateRoute
+};
+// Intern pending for admin
+const internPendingRoutes = {
+    path: '/interns/pending',
+    name: 'Garde en attente',
+    icon: FeatherIcon.AlertTriangle,
+    component: InternPending,
+    roles: ['ROLE_ADMIN'],
+    route: PrivateRoute
+};
+// Intern all for admin
+const internAllRoutes = {
+    path: '/interns/all',
+    name: 'Tous les gardes',
+    icon: FeatherIcon.List,
+    component: InternAll,
     roles: ['ROLE_ADMIN'],
     route: PrivateRoute
 };
@@ -260,7 +280,7 @@ if (loggedInUser !== null) {
         appRoutes = [internAppRoutes];
     }
     else if (loggedInUser.role === 'ROLE_ADMIN'){
-        appRoutes = [internRoutes, guardAppRoutes, usersRoutes];
+        appRoutes = [internRoutes, guardAppRoutes, usersRoutes, internPendingRoutes, internAllRoutes];
     }
 }
 

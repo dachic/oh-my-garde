@@ -33,10 +33,15 @@ const columns = [
         sort: true,
     },
     {
-        dataField: 'nbGarde',
-        text: 'Nombre de jour',
+        dataField: 'date',
+        text: 'Date',
         sort: true,
     },
+    {
+        dataField: 'jour',
+        text: 'Jour',
+        sort: true,
+    }
 ];
 
 const defaultSorted = [
@@ -58,7 +63,6 @@ const expandRow = {
                     <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
                     <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
                     <p  class="list-group-item list-group-item-action"><b>Pharmacie: </b>{`${row.namePharmacy}`}</p>
-                    
                 </div>
        </div>
     ),
@@ -111,7 +115,7 @@ const sizePerPageRenderer = ({ options, currSizePerPage, onSizePerPageChange }) 
     </React.Fragment>
 );
 
-export default class InternExport extends Component {
+export default class InternPending extends Component {
 
     constructor(props) {
         super(props);
@@ -122,7 +126,7 @@ export default class InternExport extends Component {
 
 
     componentDidMount() {
-       userApi.export().then(data=>{
+       userApi.allGuard().then(data=>{
             this.setState({
                 interns: data
             })
@@ -143,8 +147,8 @@ export default class InternExport extends Component {
             <div>
                 <Card style={cardMargin}>
                     <CardBody>
-                        <h4 className="header-title mt-0 mb-1">Tableau des gardes des internes</h4>
-                        <p className="sub-header">Ce tableau recapitule toutes les gardes des internes par heure et hopital</p>
+                        <h4 className="header-title mt-0 mb-1">Tableau des gardes acceptés</h4>
+                        <p className="sub-header">Ce tableau recapitule toutes les gardes des internes acceptés</p>
 
                         <ToolkitProvider
                             bootstrap4
