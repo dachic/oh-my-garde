@@ -8,6 +8,11 @@ import userApi from '../../api/user'
 
 const columns = [
     {
+        dataField: 'IdUtilisateur',
+        text: 'Id',
+        sort: true,
+    },
+    {
         dataField: 'lastname',
         text: 'Nom',
         sort: true,
@@ -23,8 +28,8 @@ const columns = [
         sort: true,
     },
     {
-        dataField: 'namePharmacy',
-        text: 'Pharmacie',
+        dataField: 'hospital',
+        text: 'Hopital',
         sort: true,
     },
     {
@@ -52,7 +57,8 @@ const expandRow = {
                 <div class="list-group" style={tabMargin}>
                     <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
                     <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
-
+                    <p  class="list-group-item list-group-item-action"><b>Pharmacie: </b>{`${row.namePharmacy}`}</p>
+                    
                 </div>
        </div>
     ),

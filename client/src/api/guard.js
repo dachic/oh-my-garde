@@ -48,21 +48,26 @@ export default {
       // convert data from ReadableStream to JSON
       return response.json();
     }).then((response) => {
-      //console.log('api', response);
       return Promise.resolve(response);
     }).catch(error => console.log(error.response));
   },
 
   getAll() {
     const properties = "&properties[pharmacy]=hospital&properties[]=day&properties[]=status&properties[]=id&properties[agrements]=name&properties[hour]=name&properties[job]=title&properties[user]=firstname"
-    return fetch(uri(`/guards?pharmacy=2${properties}`), {
-      method: 'GET',
-      headers: headers
-    }).then((response) => {
-      // convert data from ReadableStream to JSON
-      return response.json();
-    }).then(function (data) {
-      return Promise.resolve(data);
-    }).catch(error => Promise.reject(error));
+    if (loggedInUser.pharmacy) {
+      return fetch(uri(`/guards?pharmacy=${loggedInUser.pharmacy}${properties}`), {
+        method: 'GET',
+        headers: headers
+      }).then((response) => {
+        // convert data from ReadableStream to JSON
+        return response.json();
+      }).then(function (data) {
+        return Promise.resolve(data);
+      }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement.' }));
+    }
+    else {
+      return Promise.resolve([]);
+    }
+
   },
 };

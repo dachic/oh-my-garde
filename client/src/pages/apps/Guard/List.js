@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Row, Col, Card, CardBody, Table, Badge, Button, Spinner } from 'reactstrap';
-import { Link } from 'react-router-dom';
 
 import PageTitle from '../../../components/PageTitle';
 import guardApi from '../../../api/guard';
@@ -22,6 +21,7 @@ class List extends Component {
       this.setState({ guardsList: guards, isloaded: true });
     }).catch((error) => {
       console.log(error);
+      this.setState({ isloaded: true });
     });
   }
 
@@ -114,11 +114,11 @@ class List extends Component {
                     </thead>
 
                     <tbody>
-                      {this.state.guardsList ?
+                      {this.state.guardsList.length ?
                         this.state.guardsList.map((record, index) => {
                           return (
                             <tr key={index} className="text-center">
-                              <th scope="row">{record.id}</th>
+                              <th scope="row">{record.id}feh</th>
                               <td>{record.job.title}</td>
                               <td>{record.pharmacy.name}</td>
                               <td>{
@@ -142,7 +142,7 @@ class List extends Component {
                           );
                         })
                         : <tr>
-                          <td colSpan="6" className="text-center">
+                          <td colSpan="8" className="text-center">
                             <strong><p>Vous n'avez pas encore ajouter de garde.</p></strong>
                             <Button href={`/guards/add`} color="outline-primary" key="1">
                               Ajouter une guarde

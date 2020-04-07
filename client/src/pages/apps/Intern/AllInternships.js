@@ -62,7 +62,7 @@ class AllInternships extends Component {
                   </thead>
 
                   <tbody>
-                    {this.state.intershipsList ?
+                    {this.state.intershipsList.length ?
                       this.state.intershipsList.map((record, index) => {
                         return (
                           <tr key={index} className="text-center">

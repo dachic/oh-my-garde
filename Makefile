@@ -60,3 +60,5 @@ jwt:
 	chmod +x ./script/jwt.sh && ./script/jwt.sh
 wait_db_to_ready:
 	chmod +x ./script/wait_for_db.sh && ./script/wait_for_db.sh
+rdeploy:
+	chmod +x ./script/rdeploy.sh && ./script/rdeploy.sh

@@ -7,7 +7,7 @@ const Request = (props) => {
 
     useEffect(() => {
         guardAPI.get(props.guard).then(data => setGuard(data))
-    }, [])
+    }, [props])
 
     return (
         <Card>
@@ -39,7 +39,7 @@ const Request = (props) => {
                 </Media>
                 <Media className="border-bottom px-3 py-4">
                     <Media body>
-                        <h5 className="mt-0 mb-1 font-weight-normal">Agréments</h5>
+                        <h5 className="mt-0 mb-1 font-weight-normal">Aggrements</h5>
                         {guard ? guard.agrements.map(agrement => <span key={agrement.id} className="text-muted">{agrement.code}</span>
                         ) : 'Chargement...'}
 

@@ -6,6 +6,7 @@ api_platform:
 
     collection:
         pagination:
+            enabled: true
             client_enabled: true
             enabled_parameter_name: pagination # optional
 

@@ -12,7 +12,7 @@ const Answers = props => {
         guardAPI
             .getInternsRankingForGuard(props.guard)
             .then(data => setRanking(data));
-    }, []);
+    }, [props]);
 
     function getBadge(skills, aggrement) {
         return skills.includes(aggrement) ? (
@@ -82,7 +82,7 @@ const Answers = props => {
                                                 rank={index}
                                             />
                                             <a
-                                                href="#"
+                                                href="#index"
                                                 onMouseOver={e =>displayInternDetails(index,e)}
                                                 onMouseOut={e => {
                                                     displayInternDetails(

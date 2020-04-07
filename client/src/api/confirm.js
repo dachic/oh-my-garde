@@ -6,7 +6,7 @@ const headers = {
 
 export default {
   checkUserGuard(userId, guardid) {
-    return fetch(`http://api.localhost/user/${userId}/check/${guardid}`, {
+    return fetch(`user/${userId}/check/${guardid}`, {
       method: 'GET',
       headers: headers
     }).then((response) => {

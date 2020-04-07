@@ -74,7 +74,7 @@ class Add extends Component {
         const loggedInUser = getLoggedInUser();
         var url = new URL(process.env.REACT_APP_API_URL + "/pharmacies");
         url.search = new URLSearchParams({
-            'hospital.region.id': 1,
+            'hospital.region.id': 8,
         })
         var opt = {
             method: "GET",
