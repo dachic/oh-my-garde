@@ -10,7 +10,7 @@ const loggedInUser = getLoggedInUser();
 const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer " + loggedInUser.token
+    "Authorization": "Bearer " + (loggedInUser ? loggedInUser.token : "")
 }
 
 export default {
@@ -47,7 +47,6 @@ export default {
         }).catch(error => Promise.reject(error));
     },
     registerUser(user) {
-        console.log("après",user)
         return fetch(uri(`/users`), {
             method: 'POST',
             headers: headers,
@@ -57,5 +56,17 @@ export default {
         }).then(function (data) {
             return Promise.resolve(data);
         }).catch(error => Promise.reject(error));
-    }
+    },
+    checkUserGuard(userId, guardid) {
+        delete headers['Authorization']
+        return fetch(uri(`/user/${userId}/check/${guardid}`), {
+          method: 'GET',
+          headers: headers
+        }).then((response) => {
+          // convert data from ReadableStream to JSON
+          return response.json();
+        }).then(function (data) {
+          return Promise.resolve(data);
+        }).catch(error => Promise.reject(error));
+      }
 };

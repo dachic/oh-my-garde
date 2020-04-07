@@ -16,9 +16,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Service\MailerService;
 
-
 /**
- * @Route("/user")
+ * @Route("/api/user")
  */
 class ConfirmController extends AbstractController
 {

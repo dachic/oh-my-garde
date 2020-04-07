@@ -8,7 +8,7 @@ const loggedInUser = getLoggedInUser();
 const headers = {
   'Accept': 'application/json',
   'Content-Type': 'application/json',
-  'Authorization': 'Bearer ' + loggedInUser.token
+  'Authorization': 'Bearer ' + loggedInUser ? loggedInUser.token : ""
 }
 
 export default {

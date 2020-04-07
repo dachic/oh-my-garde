@@ -56,6 +56,7 @@ security:
     - { path: ^/api/forgot-password-request, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/reset-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/regions, role: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
+    - { path: ^/api/user/\d+/check/\d+, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/, roles: ROLE_USER }
     - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
