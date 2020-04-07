@@ -59,23 +59,4 @@ const saveUserInfoApi = ({id, firstname, lastname, status}) => {
     })
 }
 
-const AddUserInfoApi = ({id, firstname, lastname, status}) => {
-
-    const options = {
-        method: 'POST',
-        body: JSON.stringify({ firstname, lastname, status }),
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + loggedInUser.token
-        }
-    };
-
-    return fetch(`${url}/users/${id}`, options).then(response => {
-        return response.json()
-    }).then((user) => {
-        return user;
-    })
-}
-
-export { findAllUsersApi, findAllUserByIdApi, saveUserInfoApi, AddUserInfoApi }
+export { findAllUsersApi, findAllUserByIdApi, saveUserInfoApi }

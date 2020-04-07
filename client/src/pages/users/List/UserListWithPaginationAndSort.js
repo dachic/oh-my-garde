@@ -163,9 +163,7 @@ const UserListWithPaginationAndSort = ({ users }) => {
                                 columns={columns}
                                 pagination={paginationFactory(paginationOptions)}
                                 wrapperClasses="table-responsive"
-                            >
-                                <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
-                            </BootstrapTable>
+                            />
                         </React.Fragment>
                     )}
                 </ToolkitProvider>

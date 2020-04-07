@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { Row, Col, Card, CardBody, Button, Label, FormGroup, InputGroup, UncontrolledAlert } from 'reactstrap';
 import Select from 'react-select';
-import { AddUserInfoApi } from '../../../helpers/api/usersApi';
+import userApi from '../../../api/user';
+
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import PageTitle from '../../../components/PageTitle';
 import Loader from '../../../components/Loader';
@@ -13,12 +14,21 @@ const AddUser = (props) => {
     statusLabels['enabled'] = 'Activé';
     statusLabels['disabled'] = 'Désactivé';
 
+    const roleLabels = {
+        'ROLE_ADMIN': 'Administrateur',
+        'ROLE_PHARMACY': "Chef de Service",
+        'ROLE_INTERN': "Interne"
+    };
+
     const userInitial = {
         firstname: '',
         lastname: '',
         email: '',
+        phoneNumber: '',
+        password: 'x',
         region: '',
-        role: ''
+        role: '',
+        status: 'disabled'
     }
 
     const [user, setUser] = useState(userInitial);
@@ -26,6 +36,7 @@ const AddUser = (props) => {
     const [alertMessage, setAlertMessage] = useState();
     const [hasMessage, setHasMessage] = useState(false);
     const [regions, setRegions] = useState(false);
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => { // ComponentDidMount
         regionApi.getAllRegions()
@@ -44,30 +55,45 @@ const AddUser = (props) => {
         setUser(user)
     }
 
+    const changeRegion = ({ value }) => {
+        user.region = value
+        setUser(user)
+    }
+
+    const changeRole = ({ value }) => {
+        user.role = value
+        setUser(user)
+    }
+
     /**
      * Handles the submit
      */
     const handleValidSubmit = (event, values) => {
-
+        setLoader(true);
         if (user !== null) {
-            AddUserInfoApi({
-                id: user.id,
-                firstname: values.firstname,
-                lastname: values.lastname,
-                status: user.status
-            }).then(response => {
+            user.firstname = values.firstname;
+            user.lastname = values.lastname;
+            user.email = values.email;
+            user.phoneNumber = values.phoneNumber;
+            user.roles = [user.role]
+            user.region = "/api/regions/"+user.region
+
+            userApi.registerUser(user).then(response => {
                 setAlertMessage("Les informations ont été correctement enregistrées")
                 setAlertColor("success")
                 setHasMessage(true)
-
+                setLoader(false);
+                setUser(userInitial)
                 setTimeout(() => {
                     setHasMessage(false)
                 }, 3000)
+            }).catch(error => {
+                console.log(error, 'ici error')
             })
         }
     }
 
-    if (!regions) {
+    if (!regions || loader) {
         return <Loader />;
     }
 
@@ -101,7 +127,7 @@ const AddUser = (props) => {
                                         <AvGroup className="mt-2">
                                             <Label for="firstname">Prénom</Label>
                                             <InputGroup>
-                                                <AvInput type="text" name="firstname" id="firstname" placeholder="Nom" value={user.firstname} required />
+                                                <AvInput type="text" name="firstname" id="firstname" placeholder="Prénom" value={user.firstname} required />
                                             </InputGroup>
 
                                             <AvFeedback>Saisissez un prénom</AvFeedback>
@@ -110,7 +136,7 @@ const AddUser = (props) => {
                                         <AvGroup className="">
                                             <Label for="lastname">Nom de famille</Label>
                                             <InputGroup>
-                                                <AvInput type="text" name="lastname" id="lastname" placeholder="Nom" value={user.lastname} required />
+                                                <AvInput type="text" name="lastname" id="lastname" placeholder="Nom de famille" value={user.lastname} required />
                                             </InputGroup>
 
                                             <AvFeedback>Saisissez un nom de famille</AvFeedback>
@@ -126,13 +152,22 @@ const AddUser = (props) => {
                                         </AvGroup>
 
                                         <AvGroup className="">
+                                            <Label for="email">Numéro de téléphone</Label>
+                                            <InputGroup>
+                                                <AvInput type="text" name="phoneNumber" id="phoneNumber" placeholder="Numéro de téléphone" value={user.phoneNumber} required />
+                                            </InputGroup>
+
+                                            <AvFeedback>Saisissez un numéro de téléphone</AvFeedback>
+                                        </AvGroup>
+
+                                        <AvGroup className="">
                                             <Label for="region">Région</Label>
                                             <Select
                                                 className="react-select"
                                                 classNamePrefix="react-select"
                                                 isClearable="true"
                                                 placeholder="Status"
-                                                onChange={changeStatus}
+                                                onChange={changeRegion}
                                                 options={regions}></Select>
 
                                             <AvFeedback>Saisissez un email</AvFeedback>
@@ -144,6 +179,24 @@ const AddUser = (props) => {
                     </Col>
 
                     <Col xl={3}>
+
+                        <Card>
+                            <CardBody>
+                                <h4 className="header-title mt-0 mb-4">Rôle de l'utilisateur</h4>
+                                <Select
+                                    className="react-select"
+                                    classNamePrefix="react-select"
+                                    defaultValue={{ value: user.role, label: roleLabels[user.role] }}
+                                    placeholder="Rôle"
+                                    onChange={changeRole}
+                                    options={[
+                                        { value: 'ROLE_ADMIN', label: 'Administrateur' },
+                                        { value: 'ROLE_PHARMACY', label: "Chef de Service" },
+                                        { value: 'ROLE_INTERN', label: "Interne" },
+                                    ]}></Select>
+                            </CardBody>
+                        </Card>
+
                         <Card>
                             <CardBody>
                                 <h4 className="header-title mt-0 mb-4">Status de l'utilisateur</h4>

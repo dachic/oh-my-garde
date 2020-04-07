@@ -17,6 +17,7 @@ const EditUser = (props) => {
     const [alertColor, setAlertColor] = useState();
     const [alertMessage, setAlertMessage] = useState();
     const [hasMessage, setHasMessage] = useState(false);
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => { // ComponentDidMount
         const { id } = props.match.params
@@ -40,6 +41,7 @@ const EditUser = (props) => {
      * Handles the submit
      */
     const handleValidSubmit = (event, values) => {
+        setLoader(true);
 
         if (user !== null) {
             saveUserInfoApi({
@@ -51,6 +53,7 @@ const EditUser = (props) => {
                 setAlertMessage("Les informations ont été correctement mises à jour")
                 setAlertColor("success")
                 setHasMessage(true)
+                setLoader(false);
 
                 setTimeout(() => {
                     setHasMessage(false)
@@ -60,7 +63,7 @@ const EditUser = (props) => {
     }
 
     const { id } = props.match.params
-    if (user === null && id !== undefined) {
+    if (user === null && id !== undefined || loader) {
         return <Loader />;
     }
 
