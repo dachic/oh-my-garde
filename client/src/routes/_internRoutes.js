@@ -6,8 +6,7 @@ const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'))
 const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
 const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
 
-// Routes for intern
-const internAppRoutes = {
+const internship = {
     path: 'internship',
     name: 'Stages',
     header: 'Entités',
@@ -27,14 +26,14 @@ const internAppRoutes = {
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],
         },
+        {
+            path: '/internship/edit',
+            component: EditInternship,
+            route: PrivateRoute,
+            roles: ['ROLE_INTERN']
+        }
     ],
 };
 
-const EditInternshipRoutes = {
-    path: '/internship/edit',
-    component: EditInternship,
-    route: PrivateRoute,
-    roles: ['ROLE_INTERN']
-};
 
-export default { internAppRoutes, EditInternshipRoutes }
+export default { internship }

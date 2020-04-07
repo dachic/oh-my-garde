@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardBody, Input, Row, Col, Button } from 'reactstrap';
-import BootstrapTable, { TableHeaderColumn } from 'react-bootstrap-table-next';
+import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
 import { Link } from 'react-router-dom';

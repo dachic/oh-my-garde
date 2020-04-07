@@ -29,7 +29,7 @@ if (loggedInUser !== null) {
         appRoutes = [pharmacyRoutes.pharmacyAppRoutes, pharmacyRoutes.guard];
     }
     else if (loggedInUser.role === 'ROLE_INTERN') {
-        appRoutes = [internRoutes.internAppRoutes];
+        appRoutes = [internRoutes.internship];
     }
     else if (loggedInUser.role === 'ROLE_ADMIN') {
         appRoutes = [adminRoutes.guard, adminRoutes.usersRoutes];
@@ -65,7 +65,6 @@ const authProtectedRoutes = [
     accountRoutes.dashboard,
     accountRoutes.accountProfile,
     ...appRoutes,
-    internRoutes.EditInternshipRoutes
 ];
 
 const allFlattenRoutes = flattenRoutes(allRoutes);
