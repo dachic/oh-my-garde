@@ -68,9 +68,11 @@ const Answers = props => {
                                     En cours de chargement...
                                 </td>
                             </tr> : !ranking.length ? (
-                                    <td colSpan="7" style={{ textAlign: "center" }}>
+                                    <tr>
+                                        <td colSpan="7" style={{ textAlign: "center" }}>
                                                                 Aucun interne à proposer
                                       </td>
+                                    </tr>
                         ) : (
                             ranking.map((rank, index) => {
                                 return (

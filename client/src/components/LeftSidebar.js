@@ -33,7 +33,7 @@ const UserProfile = () => {
                     <FeatherIcon.ChevronDown />
                 </DropdownToggle>
                 <DropdownMenu right className="topbar-dropdown-menu profile-dropdown-items">
-                    <Link to="/" className="dropdown-item notify-item">
+                    <Link to="/account/profile" className="dropdown-item notify-item">
                         <FeatherIcon.User className="icon-dual icon-xs mr-2" />
                         <span>Mon compte</span>
                     </Link>

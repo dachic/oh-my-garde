@@ -54,6 +54,10 @@ const MenuItemWithChildren = ({ item, linkClassNames, subMenuClassNames, activat
 };
 
 const MenuItem = ({ item, className, linkClassName }) => {
+    if (item.hidden) {
+        return ""
+    }
+
     return (
         <li className={classNames('side-nav-item', className)}>
             <MenuItemLink item={item} className={linkClassName} />

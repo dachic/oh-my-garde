@@ -29,4 +29,12 @@ const getLoggedInUser = () => {
     return user ? (typeof user == 'object' ? user : JSON.parse(user)) : null;
 };
 
-export { isUserAuthenticated, getLoggedInUser };
+/**
+ * Update the logged in user
+ */
+const setLoggedInUser = user => {
+    let cookies = new Cookies();
+    cookies.set('user', JSON.stringify(user), { path: '/' });
+};
+
+export { isUserAuthenticated, getLoggedInUser, setLoggedInUser };

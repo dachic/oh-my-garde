@@ -60,5 +60,7 @@ jwt:
 	chmod +x ./script/jwt.sh && ./script/jwt.sh
 wait_db_to_ready:
 	chmod +x ./script/wait_for_db.sh && ./script/wait_for_db.sh
-rdeploy:
-	chmod +x ./script/rdeploy.sh && ./script/rdeploy.sh
+rsync-deploy:
+	chmod +x ./script/rsync-deploy.sh && ./script/rsync-deploy.sh ${server}
+rbuild-deploy:
+	chmod +x ./script/rsync_deploy_build.sh && ./script/rsync_deploy_build.sh

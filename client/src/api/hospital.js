@@ -23,7 +23,7 @@ export default {
             if (response.status === 500) {
                 return Promise.reject({ error: "Une erreur est survenue, veuillez réessayer.." })
             }
-            return Promise.resolve(response);
+            return Promise.resolve(response.json());
         }).catch(error => Promise.reject({
             error: 'Il semblerait qu\'il exite déjà une pharmacie liée à cet hôpital.'
         }));

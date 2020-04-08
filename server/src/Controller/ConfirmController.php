@@ -16,9 +16,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Service\MailerService;
 
-
 /**
- * @Route("/user")
+ * @Route("/api/user")
  */
 class ConfirmController extends AbstractController
 {
@@ -45,7 +44,7 @@ class ConfirmController extends AbstractController
                     $pharmacyEmail = $foundGuard->getPharmacy()->getRepresentative()->getEmail();
 
                     // Send mail
-                    $mailerService->sendWithCC($user->getEmail(), "Demande de garde acceptée !", $this->render('mjml/emails/user/confirm_guard.html.twig', [
+                    $mailerService->sendWithCC($user->getEmail(), "Demande de garde acceptée !", $this->render('mjml/emails/user/confirm_guard_validation.html.twig', [
                         'user' => $user,
                         'guard' => $foundGuard
                     ]), $pharmacyEmail);
