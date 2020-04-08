@@ -10,7 +10,7 @@ ywatch:
 yinstall:
 	docker-compose run -T node yarn install
 ybuild:
-	docker-compose exec -T apache yarn build
+	docker-compose run -T node yarn build
 ydev:
 	docker-compose exec -T apache yarn dev
 ystart:

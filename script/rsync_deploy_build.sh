@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export SYMFONY_ENV=prod
+
 echo -e "==> Installing composer dependencies"
 make cinstall-prod
 

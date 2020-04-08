@@ -60,6 +60,7 @@ before_script:
 .deploy_back_production_ssh: &deploy_back_production_ssh |
   make rsync-deploy server=$PRODUCTION_BACK_SSH_USER@$PRODUCTION_BACK_SSH_HOST
 
+## ====> [Continous server build to run test]
 # server:build:
 #   stage: build
 #   script:
@@ -185,7 +186,8 @@ server:prod:deploy:
   dependencies:
     - server:prod:build
   script:
-    - echo "====== Deploy client to production server ======"
+    - *init_project
+    - echo "====== Deploy server to production server ======"
     - apk update && apk upgrade
     - apk add openssh bash rsync
     - *init_back_production_ssh

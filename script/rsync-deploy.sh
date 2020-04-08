@@ -7,7 +7,6 @@
 SERVER=groupe7@hack-php
 
 echo 'Determine deploy server'
-echo $1
 if [ ! -z "$1" ]; then
     SERVER=$1
 fi
