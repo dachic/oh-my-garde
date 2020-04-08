@@ -1,3 +1,5 @@
+sf-env ?= dev
+sf-debug ?= 0
 up:
 	docker-compose up -d --force-recreate --build
 down:
@@ -10,17 +12,18 @@ ywatch:
 yinstall:
 	docker-compose run -T node yarn install
 ybuild:
-	docker-compose exec -T apache yarn build
+	docker-compose run -T node yarn build
 ydev:
 	docker-compose exec -T apache yarn dev
 ystart:
 	docker-compose run -T node yarn start
 build:
-	docker-compose up -d --build
+	docker-compose build --build-arg SF_ENV=${sf-env} --build-arg SF_DEBUG=${sf-debug}
+	docker-compose up -d
 cinstall:
 	docker-compose exec -T apache composer install
 cinstall-prod:
-	docker-compose exec -T apache composer install --no-dev --optimize-autoloader
+	docker-compose exec -T apache bash -c "export SYMFONY_ENV=prod && export APP_ENV=prod && export APP_DEBUG=0 && composer install --no-dev --optimize-autoloader"
 cupdate:
 	docker-compose exec -T apache composer update
 install:
@@ -40,6 +43,9 @@ db-migration:
 cache-clear:
 	docker-compose exec -T apache bin/console cache:clear
 	docker-compose exec -T apache php bin/console cache:warmup
+cache-clear-prod:
+	docker-compose exec -T apache bash -c "APP_ENV=prod APP_DEBUG=0 bin/console cache:clear"
+	docker-compose exec -T apache bash -c "APP_ENV=prod APP_DEBUG=0 bin/console cache:warmup"
 db-fix-load:
 	docker-compose exec apache php bin/console doctrine:fixtures:load
 db-reload:
@@ -54,13 +60,18 @@ copy-ci:
 	cp docker-compose.ci.yml docker-compose.yml
 compile:
 	docker-compose exec -T apache bin/console mjml:compiler
+compile-prod:
+	docker-compose exec -T apache bash -c "APP_ENV=prod APP_DEBUG=0 bin/console mjml:compiler"
 test:
 	docker-compose exec -T apache ./bin/phpunit
 jwt:
 	chmod +x ./script/jwt.sh && ./script/jwt.sh
+
 wait_db_to_ready:
 	chmod +x ./script/wait_for_db.sh && ./script/wait_for_db.sh
+
 rsync-deploy:
 	chmod +x ./script/rsync-deploy.sh && ./script/rsync-deploy.sh ${server}
+
 rbuild-deploy:
 	chmod +x ./script/rsync_deploy_build.sh && ./script/rsync_deploy_build.sh
