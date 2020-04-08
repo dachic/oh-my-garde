@@ -36,6 +36,8 @@ before_script:
     git checkout $CI_COMMIT_BRANCH
     echo "Starting deployment $CI_DEPLOY_USER"
     make deploy
+    docker-compose run node yarn install
+    docker-compose run node yarn build
     exit
   '"
 
@@ -73,3 +75,28 @@ phpunit:test:
     - make migrate
     - make test
     - make down
+
+staging:continuous:deploy:
+  stage: deploy
+  script:
+    - *init_ssh
+    - *deploy_ssh
+  environment:
+    name: staging
+    url: $STAGING_URL
+  except:
+    - develop
+    - master
+
+staging:deploy:
+  stage: deploy
+  dependencies: []
+  script:
+    - *init_ssh
+    - *deploy_ssh
+  environment:
+    name: staging
+    url: $STAGING_URL
+  when: manual
+  only:
+    - develop
