@@ -84,6 +84,7 @@ staging:continuous:deploy:
   environment:
     name: staging
     url: $STAGING_URL
+  when: manual
   except:
     - develop
     - master
