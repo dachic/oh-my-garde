@@ -47,26 +47,26 @@ before_script:
   '"
 
 .deploy_front_production_ssh: &deploy_front_production_ssh |
-  rsync -azPq --delete ./client/build/"$PRODUCTION_FRONT_SSH_USER@$PRODUCTION_FRONT_SSH_HOST:~/src/"
+  rsync -azvPq --delete --progress client/build/ "$PRODUCTION_FRONT_SSH_USER@$PRODUCTION_FRONT_SSH_HOST:~/src/"
 
-client:staging:build:
-  stage: build
-  script:
-    - *init_project
-    - echo "====== Install dependencied ======"
-    - docker-compose run node yarn install
-    - echo "====== Build react APP ======"
-    - echo "REACT_APP_API_URL=$STAGING_API_URL" > ./client/.env.local
-    - docker-compose run node yarn build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-client-cache-staging
-    paths:
-      - client/node_modules/
-  artifacts:
-    name: yarn-client-build-staging
-    expire_in: 1 days
-    paths:
-      - client/build/
+# client:staging:build:
+#   stage: build
+#   script:
+#     - *init_project
+#     - echo "====== Install dependencied ======"
+#     - docker-compose run node yarn install
+#     - echo "====== Build react APP ======"
+#     - echo "REACT_APP_API_URL=$STAGING_API_URL" > ./client/.env.local
+#     - docker-compose run node yarn build
+#   cache:
+#     key: ${CI_COMMIT_REF_SLUG}-client-cache-staging
+#     paths:
+#       - client/node_modules/
+#   artifacts:
+#     name: yarn-client-build-staging
+#     expire_in: 1 days
+#     paths:
+#       - client/build/
 
 client:production:build:
   stage: build
@@ -87,66 +87,87 @@ client:production:build:
     paths:
       - client/build/
 
-server:build:
-  stage: build
-  script:
-    - *init_project
-    - make cinstall
-    - make down
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-server-cache
-    paths:
-      - server/node_modules/
-      - server/vendor/
-      - server/var/
-  artifacts:
-    expire_in: 1 days
-    when: always
-    paths:
-      - server/public
-      - server/node_modules/
-      - server/vendor/
-      - server/var/
+# server:staging:build:
+#   stage: build
+#   script:
+#     - *init_project
+#     - make cinstall
+#     - make down
+#   cache:
+#     key: ${CI_COMMIT_REF_SLUG}-server-cache
+#     paths:
+#       - server/node_modules/
+#       - server/vendor/
+#       - server/var/
+#   artifacts:
+#     expire_in: 1 days
+#     when: always
+#     paths:
+#       - server/public
+#       - server/node_modules/
+#       - server/vendor/
+#       - server/var/
 
-# important to clear cache before any operation with database
-phpunit:test:
-  stage: test
-  dependencies:
-    - server:build
-  script:
-    - *init_project
-    - make wait_db_to_ready
-    - make compile
-    - make cache-clear
-    - make migrate
-    - make test
-    - make down
+# server:production:build:
+#   stage: build
+#   script:
+#     - *init_project
+#     - make cinstall-prod
+#     - make down
+#   cache:
+#     key: ${CI_COMMIT_REF_SLUG}-server-cache
+#     paths:
+#       - server/node_modules/
+#       - server/vendor/
+#       - server/var/
+#   artifacts:
+#     expire_in: 1 days
+#     when: always
+#     paths:
+#       - server/public
+#       - server/node_modules/
+#       - server/vendor/
+#       - server/var/
 
-staging:continuous:deploy:
-  stage: deploy
-  script:
-    - *init_staging_ssh
-    - *deploy_staging_ssh
-  environment:
-    name: staging
-    url: $STAGING_URL
-  when: manual
-  except:
-    - develop
-    - master
+# # important to clear cache before any operation with database
+# phpunit:test:
+#   stage: test
+#   dependencies:
+#     - server:build
+#   script:
+#     - *init_project
+#     - make wait_db_to_ready
+#     - make compile
+#     - make cache-clear
+#     - make migrate
+#     - make test
+#     - make down
 
-staging:deploy:
-  stage: deploy
-  dependencies: []
-  script:
-    - *init_staging_ssh
-    - *deploy_staging_ssh
-  environment:
-    name: staging
-    url: $STAGING_URL
-  when: manual
-  only:
-    - develop
+# staging:continuous:deploy:
+#   stage: deploy
+#   script:
+#     - *init_staging_ssh
+#     - *deploy_staging_ssh
+#   environment:
+#     name: staging
+#     url: $STAGING_URL
+#   when: manual
+#   except:
+#     - develop
+#     - master
+
+# staging:deploy:
+#   stage: deploy
+#   dependencies: []
+#   script:
+#     - *init_staging_ssh
+#     - *deploy_staging_ssh
+#   environment:
+#     name: staging
+#     url: $STAGING_URL
+#   when: manual
+#   only:
+#     - develop
 
 production:front:deploy:
   stage: deploy
