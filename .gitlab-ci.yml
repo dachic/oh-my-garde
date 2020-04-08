@@ -49,20 +49,40 @@ before_script:
 .deploy_front_production_ssh: &deploy_front_production_ssh |
   rsync -azPq --delete ./client/build/"$PRODUCTION_FRONT_SSH_USER@$PRODUCTION_FRONT_SSH_HOST:~/src/"
 
-client:build:
+client:staging:build:
   stage: build
   script:
     - *init_project
     - echo "====== Install dependencied ======"
     - docker-compose run node yarn install
     - echo "====== Build react APP ======"
+    - echo "REACT_APP_API_URL=$STAGING_API_URL" > ./client/.env.local
     - docker-compose run node yarn build
   cache:
-    key: ${CI_COMMIT_REF_SLUG}-client-cache
+    key: ${CI_COMMIT_REF_SLUG}-client-cache-staging
     paths:
       - client/node_modules/
   artifacts:
-    name: yarn-client-build
+    name: yarn-client-build-staging
+    expire_in: 1 days
+    paths:
+      - client/build/
+
+client:production:build:
+  stage: build
+  script:
+    - *init_project
+    - echo "====== Install dependencied ======"
+    - docker-compose run node yarn install
+    - echo "====== Build react APP ======"
+    - echo "REACT_APP_API_URL=$PRODUCTION_API_URL" > ./client/.env.local
+    - docker-compose run node yarn build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-client-cache-production
+    paths:
+      - client/node_modules/
+  artifacts:
+    name: yarn-client-build-production
     expire_in: 1 days
     paths:
       - client/build/
