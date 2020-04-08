@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 docker-compose exec -T apache mkdir -p var
 docker-compose exec -T apache ls -la var

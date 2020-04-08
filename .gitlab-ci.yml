@@ -24,8 +24,7 @@ before_script:
 .init_prod_project: &init_prod_project |
   cp .env.example .env
   make copy-ci
-  make build
-  make build sf-env=prod
+  make build sf-env=prod sf-debug=0
 
 .init_staging_ssh: &init_staging_ssh |
   eval $(ssh-agent -s)
@@ -79,7 +78,7 @@ before_script:
 #       - server/vendor/
 #       - server/var/
 #   artifacts:
-#     expire_in: 1 days
+#     #expire_in: 1 days
 #     when: always
 #     paths:
 #       - server/public
@@ -142,7 +141,7 @@ client:prod:build:
       - client/node_modules/
   artifacts:
     name: yarn-client-build-production
-    expire_in: 1 days
+    #expire_in: 1 days
     paths:
       - client/build/
 
@@ -176,7 +175,7 @@ back:prod:build:
       - server/vendor/
       - server/var/
   artifacts:
-    expire_in: 1 days
+    #expire_in: 1 days
     when: always
     paths:
       - server/public
@@ -189,7 +188,6 @@ back:prod:deploy:
     - back:prod:build
   script:
     - *init_prod_project
-    - docker-compose exec apache env
     - echo "====== Deploy server to production server ======"
     - apk update && apk upgrade
     - apk add openssh bash rsync

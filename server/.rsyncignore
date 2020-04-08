@@ -1,6 +1,6 @@
-var/*
 .git
 public/bundles/apiplatform/*
-.env
 .gitignore
-.env*
+.env.*
+bin/.phpunit/*
+/templates/mjml/**/*.mjml.twig
