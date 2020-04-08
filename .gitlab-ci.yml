@@ -151,7 +151,7 @@ staging:deploy:
 production:front:deploy:
   stage: deploy
   dependencies:
-    - client:build
+    - client:production:build
   script:
     - echo "====== Deploy client to production server ======"
     - apk update && apk upgrade
