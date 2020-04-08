@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - preparation
   - deploy
 
 image: kabaconde/docker-in-docker-ci:latest
@@ -34,6 +35,13 @@ before_script:
   chmod 700 ~/.ssh
   [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
+.init_back_production_ssh: &init_back_production_ssh |
+  eval $(ssh-agent -s)
+  echo "$PRODUCTION_BACK_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
 .deploy_staging_ssh: &deploy_staging_ssh |
   ssh -p $SSH_PORT $SSH_USER@$SSH_HOST bash -c "'
     echo "SSH Login successfully"
@@ -49,73 +57,17 @@ before_script:
 .deploy_front_production_ssh: &deploy_front_production_ssh |
   rsync -azvPq --delete --progress client/build/ "$PRODUCTION_FRONT_SSH_USER@$PRODUCTION_FRONT_SSH_HOST:~/src/"
 
-# client:staging:build:
-#   stage: build
-#   script:
-#     - *init_project
-#     - echo "====== Install dependencied ======"
-#     - docker-compose run node yarn install
-#     - echo "====== Build react APP ======"
-#     - echo "REACT_APP_API_URL=$STAGING_API_URL" > ./client/.env.local
-#     - docker-compose run node yarn build
-#   cache:
-#     key: ${CI_COMMIT_REF_SLUG}-client-cache-staging
-#     paths:
-#       - client/node_modules/
-#   artifacts:
-#     name: yarn-client-build-staging
-#     expire_in: 1 days
-#     paths:
-#       - client/build/
+.deploy_back_production_ssh: &deploy_back_production_ssh |
+  make rsync-deploy server=$PRODUCTION_BACK_SSH_USER@$PRODUCTION_BACK_SSH_HOST
 
-client:production:build:
-  stage: build
-  script:
-    - *init_project
-    - echo "====== Install dependencied ======"
-    - docker-compose run node yarn install
-    - echo "====== Build react APP ======"
-    - echo "REACT_APP_API_URL=$PRODUCTION_API_URL" > ./client/.env.local
-    - docker-compose run node yarn build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-client-cache-production
-    paths:
-      - client/node_modules/
-  artifacts:
-    name: yarn-client-build-production
-    expire_in: 1 days
-    paths:
-      - client/build/
-
-# server:staging:build:
+# server:build:
 #   stage: build
 #   script:
 #     - *init_project
 #     - make cinstall
 #     - make down
 #   cache:
-#     key: ${CI_COMMIT_REF_SLUG}-server-cache
-#     paths:
-#       - server/node_modules/
-#       - server/vendor/
-#       - server/var/
-#   artifacts:
-#     expire_in: 1 days
-#     when: always
-#     paths:
-#       - server/public
-#       - server/node_modules/
-#       - server/vendor/
-#       - server/var/
-
-# server:production:build:
-#   stage: build
-#   script:
-#     - *init_project
-#     - make cinstall-prod
-#     - make down
-#   cache:
-#     key: ${CI_COMMIT_REF_SLUG}-server-cache
+#     key: ${CI_COMMIT_REF_SLUG}-server-cache-test
 #     paths:
 #       - server/node_modules/
 #       - server/vendor/
@@ -169,16 +121,75 @@ client:production:build:
 #   only:
 #     - develop
 
-production:front:deploy:
+## ====> [Client for production] build and deploy
+client:prod:build:
+  stage: preparation
+  script:
+    - *init_project
+    - echo "====== Install front dependencies ======"
+    - make yinstall
+    - echo "====== Build react APP ======"
+    - echo "REACT_APP_API_URL=$PRODUCTION_API_URL" > ./client/.env.local
+    - make ybuild
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-client-cache-production
+    paths:
+      - client/node_modules/
+  artifacts:
+    name: yarn-client-build-production
+    expire_in: 1 days
+    paths:
+      - client/build/
+
+client:prod:deploy:
   stage: deploy
   dependencies:
-    - client:production:build
+    - client:prod:build
   script:
     - echo "====== Deploy client to production server ======"
     - apk update && apk upgrade
     - apk add openssh bash rsync
     - *init_front_production_ssh
     - *deploy_front_production_ssh
+  environment:
+    name: production
+    url: $PRODUCTION_URL
+  when: manual
+#   only:
+#     - master
+
+## ====> [Server for production] build and deploy
+server:prod:build:
+  stage: preparation
+  script:
+    - *init_project
+    - make rbuild-deploy
+    - make down
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-server-cache-production
+    paths:
+      - server/node_modules/
+      - server/vendor/
+      - server/var/
+  artifacts:
+    expire_in: 1 days
+    when: always
+    paths:
+      - server/public
+      - server/node_modules/
+      - server/vendor/
+      - server/var/
+
+server:prod:deploy:
+  stage: deploy
+  dependencies:
+    - server:prod:build
+  script:
+    - echo "====== Deploy client to production server ======"
+    - apk update && apk upgrade
+    - apk add openssh bash rsync
+    - *init_back_production_ssh
+    - *deploy_back_production_ssh
   environment:
     name: production
     url: $PRODUCTION_URL
