@@ -20,14 +20,21 @@ before_script:
   make copy-ci
   make build
 
-.init_ssh: &init_ssh |
+.init_staging_ssh: &init_staging_ssh |
   eval $(ssh-agent -s)
   echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh
   [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
-.deploy_ssh: &deploy_ssh |
+.init_front_production_ssh: &init_front_production_ssh |
+  eval $(ssh-agent -s)
+  echo "$PRODUCTION_FRONT_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+.deploy_staging_ssh: &deploy_staging_ssh |
   ssh -p $SSH_PORT $SSH_USER@$SSH_HOST bash -c "'
     echo "SSH Login successfully"
     echo "Browsing to project path..."
@@ -36,19 +43,38 @@ before_script:
     git checkout $CI_COMMIT_BRANCH
     echo "Starting deployment $CI_DEPLOY_USER"
     make deploy
-    docker-compose run node yarn install
-    docker-compose run node yarn build
     exit
   '"
 
-deps:build:
+.deploy_front_production_ssh: &deploy_front_production_ssh |
+  rsync -azPq --delete ./client/build/"$PRODUCTION_FRONT_SSH_USER@$PRODUCTION_FRONT_SSH_HOST:~/src/"
+
+client:build:
+  stage: build
+  script:
+    - *init_project
+    - echo "====== Install dependencied ======"
+    - docker-compose run node yarn install
+    - echo "====== Build react APP ======"
+    - docker-compose run node yarn build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-client-cache
+    paths:
+      - client/node_modules/
+  artifacts:
+    name: yarn-client-build
+    expire_in: 1 days
+    paths:
+      - client/build/
+
+server:build:
   stage: build
   script:
     - *init_project
     - make cinstall
     - make down
   cache:
-    key: ${CI_COMMIT_REF_SLUG}-deps
+    key: ${CI_COMMIT_REF_SLUG}-server-cache
     paths:
       - server/node_modules/
       - server/vendor/
@@ -66,7 +92,7 @@ deps:build:
 phpunit:test:
   stage: test
   dependencies:
-    - deps:build
+    - server:build
   script:
     - *init_project
     - make wait_db_to_ready
@@ -79,8 +105,8 @@ phpunit:test:
 staging:continuous:deploy:
   stage: deploy
   script:
-    - *init_ssh
-    - *deploy_ssh
+    - *init_staging_ssh
+    - *deploy_staging_ssh
   environment:
     name: staging
     url: $STAGING_URL
@@ -93,11 +119,28 @@ staging:deploy:
   stage: deploy
   dependencies: []
   script:
-    - *init_ssh
-    - *deploy_ssh
+    - *init_staging_ssh
+    - *deploy_staging_ssh
   environment:
     name: staging
     url: $STAGING_URL
   when: manual
   only:
     - develop
+
+production:front:deploy:
+  stage: deploy
+  dependencies:
+    - client:build
+  script:
+    - echo "====== Deploy client to production server ======"
+    - apk update && apk upgrade
+    - apk add openssh bash rsync
+    - *init_front_production_ssh
+    - *deploy_front_production_ssh
+  environment:
+    name: production
+    url: $PRODUCTION_URL
+  when: manual
+#   only:
+#     - master
