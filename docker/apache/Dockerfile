@@ -60,5 +60,6 @@ RUN node -v; npm -v; yarn --version
 RUN yarn global add mjml
 
 WORKDIR /var/www/symfony
-
+ARG SF_ENV=dev
+ENV APP_ENV=${SF_ENV}
 EXPOSE 80

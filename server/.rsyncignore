@@ -3,3 +3,4 @@ var/*
 public/bundles/apiplatform/*
 .env
 .gitignore
+.env*

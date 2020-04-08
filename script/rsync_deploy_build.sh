@@ -1,15 +1,13 @@
 #!/bin/sh
 
-export SYMFONY_ENV=prod
-
-echo -e "==> Installing composer dependencies"
+echo "==> Installing composer dependencies"
 make cinstall-prod
 
 echo -e "==> Update JWT private/public key"
 make jwt
 
 echo -e "==> Compiling emails"
-make compile
+#make compile
 
 echo -e "==> Clearing cache for production"
 make cache-clear

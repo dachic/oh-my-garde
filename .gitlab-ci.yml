@@ -21,6 +21,12 @@ before_script:
   make copy-ci
   make build
 
+.init_prod_project: &init_prod_project |
+  cp .env.example .env
+  make copy-ci
+  make build
+  make build sf-env=prod
+
 .init_staging_ssh: &init_staging_ssh |
   eval $(ssh-agent -s)
   echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
@@ -61,7 +67,7 @@ before_script:
   make rsync-deploy server=$PRODUCTION_BACK_SSH_USER@$PRODUCTION_BACK_SSH_HOST
 
 ## ====> [Continous server build to run test]
-# server:build:
+# back:build:
 #   stage: build
 #   script:
 #     - *init_project
@@ -70,7 +76,6 @@ before_script:
 #   cache:
 #     key: ${CI_COMMIT_REF_SLUG}-server-cache-test
 #     paths:
-#       - server/node_modules/
 #       - server/vendor/
 #       - server/var/
 #   artifacts:
@@ -78,7 +83,6 @@ before_script:
 #     when: always
 #     paths:
 #       - server/public
-#       - server/node_modules/
 #       - server/vendor/
 #       - server/var/
 
@@ -86,7 +90,7 @@ before_script:
 # phpunit:test:
 #   stage: test
 #   dependencies:
-#     - server:build
+#     - back:build
 #   script:
 #     - *init_project
 #     - make wait_db_to_ready
@@ -160,16 +164,15 @@ client:prod:deploy:
 #     - master
 
 ## ====> [Server for production] build and deploy
-server:prod:build:
+back:prod:build:
   stage: preparation
   script:
-    - *init_project
+    - *init_prod_project
     - make rbuild-deploy
     - make down
   cache:
     key: ${CI_COMMIT_REF_SLUG}-server-cache-production
     paths:
-      - server/node_modules/
       - server/vendor/
       - server/var/
   artifacts:
@@ -177,16 +180,16 @@ server:prod:build:
     when: always
     paths:
       - server/public
-      - server/node_modules/
       - server/vendor/
       - server/var/
 
-server:prod:deploy:
+back:prod:deploy:
   stage: deploy
   dependencies:
-    - server:prod:build
+    - back:prod:build
   script:
-    - *init_project
+    - *init_prod_project
+    - docker-compose exec apache env
     - echo "====== Deploy server to production server ======"
     - apk update && apk upgrade
     - apk add openssh bash rsync

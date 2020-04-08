@@ -1,3 +1,4 @@
+sf-env ?= dev
 up:
 	docker-compose up -d --force-recreate --build
 down:
@@ -16,11 +17,12 @@ ydev:
 ystart:
 	docker-compose run -T node yarn start
 build:
-	docker-compose up -d --build
+	docker-compose build --build-arg SF_ENV=${sf-env}
+	docker-compose up -d
 cinstall:
 	docker-compose exec -T apache composer install
 cinstall-prod:
-	docker-compose exec -T apache composer install --no-dev --optimize-autoloader
+	docker-compose exec -T apache bash -c "export SYMFONY_ENV=prod && export APP_ENV=prod && export APP_DEBUG=0 && composer install --no-dev --optimize-autoloader"
 cupdate:
 	docker-compose exec -T apache composer update
 install:
