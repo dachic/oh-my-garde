@@ -13,7 +13,7 @@ services:
             - ./server:/var/www/symfony:cached
         ports:
             - 80:80
-    # MySQL
+
     postgres:
         image: postgres:12-alpine
         container_name: ${PROJECT_NAME}-postgres
@@ -21,3 +21,10 @@ services:
             - POSTGRES_DB=${DB_DATABASE}
             - POSTGRES_USER=${DB_USERNAME}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
+
+    node:
+        container_name: "${PROJECT_NAME}_node"
+        image: node:latest
+        working_dir: /home/app
+        volumes:
+            - ./client:/home/app:rw,cached

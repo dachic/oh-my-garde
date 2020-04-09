@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { Row, Col, UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap';
-import Flatpickr from 'react-flatpickr'
-import { ChevronDown, Mail, Printer, File, Users, Image, ShoppingBag } from 'react-feather';
+import { Row, Col, /*UncontrolledButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle*/ } from 'reactstrap';
+// import Flatpickr from 'react-flatpickr'
+// import { ChevronDown, Mail, Printer, File, Users, Image, ShoppingBag } from 'react-feather';
 
 import { getLoggedInUser } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
-import OverviewWidget from '../../components/OverviewWidget';
+// import OverviewWidget from '../../components/OverviewWidget';
 
-import Statistics from './Statistics';
-import RevenueChart from './RevenueChart';
-import TargetChart from './TargetChart';
-import SalesChart from './SalesChart';
-import Orders from './Orders';
-import Performers from './Performers';
-import Tasks from './Tasks';
-import Chat from './Chat';
+// import Statistics from './Statistics';
+// import RevenueChart from './RevenueChart';
+// import TargetChart from './TargetChart';
+// import SalesChart from './SalesChart';
+// import Orders from './Orders';
+// import Performers from './Performers';
+// import Tasks from './Tasks';
+// import Chat from './Chat';
 
 
 class Dashboard extends Component {
@@ -41,9 +41,9 @@ class Dashboard extends Component {
 
                     <Row className="page-title align-items-center">
                         <Col sm={4} xl={6}>
-                            <h4 className="mb-1 mt-0">Dashboard</h4>
+                            <h4 className="mb-1 mt-0">Tableau de board</h4>
                         </Col>
-                        <Col sm={8} xl={6}>
+                        {/* <Col sm={8} xl={6}>
                             <form className="form-inline float-sm-right mt-3 mt-sm-0">
                                 <div className="form-group mb-sm-0 mr-2">
                                     <Flatpickr value={this.state.filterDate}
@@ -72,14 +72,14 @@ class Dashboard extends Component {
                                     </DropdownMenu>
                                 </UncontrolledButtonDropdown>
                             </form>
-                        </Col>
+                        </Col> */}
                     </Row>
 
                     {/* stats */}
-                    <Statistics></Statistics>
+                    {/* <Statistics></Statistics> */}
 
                     {/* charts */}
-                    <Row>
+                    {/* <Row>
                         <Col xl={3}>
                             <OverviewWidget items={[
                                 { title: '121,000', description: 'Total Visitors', icon: Users },
@@ -94,19 +94,19 @@ class Dashboard extends Component {
                         <Col xl={3}>
                             <TargetChart />
                         </Col>
-                    </Row>
+                    </Row> */}
 
                     {/* charts */}
-                    <Row>
+                    {/* <Row>
                         <Col xl={5}>
                             <SalesChart />
                         </Col>
                         <Col xl={7}>
                             <Orders />
                         </Col>
-                    </Row>
+                    </Row> */}
 
-                    <Row>
+                    {/* <Row>
                         <Col xl={4}>
                             <Performers />
                         </Col>
@@ -116,7 +116,7 @@ class Dashboard extends Component {
                         <Col xl={4}>
                             <Chat />
                         </Col>
-                    </Row>
+                    </Row> */}
                 </div>
             </React.Fragment>
         )

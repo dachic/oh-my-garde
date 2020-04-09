@@ -12,7 +12,6 @@ import Loader from '../../components/Loader';
 import logo from '../../assets/images/logo_horizontal.svg';
 
 class Login extends Component {
-    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -25,14 +24,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
-
         document.body.classList.add('authentication-bg');
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-        document.body.classList.remove('authentication-bg');
     }
 
     /**
@@ -60,7 +52,7 @@ class Login extends Component {
 
                 {this.renderRedirectToRoot()}
 
-                {(this._isMounted || !isAuthTokenValid) && <div className="account-pages my-5">
+                {(!isAuthTokenValid) && <div className="account-pages my-5">
                     <Container>
                         <Row className="justify-content-center">
                             <Col xl={10}>

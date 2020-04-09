@@ -1,7 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-docker-compose exec apache chmod 777 var
-docker-compose exec apache bash -c '
+docker-compose exec -T apache mkdir -p var
+docker-compose exec -T apache ls -la var
+docker-compose exec -T apache chmod 777 var
+docker-compose exec -T apache bash -c '
     set -e
     apt-get install openssl
     mkdir -p config/jwt

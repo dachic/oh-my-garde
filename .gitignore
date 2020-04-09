@@ -1,6 +1,7 @@
 ###> docker
 docker/postgresql/data
 docker/postgres/data
+docker/backup
 docker/data
 ###< docker
 

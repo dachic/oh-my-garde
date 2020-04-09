@@ -62,7 +62,7 @@ class AllInternships extends Component {
                   </thead>
 
                   <tbody>
-                    {this.state.intershipsList ?
+                    {this.state.intershipsList.length ?
                       this.state.intershipsList.map((record, index) => {
                         return (
                           <tr key={index} className="text-center">
@@ -83,20 +83,15 @@ class AllInternships extends Component {
                           </tr>
                         );
                       })
-                      : <Col md={8} className="mx-auto">
-                        <Card className="text-center">
-                          <CardBody>
-                            <div>
-                              <strong><p>Vous n'avez pas encore renseigné de stage.</p></strong>
-                              <div className="mt-3">
-                                <Button href={`/intern/internship/add`} color="outline-primary" key="1">
-                                  Ajouter un stage
+                      : <tr>
+                        <td colSpan="6" className="text-center">
+                          <strong><p>Vous n'avez pas encore renseigné de stage.</p></strong>
+                          <Button href={`/intern/internship/add`} color="outline-primary" key="1">
+                            Ajouter un stage
                               </Button>
-                              </div>
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Col>}
+                        </td>
+                      </tr>
+                    }
                   </tbody>
                 </Table>}
             </CardBody>

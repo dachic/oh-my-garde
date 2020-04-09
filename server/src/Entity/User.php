@@ -15,7 +15,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Elasticsearch\DataProvider\Filter\OrderFilter;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -112,6 +111,11 @@ class User  implements UserInterface
      * @Assert\Valid
      */
     private $region;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tokenCode;
 
 
     public function __construct()
@@ -382,6 +386,18 @@ class User  implements UserInterface
     public function setRegion(?Region $region): self
     {
         $this->region = $region;
+
+        return $this;
+    }
+
+    public function getTokenCode(): ?string
+    {
+        return $this->tokenCode;
+    }
+
+    public function setTokenCode(?string $tokenCode): self
+    {
+        $this->tokenCode = $tokenCode;
 
         return $this;
     }

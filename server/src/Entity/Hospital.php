@@ -41,6 +41,11 @@ class Hospital
      */
     private $interships;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $postalCode;
+
     public function __construct()
     {
         $this->interships = new ArrayCollection();
@@ -119,6 +124,18 @@ class Hospital
                 $intership->setHospital(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPostalCode(): ?int
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(int $postalCode): self
+    {
+        $this->postalCode = $postalCode;
 
         return $this;
     }

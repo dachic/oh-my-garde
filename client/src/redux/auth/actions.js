@@ -10,6 +10,9 @@ import {
     FORGET_PASSWORD,
     FORGET_PASSWORD_SUCCESS,
     FORGET_PASSWORD_FAILED,
+    RESET_PASSWORD,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_FAILED,
 } from './constants';
 
 
@@ -48,9 +51,9 @@ export const logoutUser = (history) => ({
     payload: { history },
 });
 
-export const forgetPassword = (username) => ({
+export const forgetPassword = (email) => ({
     type: FORGET_PASSWORD,
-    payload: { username },
+    payload: { email },
 });
 
 export const forgetPasswordSuccess = (passwordResetStatus) => ({
@@ -60,5 +63,20 @@ export const forgetPasswordSuccess = (passwordResetStatus) => ({
 
 export const forgetPasswordFailed = (error) => ({
     type: FORGET_PASSWORD_FAILED,
+    payload: error,
+});
+
+export const resetPassword = (token, password) => ({
+    type: RESET_PASSWORD,
+    payload: { token, password },
+});
+
+export const resetPasswordSuccess = (passwordResetStatus) => ({
+    type: RESET_PASSWORD_SUCCESS,
+    payload: passwordResetStatus,
+});
+
+export const resetPasswordFailed = (error) => ({
+    type: RESET_PASSWORD_FAILED,
     payload: error,
 });

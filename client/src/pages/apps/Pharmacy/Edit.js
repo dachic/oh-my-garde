@@ -13,7 +13,6 @@ class Edit extends Component {
   constructor(props) {
     super(props);
     const loggedInUser = getLoggedInUser();
-    console.log(loggedInUser.token);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       status: '',
@@ -106,7 +105,7 @@ class Edit extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadPharmacy();
   }
 

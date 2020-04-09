@@ -12,7 +12,7 @@ const Answers = props => {
         guardAPI
             .getInternsRankingForGuard(props.guard)
             .then(data => setRanking(data));
-    }, []);
+    }, [props]);
 
     function getBadge(skills, aggrement) {
         return skills.includes(aggrement) ? (
@@ -68,9 +68,11 @@ const Answers = props => {
                                     En cours de chargement...
                                 </td>
                             </tr> : !ranking.length ? (
-                                    <td colSpan="7" style={{ textAlign: "center" }}>
+                                    <tr>
+                                        <td colSpan="7" style={{ textAlign: "center" }}>
                                                                 Aucun interne à proposer
                                       </td>
+                                    </tr>
                         ) : (
                             ranking.map((rank, index) => {
                                 return (
@@ -82,7 +84,7 @@ const Answers = props => {
                                                 rank={index}
                                             />
                                             <a
-                                                href="#"
+                                                href="#index"
                                                 onMouseOver={e =>displayInternDetails(index,e)}
                                                 onMouseOut={e => {
                                                     displayInternDetails(

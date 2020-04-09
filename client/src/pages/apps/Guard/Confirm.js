@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Spinner } from 'reactstrap';
-import confirmApi from '../../../api/confirm';
+import userApi from '../../../api/user';
 
 class Confirm extends Component {
   constructor(props) {
@@ -19,14 +19,14 @@ class Confirm extends Component {
 
   checkValidity() {
     // Check user than guard
-    confirmApi.checkUserGuard(this.state.userId, this.state.guardId).then(validation => {
+    userApi.checkUserGuard(this.state.userId, this.state.guardId).then(validation => {
       this.setState({ isValid: validation.check, isPharmacyLoaded: true });
     }).catch((error) => {
       this.setState({ pharmaciesOptions: { value: 0, label: "Aucun agrément trouvé" } });
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.checkValidity();
   }
 

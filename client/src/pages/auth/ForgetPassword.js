@@ -6,12 +6,13 @@ import { Container, Row, Col, Card, CardBody, FormGroup, Button, Alert, Label, I
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import { Mail } from 'react-feather';
 
+import { forgetPassword } from '../../redux/actions';
+
 import { isUserAuthenticated } from '../../helpers/authUtils';
 import Loader from '../../components/Loader';
 import logo from '../../assets/images/logo_horizontal.svg';
 
 class ForgetPassword extends Component {
-    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -25,13 +26,7 @@ class ForgetPassword extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
         document.body.classList.add('authentication-bg');
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-        document.body.classList.remove('authentication-bg');
     }
 
     /**
@@ -45,17 +40,14 @@ class ForgetPassword extends Component {
      * Handles the submit
      */
     handleValidSubmit = (event, values) => {
-        console.log(values);
-
         this.setState({ isLoading: true });
-
         // You can make actual api call to register here
+        this.props.forgetPassword(values.email)
 
         window.setTimeout(() => {
             this.setState({ isLoading: false, passwordResetSuccessful: true });
         }, 1000)
     }
-
 
     /**
      * Redirect to root
@@ -76,7 +68,7 @@ class ForgetPassword extends Component {
 
                 {(this._isMounted || !isAuthTokenValid) && <div className="account-pages my-5">
                     <Container>
-                    <Row className="justify-content-center">
+                        <Row className="justify-content-center">
                             <Col xl={10}>
                                 <Card className="">
                                     <CardBody className="p-0">
@@ -93,12 +85,15 @@ class ForgetPassword extends Component {
 
                                                 <h6 className="h5 mb-0 mt-4">Réinitialiser un mot de passe</h6>
                                                 <p className="text-muted mt-1 mb-4">
-                                                Veuillez saisir votre adresse e-mail et nous vous enverrons des instructions pour réinitialiser votre mot de passe
+                                                    Veuillez saisir votre adresse e-mail et nous vous enverrons des instructions pour réinitialiser votre mot de passe
                                                 </p>
-
 
                                                 {this.props.error && <Alert color="danger" isOpen={this.props.error ? true : false}>
                                                     <div>{this.props.error}</div>
+                                                </Alert>}
+
+                                                {this.props.passwordResetStatus && <Alert color="success" isOpen={this.props.passwordResetStatus ? true : false}>
+                                                    <div>{this.props.passwordResetStatus}</div>
                                                 </Alert>}
 
                                                 <AvForm onValidSubmit={this.handleValidSubmit} className="authentication-form">
@@ -149,4 +144,9 @@ class ForgetPassword extends Component {
     }
 }
 
-export default connect()(ForgetPassword);
+const mapStateToProps = (state) => {
+    const { user, loading, error, passwordResetStatus } = state.Auth;
+    return { user, loading, error, passwordResetStatus };
+};
+
+export default connect(mapStateToProps, { forgetPassword })(ForgetPassword);

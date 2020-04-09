@@ -62,6 +62,26 @@ Reload database
 make db-reload
 ```
 
+## Database
+
+Backup Database as version
+
+```shell
+docker-compose exec -T postgres pg_dump --inserts -U user ohmygarde > docker/backup/dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+```
+
+Backup Database with specific name
+
+```shell
+docker-compose exec -T postgres pg_dump --inserts -U user ohmygarde > docker/backup/db.sql
+```
+
+Restore Database
+
+```shell
+cat docker/backup/db.sql | docker-compose exec -T postgres psql -U user -d ohmygarde
+```
+
 ## App base url
 
 - [Server - http://api.localhost](http://api.localhost)

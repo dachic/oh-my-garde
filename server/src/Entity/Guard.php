@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -15,6 +16,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\GuardRepository")
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
+ * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact"})
  */
 class Guard
 {
@@ -136,10 +138,18 @@ class Guard
     public function toString()
     {
         return [
-            'user' => $this->user->getLastName().' '.$this->user->getFirstName(),
+            'lastname' => $this->user->getLastName(),
+            'IdUtilisateur' => $this->user->getId(),
+            'firstname' => $this->user->getFirstName(),
+            'email' => $this->user->getEmail(),
+            'phoneNumber' => $this->user->getPhoneNumber(),
             'pharmacie' => $this->pharmacy->getName(),
+            'hospital' => $this->pharmacy->getHospital()->getName(),
+            'emailPharmacy' => $this->pharmacy->getEmail(),
+            'phoneNumberPharmacy' => $this->pharmacy->getPhoneNumber(),
             'horaire' => $this->hour->getName(),
-            'jour' => $this->day
+            'jour' => $this->day,
+            'date' =>$this->createdAt->format('Y-m-d h:i:s'),
         ];
     }
     

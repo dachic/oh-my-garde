@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Row, Col, Card, CardBody, Button, Label, FormGroup, InputGroup, UncontrolledAlert } from 'reactstrap';
 import Select from 'react-select';
@@ -6,30 +6,23 @@ import { findAllUserByIdApi, saveUserInfoApi } from '../../../helpers/api/usersA
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import PageTitle from '../../../components/PageTitle';
 import Loader from '../../../components/Loader';
+import Error404 from '../../../pages/other/Error404';
 
-const EditUser = () => {
+const EditUser = (props) => {
     const statusLabels = {};
     statusLabels['enabled'] = 'Activé';
     statusLabels['disabled'] = 'Désactivé';
 
     const [user, setUser] = useState(null);
-    const [title, setTitle] = useState("Ajout d'un utilisateur");
-    const [buttonTitle, setButtonTitle] = useState("Enregister un nouvel utilisateur");
     const [alertColor, setAlertColor] = useState();
     const [alertMessage, setAlertMessage] = useState();
     const [hasMessage, setHasMessage] = useState(false);
-
-    const ref = useRef();
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => { // ComponentDidMount
-        ref.current = true;
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id');
+        const { id } = props.match.params
 
         if (id !== null) {
-            setTitle("Modification d'un utilisateur")
-            setButtonTitle("Enregistrer les modifications")
-
             findAllUserByIdApi(id)
                 .then(user => {
                     setUser(user)
@@ -37,7 +30,7 @@ const EditUser = () => {
                     setAlertMessage("Un erreur s'est produite lors de la recherche de l'utilisateur")
                 })
         }
-    }, []);
+    }, [props]);
 
     const changeStatus = ({ value }) => {
         user.status = value
@@ -48,6 +41,7 @@ const EditUser = () => {
      * Handles the submit
      */
     const handleValidSubmit = (event, values) => {
+        setLoader(true);
 
         if (user !== null) {
             saveUserInfoApi({
@@ -59,6 +53,7 @@ const EditUser = () => {
                 setAlertMessage("Les informations ont été correctement mises à jour")
                 setAlertColor("success")
                 setHasMessage(true)
+                setLoader(false);
 
                 setTimeout(() => {
                     setHasMessage(false)
@@ -67,9 +62,13 @@ const EditUser = () => {
         }
     }
 
-
-    if (user === null) {
+    const { id } = props.match.params
+    if ((user === null && id !== undefined) || loader) {
         return <Loader />;
+    }
+
+    if (id === undefined) {
+        return <Error404 />
     }
 
     return (
@@ -80,9 +79,9 @@ const EditUser = () => {
                         <PageTitle
                             breadCrumbItems={[
                                 { label: 'Utilisateurs', path: '/users/all' },
-                                { label: title, path: '/users/edit?id=1', active: true },
+                                { label: "Modification d'un utilisateur", path: "/user/", active: true },
                             ]}
-                            title={title}
+                            title={"Modification d'un utilisateur"}
                         />
                     </Col>
                 </Row>
@@ -142,7 +141,7 @@ const EditUser = () => {
                         <Card>
                             <CardBody>
                                 <FormGroup className="form-group mb-0 text-center">
-                                    <Button color="primary" className="btn-block">{buttonTitle}</Button>
+                                    <Button color="primary" className="btn-block">Enregistrer les modifications</Button>
                                 </FormGroup>
                             </CardBody>
                         </Card>

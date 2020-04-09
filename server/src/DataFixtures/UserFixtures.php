@@ -41,6 +41,7 @@ class UserFixtures extends Fixture
                 $hospital = new Hospital();
                 $hospital->setName('Hospital' . $i . "-" . $j);
                 $hospital->setRegion($region);
+                $hospital->setPostalCode("6600".$i);
                 $manager->persist($hospital);
                 array_push($hospitals, $hospital);
             }
@@ -71,7 +72,6 @@ class UserFixtures extends Fixture
             $userFixture->setRoles(['ROLE_ADMIN']);
             $manager->persist($userFixture);
         }
-
 
         $userPharmacy = new User();
         $userPharmacy->setLastname($faker->lastName);

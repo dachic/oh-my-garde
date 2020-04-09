@@ -133,7 +133,7 @@ class EditInternship extends Component {
     }).catch((error) => { });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadInternship();
   }
 

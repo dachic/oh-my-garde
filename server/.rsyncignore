@@ -1,0 +1,6 @@
+.git
+public/bundles/apiplatform/*
+.gitignore
+.env.*
+bin/.phpunit/*
+/templates/mjml/**/*.mjml.twig
