@@ -141,7 +141,7 @@ client:prod:build:
       - client/node_modules/
   artifacts:
     name: yarn-client-build-production
-    #expire_in: 1 days
+    expire_in: 1 days
     paths:
       - client/build/
   only:
@@ -197,6 +197,9 @@ back:prod:deploy:
     - apk add openssh bash rsync
     - *init_back_production_ssh
     - *deploy_back_production_ssh
+  after_script:
+      - echo "Do not forget to clear php fpm cache 😅"
+      - echo "sudo systemctl reload php-fpm"
   environment:
     name: production
     url: $PRODUCTION_URL

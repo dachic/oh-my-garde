@@ -3,4 +3,5 @@ public/bundles/apiplatform/*
 .gitignore
 .env.*
 bin/.phpunit/*
-/templates/mjml/**/*.mjml.twig
+/templates/mjml/*
+/var/*

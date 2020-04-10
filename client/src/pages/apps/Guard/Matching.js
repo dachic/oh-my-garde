@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import Request from '../../../components/Matching/Request'
 import Answers from '../../../components/Matching/Answers'
 

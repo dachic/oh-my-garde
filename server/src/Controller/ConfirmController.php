@@ -44,7 +44,7 @@ class ConfirmController extends AbstractController
                     $pharmacyEmail = $foundGuard->getPharmacy()->getRepresentative()->getEmail();
 
                     // Send mail
-                    $mailerService->sendWithCC($user->getEmail(), "Demande de garde acceptée !", $this->render('mjml/emails/user/confirm_guard_validation.html.twig', [
+                    $mailerService->sendWithCC($user->getEmail(), "Demande de garde acceptée !", $this->render('emails/confirm_guard_validation.html.twig', [
                         'user' => $user,
                         'guard' => $foundGuard
                     ]), $pharmacyEmail);
