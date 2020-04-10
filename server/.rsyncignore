@@ -4,3 +4,4 @@ public/bundles/apiplatform/*
 .env.*
 bin/.phpunit/*
 /templates/mjml/*
+/var/*
