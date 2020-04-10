@@ -60,7 +60,7 @@ class ForgotPasswordController extends AbstractController
 
         return $this->json([
             "success" => true,
-            "message" => sprintf("Nous venons de vous envoyer un mail avec lien de réinitialisation de votre mot de passe à l'adresse emal spécifié")
+            "message" => sprintf("Nous venons de vous envoyer un mail avec lien de réinitialisation de votre mot de passe à l'adresse email %s", $json['email'])
         ]);
     }
 

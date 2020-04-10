@@ -69,7 +69,7 @@ class UserSubscriber implements EventSubscriberInterface
         $email = $user->getEmail();
         $subject = "Confirmation d'inscription sur OhMyGarde";
 
-        $view = $this->twig->render('mjml/emails/user/pending_registration.html.twig', [
+        $view = $this->twig->render('emails/pending_registration.html.twig', [
             'user' => $user
         ]);
 
@@ -93,7 +93,7 @@ class UserSubscriber implements EventSubscriberInterface
             ->findByRoleAndRegionAsEmailKey(UserRole::ROLE_ADMIN, $user->getRegion());
 
         $emails = array_keys($users);
-        $view = $this->twig->render('mjml/emails/user/validate_user.html.twig', [
+        $view = $this->twig->render('emails/validate_user.html.twig', [
             'user' => $user,
         ]);
 
@@ -121,14 +121,14 @@ class UserSubscriber implements EventSubscriberInterface
 
         if ($user->getStatus() === UserStatus::STATUS_ENABLED) {
             $subject = "Validation de votre compte sur OhMyGarde";
-            $view = $this->twig->render('mjml/emails/user/account_validated.html.twig', [
+            $view = $this->twig->render('emails/account_validated.html.twig', [
                 'user' => $user,
             ]);
 
             $this->mailerService->send($email, $subject, $view);
         } else if ($user->getStatus() === UserStatus::STATUS_DISABLED) {
             $subject = "Désactivation de votre compte sur OhMyGarde";
-            $view = $this->twig->render('mjml/emails/user/account_unvalidated.html.twig', [
+            $view = $this->twig->render('emails/account_unvalidated.html.twig', [
                 'user' => $user,
             ]);
 
@@ -147,7 +147,7 @@ class UserSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         $subject = "Ré-initialisation de votre mot de passe";
 
-        $view = $this->twig->render('mjml/emails/user/forgot_password.html.twig', [
+        $view = $this->twig->render('emails/forgot_password.html.twig', [
             'user' => $user,
         ]);
 
@@ -165,7 +165,7 @@ class UserSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         $subject = "Mot de passe modifié";
 
-        $view = $this->twig->render('mjml/emails/user/confirm_forgot_password.html.twig', [
+        $view = $this->twig->render('emails/confirm_forgot_password.html.twig', [
             'user' => $user,
         ]);
 

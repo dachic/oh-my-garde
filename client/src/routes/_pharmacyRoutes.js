@@ -5,7 +5,7 @@ import PrivateRoute from './PrivateRoute';
 const GuardApp = React.lazy(() => import('../pages/apps/Guard/Add'));
 const GuardsList = React.lazy(() => import('../pages/apps/Guard/List'));
 const PharmacyApp = React.lazy(() => import('../pages/apps/Pharmacy/Add'));
-const EditPharmacy = React.lazy(() => import('../pages/apps/Pharmacy/Edit'));
+// const EditPharmacy = React.lazy(() => import('../pages/apps/Pharmacy/Edit'));
 const Matching = React.lazy(() => import('../pages/apps/Guard/Matching'));
 
 const guard = {
