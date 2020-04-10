@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -28,11 +27,6 @@ yarn-error.log
 #system
 .DS_Store
 #end system
-
-###> assoconnect/mjml-bundle ###
-/templates/mjml/**/*.html.twig
-###< assoconnect/mjml-bundle ###
-
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###

@@ -16,5 +16,6 @@ rsync -azv --exclude-from='./server/.rsyncignore' ./server/ $SERVER:~/src/ --pro
 ssh $SERVER bash -c "'
     cd src
     bin/console doctrine:migrations:migrate --no-interaction
+    bin/console cache:clear
     exit
   '"

@@ -40,7 +40,7 @@ class GuardController extends AbstractController
             $mailerService->send(
                 $intern->getEmail(),
                 "Demande d'attribution de garde",
-                $this->render('mjml/emails/user/confirm_guard.html.twig', [
+                $this->render('emails/confirm_guard.html.twig', [
                     'user' => $intern,
                     'guard' => $guard
                 ])
