@@ -104,3 +104,8 @@ rsync-deploy:
 
 rbuild-deploy:
 	chmod +x ./script/rsync_deploy_build.sh && ./script/rsync_deploy_build.sh
+
+init-data:
+	docker-compose exec apache php bin/console app:job:register-all
+	docker-compose exec apache php bin/console app:agrement:register-all
+	docker-compose exec apache php bin/console app:region:add Auvergne-Rhône-Alpes
