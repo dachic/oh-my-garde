@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InsertAllJobCommand extends Command
 {
-    protected static $defaultName = 'app:job:register-all';
+    protected static $defaultName = 'app:job:insert-all';
 
     protected function configure()
     {

@@ -1,5 +1,5 @@
 sf-env ?= dev
-sf-debug ?= 0
+sf-debug ?= 1
 
 up:
 	docker-compose up -d --force-recreate --build
@@ -106,6 +106,6 @@ rbuild-deploy:
 	chmod +x ./script/rsync_deploy_build.sh && ./script/rsync_deploy_build.sh
 
 init-data:
-	docker-compose exec apache php bin/console app:job:register-all
-	docker-compose exec apache php bin/console app:agrement:register-all
+	docker-compose exec apache php bin/console app:job:insert-all
+	docker-compose exec apache php bin/console app:agrement:insert-all
 	docker-compose exec apache php bin/console app:region:add Auvergne-Rhône-Alpes

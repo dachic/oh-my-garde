@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InsertAllAgrementCommand extends Command
 {
-    protected static $defaultName = 'app:agrement:register-all';
+    protected static $defaultName = 'app:agrement:insert-all';
 
     protected function configure()
     {
