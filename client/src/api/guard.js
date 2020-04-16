@@ -35,7 +35,6 @@ export default {
             headers: headers,
             body: JSON.stringify({ guard: guard, intern: intern.id })
         })
-
         return await res
     },
 

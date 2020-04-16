@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, Label, FormGroup } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button, Label, FormGroup, Spinner, UncontrolledAlert } from 'reactstrap';
 import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 
 import PageTitle from '../../../components/PageTitle';
-import Api from '../../../api/guard';
+import guardApi from '../../../api/guard';
+import agrementApi from '../../../api/agrement';
+import userApi from '../../../api/user';
+import jobApi from '../../../api/job';
 import { getLoggedInUser } from '../../../helpers/authUtils';
 
 import Select from 'react-select';
@@ -25,78 +28,127 @@ class Add extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             status: '',
-            pharmacies: [],
+            pharmacy: [],
             hours: [],
-            jobs: [],
-            aggrements: [],
+            errorSelect: {},
+            job: '',
+            jobsOptions: {},
+            selectedJob: '',
+            agrements: [],
+            agrementsOptions: [],
+            selectedAgrements: [],
+            areAgrementsLoaded: false,
             day: null,
-            hour: null,
-            pharmacy: null,
-            job: null
+            hour: null
         };
     }
 
+    handleSubmit(event, errors, values) {
+        this.setState({ errors, values });
+
+        // API Call
+        if (!errors.length) {
+            if (this.state.job === '') {
+                this.setState({ errorSelect: { job: "Vous devez sélectionner un poste" } });
+                return;
+            }
+            else if (!this.state.agrements.length) {
+                this.setState({ errorSelect: { agrement: "Vous devez sélectionner au moins un agrément" } });
+                return;
+            }
+            else {
+                let form = JSON.stringify(
+                    {
+                        ...this.state.values,
+                        'agrements': this.state.agrements,
+                        'job': this.state.job,
+                        'pharmacy': `api/pharmacies/${this.state.pharmacy.id}`,
+                        'day': this.state.day.value,
+                        'hour': 'api/disponibility_hours/' + this.state.hour.value
+                    }, null, 2);
+                guardApi.add(form).then(guard => {
+                    this.setState({ status: 'La garde a bien été ajoutée' });
+                    this.props.history.push(`/guards/${guard.id}/matching/`);
+                }).catch((error) => {
+                    console.log(error);
+                });
+            }
+        }
+    };
+
     handleChangeDay = day => {
         this.setState(
-            { day },
-            () => console.log(`Option selected:`, this.state.day.value)
-        );
-    };
-
-    handleChangeJob = job => {
-        this.setState(
-            { job },
-            () => console.log(`Option selected:`, this.state.job.value)
-        );
-    };
-
-    handleChangePharmacy = pharmacy => {
-        this.setState(
-            { pharmacy },
-            () => console.log(`Option selected:`, this.state.pharmacy.value)
+            { day }
         );
     };
 
     handleChangeHour = hour => {
         this.setState(
-            { hour },
-            () => console.log(`Option selected:`, this.state.hour.value)
+            { hour }
         );
     };
 
     handleChangeAggrements = aggrement => {
-        this.setState(
-            { aggrement }
-        );
+        let tab = [];
+        if (aggrement) {
+            this.setState({
+                errorSelect: {}
+            });
+            Object.keys(aggrement).forEach(function (key) {
+                tab.push(`api/agrements/${aggrement[key]['value']}`);
+            });
+            this.setState({ agrements: tab, selectedAgrements: aggrement });
+        } else {
+            this.setState({ errorSelect: { agrement: "vous devez sélectionner au moins un argument" }, agrements: [], selectedAgrements: aggrement });
+        }
+    };
+
+    loadAgrementsFromServer() {
+        agrementApi.getAll().then(agrements => {
+            let options = [];
+            agrements.forEach(agrement => {
+                options.push({ value: agrement.id, label: agrement.name })
+            });
+            this.setState({ agrementsOptions: options, areAgrementsLoaded: true });
+        }).catch((error) => {
+            console.log(error);
+            this.setState({ agrementsOptions: { value: 0, label: "Aucun agrément trouvé" } });
+        });
+    };
+
+    handleChangeJob = job => {
+        if (job) {
+            this.setState({ job: `api/jobs/${job.value}`, selectedJob: job, errorSelect: {} });
+        } else {
+            this.setState({ job: '', selectedJob: job });
+        }
+    };
+
+    loadJobsFromServer() {
+        jobApi.getAll().then(jobs => {
+            let options = [];
+            Object.keys(jobs).forEach(function (key) {
+                options.push({ value: jobs[key]['id'], label: jobs[key]['title'] });
+            });
+            this.setState({ jobsOptions: options, areJobsLoaded: true });
+        }).catch((error) => {
+            console.log(error);
+            this.setState({ jobsOptions: { value: 0, label: "Aucun agrément trouvé" } });
+        });
+    };
+
+    loadPharmacyFromServer() {
+        userApi.getPharmacy().then((pharmacy) => {
+            this.setState({
+                pharmacy: pharmacy.pharmacy
+            })
+        }).catch(error => {
+            console.log(error);
+        })
     };
 
     componentDidMount() {
         const loggedInUser = getLoggedInUser();
-        var url = new URL(process.env.REACT_APP_API_URL + "/pharmacies");
-        url.search = new URLSearchParams({
-            'hospital.region.id': loggedInUser.region.id,
-        })
-        var opt = {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + loggedInUser.token
-            }
-        };
-        fetch(url, opt).then((response) => {
-            return response.json()
-        }).then(pharmacies => {
-            const opts = [];
-            pharmacies.forEach(pharmacy => {
-                opts.push({ value: pharmacy.id, label: pharmacy.name })
-            });
-
-            this.setState({
-                pharmacies: opts
-            })
-        })
-
 
         var url2 = new URL(process.env.REACT_APP_API_URL + "/disponibility_hours");
         var opt2 = {
@@ -120,80 +172,14 @@ class Add extends Component {
             })
         })
 
-        var url3 = new URL(process.env.REACT_APP_API_URL + "/jobs");
-        var opt3 = {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + loggedInUser.token
-            }
-        };
-        fetch(url3, opt3).then((response) => {
-            return response.json()
-        }).then(jobs => {
-            const opts = [];
-            jobs.forEach(job => {
-                opts.push({ value: job.id, label: job.title })
-            });
-
-            this.setState({
-                jobs: opts
-            })
-        })
-
-        var url4 = new URL(process.env.REACT_APP_API_URL + "/agrements");
-        var opt4 = {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + loggedInUser.token
-            }
-        };
-        fetch(url4, opt4).then((response) => {
-            return response.json()
-        }).then(aggrements => {
-            const opts = [];
-            aggrements.forEach(agrement => {
-                opts.push({ value: agrement.id, label: agrement.name })
-            });
-
-            this.setState({
-                aggrements: opts
-            })
-        })
-    }
-
-    handleSubmit(event, errors, values) {
-        this.setState({ errors, values });
-
-        // API Call
-        if (!errors.length) {
-            let form = JSON.stringify(
-                {
-                    'day': this.state.day.value,
-                    'hour': 'api/disponibility_hours/' + this.state.hour.value,
-                    'pharmacy': 'api/pharmacies/' + this.state.pharmacy.value,
-                    'job': 'api/jobs/' + this.state.job.value,
-                    'agrements': ['api/agrements/' + this.state.aggrement.value],
-                }, null, 2);
-
-            Api.add(form).then(guard => {
-                this.setState({ status: 'La garde a bien été ajoutée', hour: null, day: null, pharmacy: null, job: null, aggrement: null });
-                this.props.history.push('/guards/matching/' + guard.id);
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
+        this.loadPharmacyFromServer();
+        this.loadJobsFromServer();
+        this.loadAgrementsFromServer();
     }
 
     render() {
         const { day } = this.state;
-        const { pharmacy } = this.state;
         const { hour } = this.state;
-        const { job } = this.state;
-        const { aggrement } = this.state
 
         return <React.Fragment>
             <Row className="page-title">
@@ -208,12 +194,20 @@ class Add extends Component {
                 </Col>
                 {this.state.status &&
                     <Col md={12}>
-                        <div className="mt-2 p-2">
-                            <div className="alert alert-success" role="alert" aria-label="Close">
-                                <strong>{this.state.status}</strong>
-                                <span aria-hidden="true">&times;</span>
+                        <UncontrolledAlert color="success" key="1">
+                            <strong>{this.state.status} </strong>
+                        </UncontrolledAlert>
+                    </Col>}
+                {!this.state.pharmacy &&
+                    <Col md={12} className='mt-3'>
+                        <UncontrolledAlert color="secondary" key="1">
+                            Vous devez ajouter une pharmacie avant de créer une demande de garde.
+                            <div className="mt-3">
+                                <Button href={`/pharmacy/add`} color="outline-success" key="1">
+                                    Ajouter une pharmacie
+                                </Button>
                             </div>
-                        </div>
+                        </UncontrolledAlert>
                     </Col>}
             </Row>
 
@@ -222,20 +216,10 @@ class Add extends Component {
                     <Card>
                         <CardBody>
                             <AvForm onSubmit={this.handleSubmit}>
-
-
                                 <AvGroup className="mb-3">
                                     <FormGroup>
-                                        <Label for="roleUser">Pharmacie *</Label>
-                                        <Select
-                                            placeholder="Choisir une pharmacie"
-                                            isSearchable="true"
-                                            name="pharmacy"
-                                            value={pharmacy}
-                                            onChange={this.handleChangePharmacy}
-                                            options={this.state.pharmacies}
-                                            required
-                                        />
+                                        <Label for="roleUser">Pharmacie</Label>
+                                        {this.state.pharmacy ? <p>{this.state.pharmacy.name}</p> : <p>Aucune pharmacie ajoutée</p>}
                                     </FormGroup>
                                 </AvGroup>
 
@@ -269,39 +253,53 @@ class Add extends Component {
                                     </FormGroup>
                                 </AvGroup>
 
-                                <AvGroup className="mb-3">
-                                    <FormGroup>
-                                        <Label for="roleUser">Poste *</Label>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <Label for="roleUser">Poste *</Label>
+                                    {!this.state.areJobsLoaded ?
+                                        <div>
+                                            <Spinner key="2" className="m-2" color="primary" />
+                                        </div> :
                                         <Select
+                                            name="job"
+                                            options={this.state.jobsOptions}
+                                            className="react-select"
                                             placeholder="Choisir un poste"
-                                            isSearchable="true"
-                                            name="job"
-                                            value={job}
+                                            value={this.state.selectedJob}
                                             onChange={this.handleChangeJob}
-                                            options={this.state.jobs}
-                                            required
-                                        />
-                                    </FormGroup>
-                                </AvGroup>
+                                            classNamePrefix="react-select"
+                                        />}
+                                    {this.state.errorSelect &&
+                                        <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.job}</p>}
+                                </div>
 
-                                <AvGroup className="mb-3">
-                                    <FormGroup>
-                                        <Label for="roleUser">Agréments *</Label>
+                                <div style={{ marginBottom: '15px' }}>
+                                    <Label for="agrements" style={this.state.errorSelect && { border: 'red' }}>Agréments *</Label>
+                                    {!this.state.areAgrementsLoaded ?
+                                        <div>
+                                            <Spinner key="2" className="m-2" color="primary" />
+                                        </div> :
                                         <Select
-                                            placeholder="Choisir un aggrement"
-                                            isSearchable="true"
-                                            name="job"
-                                            value={aggrement}
+                                            name="agrements"
+                                            isMulti={true}
+                                            options={this.state.agrementsOptions ? this.state.agrementsOptions :
+                                                { value: 0, label: "Aucun agrément trouvé" }}
+                                            className="react-select"
+                                            styles={this.state.errorSelect && { border: '1px solid red' }}
+                                            placeholder="Choisir des agréments"
+                                            value={this.state.selectedAgrements}
                                             onChange={this.handleChangeAggrements}
-                                            options={this.state.aggrements}
-                                            required
-                                        />
-                                    </FormGroup>
-                                </AvGroup>
-
-                                <Button color="primary" type="submit">
-                                    Ajouter
-                </Button>
+                                            classNamePrefix="react-select"></Select>}
+                                    {this.state.errorSelect &&
+                                        <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.agrement}</p>}
+                                </div>
+                                {this.state.pharmacy ?
+                                    <Button color="primary" type="submit">
+                                        Ajouter
+                                </Button> :
+                                    <Button color="primary" type="submit" disabled={true}>
+                                        Ajouter
+                                </Button>
+                                }
                             </AvForm>
                         </CardBody>
                     </Card>
@@ -310,6 +308,5 @@ class Add extends Component {
         </React.Fragment>
     }
 }
-
 
 export default Add;
