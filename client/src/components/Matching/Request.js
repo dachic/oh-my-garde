@@ -35,7 +35,7 @@ const Request = (props) => {
                 </Media>
                 <Media className="border-bottom px-3 py-4">
                     <Media body>
-                        <h5 className="mt-0 mb-1 font-weight-normal">Heure</h5>
+                        <h5 className="mt-0 mb-1 font-weight-normal">Horaire</h5>
                         <span className="text-muted">{guard.hour.name}</span>
                     </Media>
                 </Media>

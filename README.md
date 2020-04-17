@@ -89,3 +89,27 @@ cat docker/backup/db.sql | docker-compose exec -T postgres psql -U user -d ohmyg
 - [Adminer DB - http://adminer.localhost](http://adminer.localhost)
 - [Api Docs - Api Route base - http://api.localhost/api](http://api.localhost/api)
 - [Mail Dev - http://maildev.localhost/](http://maildev.localhost/)
+
+## Useful links
+
+- [react-bootstrap-table2](https://react-bootstrap-table.github.io/react-bootstrap-table2)
+
+## Bootstrap app for test
+
+Run this command if you want to have a fresh database with these users with their password :
+
+|email   | password  |
+|---|---|
+| admin@ohmygarde.app  | admin  |
+| pharmacy@ohmygarde.app  | pharmacy   |
+| intern@ohmygarde.app  | intern  |
+
+```shell
+make init-data-test
+```
+
+If you just want basic bootstrap data use this command
+
+```shell
+make init-data
+```

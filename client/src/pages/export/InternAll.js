@@ -54,17 +54,17 @@ const expandRow = {
     renderer: row => (
         <div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.lastname} ${row.firstname}`} </p>
-                <div class="list-group" style={tabMargin}>
-                    <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.email}`}</a>
-                    <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumber}`}</a>
-                </div>
+            <div class="list-group" style={tabMargin}>
+                <a href={`mailto:${row.email}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.email}`}</a>
+                <a href={`tel:${row.phoneNumber}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumber}`}</a>
+            </div>
             <p style={center} className="header-title mt-2">Informations supplementaires sur {`${row.namePharmacy}`}</p>
-                <div class="list-group" style={tabMargin}>
-                    <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
-                    <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
-                    <p  class="list-group-item list-group-item-action"><b>Pharmacie: </b>{`${row.namePharmacy}`}</p>
-                </div>
-       </div>
+            <div class="list-group" style={tabMargin}>
+                <a href={`mailto:${row.emailPharmacy}`} class="list-group-item list-group-item-action"><b>Email: </b>{`${row.emailPharmacy}`}</a>
+                <a href={`tel:${row.phoneNumberPharmacy}`} class="list-group-item list-group-item-action"><b>Téléphone: </b>{`${row.phoneNumberPharmacy}`}</a>
+                <p class="list-group-item list-group-item-action"><b>Pharmacie: </b>{`${row.namePharmacy}`}</p>
+            </div>
+        </div>
     ),
     showExpandColumn: true,
     onlyOneExpanding: true,
@@ -78,7 +78,7 @@ const expandRow = {
 const { SearchBar } = Search;
 const { ExportCSVButton } = CSVExport;
 const select = {
-   padding: '3px',
+    padding: '3px',
 };
 const cardMargin = {
     margin: '30px',
@@ -91,7 +91,7 @@ const box = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height:"80vh"
+    height: "80vh"
 };
 const center = {
     textAlign: 'center',
@@ -124,23 +124,22 @@ export default class InternPending extends Component {
         };
     }
 
-
     componentDidMount() {
-       userApi.allGuard().then(data=>{
+        userApi.allGuard().then(data => {
             this.setState({
                 interns: data
             })
-       })
+        })
     }
 
     render() {
         if (this.state.interns.length === 0) {
             return (<div style={box}>
-                        <div className="spinner-border" style={spinner} role="status">
-                        <span className="sr-only">Loading...</span>
-                        </div>
-                     </div>
-                    );
+                <div className="spinner-border" style={spinner} role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+            );
         }
 
         return (
