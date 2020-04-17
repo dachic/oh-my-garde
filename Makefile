@@ -109,3 +109,5 @@ init-data:
 	docker-compose exec apache php bin/console app:job:insert-all
 	docker-compose exec apache php bin/console app:agrement:insert-all
 	docker-compose exec apache php bin/console app:region:add Auvergne-Rhône-Alpes
+	docker-compose exec apache php bin/console app:hospital:insert-all
+	# docker-compose exec apache php bin/console app:user:add kabaconde admin@admin.com --admin
