@@ -35,7 +35,7 @@ export default {
         })
         return await res
     },
-    getPharmacy() {
+    getPharmacyId() {
         return fetch(uri(`/user/${loggedInUser.id}/pharmacy`), {
             method: 'GET',
             headers: headers
@@ -60,13 +60,25 @@ export default {
     checkUserGuard(userId, guardid) {
         delete headers['Authorization']
         return fetch(uri(`/user/${userId}/check/${guardid}`), {
-          method: 'GET',
-          headers: headers
+            method: 'GET',
+            headers: headers
         }).then((response) => {
-          // convert data from ReadableStream to JSON
-          return response.json();
+            // convert data from ReadableStream to JSON
+            return response.json();
         }).then(function (data) {
-          return Promise.resolve(data);
+            return Promise.resolve(data);
         }).catch(error => Promise.reject(error));
-      }
+    },
+    getPharmacy() {
+        const properties = "?properties[pharmacy]=name"
+        return fetch(uri(`/users/${loggedInUser.id}/${properties}`), {
+            method: 'GET',
+            headers: headers
+        }).then((response) => {
+            // convert data from ReadableStream to JSON
+            return response.json();
+        }).then(function (data) {
+            return Promise.resolve(data);
+        }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement.' }));
+    }
 };

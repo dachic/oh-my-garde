@@ -22,7 +22,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ApiFilter(SearchFilter::class, properties={"id": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact","pharmacy": "exact"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
  */
 class User  implements UserInterface

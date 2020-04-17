@@ -57,11 +57,11 @@ const pharmacyAppRoutes = {
         {
             path: '/pharmacy/edit',
             name: 'Modifier',
+            component: EditPharmacy,
             route: PrivateRoute,
             roles: ['ROLE_PHARMACY'],
         }
     ]
 };
-
 
 export default { guard, pharmacyAppRoutes }
