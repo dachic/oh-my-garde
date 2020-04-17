@@ -105,9 +105,18 @@ rsync-deploy:
 rbuild-deploy:
 	chmod +x ./script/rsync_deploy_build.sh && ./script/rsync_deploy_build.sh
 
-init-data:
+init-data-2:
+	docker-compose exec apache php bin/console app:init-app-data
+
+init-data-1:
 	docker-compose exec apache php bin/console app:job:insert-all
-	docker-compose exec apache php bin/console app:agrement:insert-all
 	docker-compose exec apache php bin/console app:region:add Auvergne-Rhône-Alpes
 	docker-compose exec apache php bin/console app:hospital:insert-all
 	# docker-compose exec apache php bin/console app:user:add kabaconde admin@admin.com --admin
+
+init-data:
+	make db-drop
+	make db-create
+	make migrate
+	make init-data-1
+	make init-data-2
