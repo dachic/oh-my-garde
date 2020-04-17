@@ -133,15 +133,10 @@ class PaginatedList extends React.Component {
                 });
             }
 
-            // change table here
-            this.props.onRefreshTableData(page, sizePerPage).then(results => {
-                this.setState(() => ({
-                    page,
-                    sizePerPage,
-                    data: results['hydra:member']
-                }));
-            });
         }, 2000);
+
+        // change table here
+        this.props.onRefreshTableData(page, sizePerPage);
     }
 
     render() {

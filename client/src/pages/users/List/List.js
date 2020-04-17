@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Button, Card, CardBody } from 'reactstrap';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import PageTitle from '../../../components/PageTitle';
-import UserListWithPaginationAndSort from './UserListWithPaginationAndSort';
 import { findAllUsersApi } from '../../../helpers/api/usersApi';
 import Loader from '../../../components/Loader';
 import PaginatedList from '../../../components/PaginatedList';
@@ -70,8 +69,8 @@ const columns = [
 
 const List = () => {
     const [results, setResults] = useState([]);
-    const [sizePerPage] = useState(10);
-    const [page] = useState(1);
+    const [sizePerPage, setSizePerPage] = useState(10);
+    const [page, setPage] = useState(1);
     const ref = useRef();
 
     useEffect(() => { // ComponentDidMount
@@ -86,9 +85,14 @@ const List = () => {
         return <Loader />;
     }
 
-
     const onRefreshTableData = (page, itemsPerPage) => {
+        setResults([]);
         return findAllUsersApi(page, itemsPerPage)
+            .then(results => {
+                setResults(results)
+                setSizePerPage(itemsPerPage)
+                setPage(page);
+            });
     }
 
     return (
@@ -106,7 +110,6 @@ const List = () => {
 
             <Row>
                 <Col>
-                    {/* <UserListWithPaginationAndSort  /> */}
                     <Card>
                         <CardBody>
                             <PaginatedList
