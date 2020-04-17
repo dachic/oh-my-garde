@@ -1,8 +1,7 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-// import cellEditFactory from 'react-bootstrap-table2-editor';
-import filterFactory, { textFilter, Comparator } from 'react-bootstrap-table2-filter';
+import filterFactory, { Comparator } from 'react-bootstrap-table2-filter';
 import PropTypes from 'prop-types';
 import { Input } from 'reactstrap';
 
@@ -89,52 +88,7 @@ class PaginatedList extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
     }
 
-    handleTableChange = (type, { page, sizePerPage, filters, sortField, sortOrder }) => {
-
-        setTimeout(() => {
-            let result = this.props.data;
-
-            // Handle column filters
-            result = result.filter((row) => {
-                let valid = true;
-                for (const dataField in filters) {
-                    const { filterVal, filterType, comparator } = filters[dataField];
-
-                    if (filterType === 'TEXT') {
-                        if (comparator === Comparator.LIKE) {
-                            valid = row[dataField].toString().indexOf(filterVal) > -1;
-                        } else {
-                            valid = row[dataField] === filterVal;
-                        }
-                    }
-                    if (!valid) break;
-                }
-                return valid;
-            });
-
-            // Handle column sort
-            if (sortOrder === 'asc') {
-                result = result.sort((a, b) => {
-                    if (a[sortField] > b[sortField]) {
-                        return 1;
-                    } else if (b[sortField] > a[sortField]) {
-                        return -1;
-                    }
-                    return 0;
-                });
-            } else {
-                result = result.sort((a, b) => {
-                    if (a[sortField] > b[sortField]) {
-                        return -1;
-                    } else if (b[sortField] > a[sortField]) {
-                        return 1;
-                    }
-                    return 0;
-                });
-            }
-
-        }, 2000);
-
+    handleTableChange = (type, { page, sizePerPage }) => {
         // change table here
         this.props.onRefreshTableData(page, sizePerPage);
     }

@@ -79,19 +79,23 @@ const List = () => {
                 setResults(results)
             })
         ref.current = true;
-    }, []);
+    }, [page, sizePerPage]);
 
     if (results.length === 0) {
         return <Loader />;
     }
 
-    const onRefreshTableData = (page, itemsPerPage) => {
-        setResults([]);
-        return findAllUsersApi(page, itemsPerPage)
-            .then(results => {
-                setResults(results)
-                setSizePerPage(itemsPerPage)
-                setPage(page);
+    const onRefreshTableData = (newPage, newItemsPerPage) => {
+        setResults([])
+        // important to update (newPage, newItemsPerPage)
+        // before api call
+        setSizePerPage(newItemsPerPage)
+        setPage(newPage);
+
+        // api call to get paginated users data
+        findAllUsersApi(newPage, newItemsPerPage)
+            .then(newResults => {
+                setResults(newResults)
             });
     }
 
