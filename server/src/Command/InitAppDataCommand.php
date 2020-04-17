@@ -37,52 +37,56 @@ class InitAppDataCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Bootstrap app with initial data');
+            ->setDescription('Bootstrap app with initial data')
+            ->addOption('test', null, InputOption::VALUE_NONE, 'If set, the test user will be created');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $isTest = $input->getOption('test');
 
         $faker = Faker\Factory::create('fr_FR');
 
         $region = $this->em->getRepository(Region::class)->find(1);
 
-        // User
-        $userAdmin = new User();
-        $userAdmin->setLastname($faker->lastName)
-            ->setFirstname($faker->firstName)
-            ->setPassword($this->passwordEncoder->encodePassword($userAdmin, 'admin'))
-            ->setEmail('admin@ohmygarde.app')
-            ->setPhoneNumber($faker->phoneNumber)
-            ->setStatus('enabled')
-            ->setRegion($region)
-            ->setRoles([UserRole::ROLE_ADMIN]);
-        $this->em->persist($userAdmin);
+        if ($isTest) {
+            // User
+            $userAdmin = new User();
+            $userAdmin->setLastname($faker->lastName)
+                ->setFirstname($faker->firstName)
+                ->setPassword($this->passwordEncoder->encodePassword($userAdmin, 'admin'))
+                ->setEmail('admin@ohmygarde.app')
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setStatus('enabled')
+                ->setRegion($region)
+                ->setRoles([UserRole::ROLE_ADMIN]);
+            $this->em->persist($userAdmin);
 
-        // pharmacy user
-        $userPharmacy = new User();
-        $userPharmacy->setLastname($faker->lastName)
-            ->setFirstname($faker->firstName)
-            ->setPassword($this->passwordEncoder->encodePassword($userPharmacy, 'pharmacy'))
-            ->setEmail('pharmacy@ohmygarde.app')
-            ->setPhoneNumber($faker->phoneNumber)
-            ->setStatus('enabled')
-            ->setRegion($region)
-            ->setRoles([UserRole::ROLE_PHARMACY]);
-        $this->em->persist($userPharmacy);
+            // pharmacy user
+            $userPharmacy = new User();
+            $userPharmacy->setLastname($faker->lastName)
+                ->setFirstname($faker->firstName)
+                ->setPassword($this->passwordEncoder->encodePassword($userPharmacy, 'pharmacy'))
+                ->setEmail('pharmacy@ohmygarde.app')
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setStatus('enabled')
+                ->setRegion($region)
+                ->setRoles([UserRole::ROLE_PHARMACY]);
+            $this->em->persist($userPharmacy);
 
-        // interne user
-        $userIntern = new User();
-        $userIntern->setLastname($faker->lastName)
-            ->setFirstname($faker->firstName)
-            ->setPassword($this->passwordEncoder->encodePassword($userIntern, 'intern'))
-            ->setEmail('intern@ohmygarde.app')
-            ->setPhoneNumber($faker->phoneNumber)
-            ->setStatus('enabled')
-            ->setRegion($region)
-            ->setRoles([UserRole::ROLE_INTERN]);
-        $this->em->persist($userIntern);
+            // interne user
+            $userIntern = new User();
+            $userIntern->setLastname($faker->lastName)
+                ->setFirstname($faker->firstName)
+                ->setPassword($this->passwordEncoder->encodePassword($userIntern, 'intern'))
+                ->setEmail('intern@ohmygarde.app')
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setStatus('enabled')
+                ->setRegion($region)
+                ->setRoles([UserRole::ROLE_INTERN]);
+            $this->em->persist($userIntern);
+        }
 
         // DisponibilityHour
         $hours = ['Jour', 'Nuit'];

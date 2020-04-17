@@ -108,6 +108,9 @@ rbuild-deploy:
 init-data-2:
 	docker-compose exec apache php bin/console app:init-app-data
 
+init-data-2-test:
+	docker-compose exec apache php bin/console app:init-app-data --test
+
 init-data-1:
 	docker-compose exec apache php bin/console app:job:insert-all
 	docker-compose exec apache php bin/console app:region:add Auvergne-Rhône-Alpes
@@ -120,3 +123,10 @@ init-data:
 	make migrate
 	make init-data-1
 	make init-data-2
+
+init-data-test:
+	make db-drop
+	make db-create
+	make migrate
+	make init-data-1
+	make init-data-2-test
