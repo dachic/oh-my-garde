@@ -89,3 +89,7 @@ cat docker/backup/db.sql | docker-compose exec -T postgres psql -U user -d ohmyg
 - [Adminer DB - http://adminer.localhost](http://adminer.localhost)
 - [Api Docs - Api Route base - http://api.localhost/api](http://api.localhost/api)
 - [Mail Dev - http://maildev.localhost/](http://maildev.localhost/)
+
+## Useful links
+
+- [react-bootstrap-table2](https://react-bootstrap-table.github.io/react-bootstrap-table2)

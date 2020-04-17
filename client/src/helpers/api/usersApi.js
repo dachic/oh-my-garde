@@ -3,17 +3,16 @@ import { getLoggedInUser } from '../authUtils';
 const url = process.env.REACT_APP_API_URL
 const loggedInUser = getLoggedInUser()
 
-const findAllUsersApi = () => {
+const findAllUsersApi = (page = 1, itemsPerPage = 10) => {
     const options = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
             'Authorization': 'Bearer ' + loggedInUser.token
         },
     };
 
-    return fetch(`${url}/users?pagination=true`, options).then(response => {
+    return fetch(`${url}/users?pagination=true&page=${page}&itemsPerPage=${itemsPerPage}`, options).then(response => {
         return response.json()
     }).then((users) => {
         return users;
