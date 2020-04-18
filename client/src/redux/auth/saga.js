@@ -41,6 +41,7 @@ function* login({ payload: { username, password } }) {
         const response = yield call(loginApi, '/login', options);
         setSession(response);
         yield put(loginUserSuccess(response));
+        document.location.reload(true); // hack redux re-initialization
     } catch (error) {
         let message;
         switch (error.status) {

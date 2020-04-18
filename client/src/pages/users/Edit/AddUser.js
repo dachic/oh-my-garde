@@ -170,7 +170,7 @@ const AddUser = (props) => {
                                                 onChange={changeRegion}
                                                 options={regions}></Select>
 
-                                            <AvFeedback>Saisissez un email</AvFeedback>
+                                            <AvFeedback>Choisissez une région</AvFeedback>
                                         </AvGroup>
                                     </Col>
                                 </Row>
