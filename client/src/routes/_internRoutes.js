@@ -6,6 +6,7 @@ const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'))
 const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
 const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
 const DisponibilityAdd = React.lazy(() => import('../pages/apps/Disponibility/Add'));
+const DisponibilityList = React.lazy(() => import('../pages/apps/Disponibility/List'));
 
 const internship = {
     path: 'internship',
@@ -52,12 +53,12 @@ const disponibility = {
         {
             path: '/disponibility/all',
             name: 'Toutes mes disponibilités',
-            component: InternList,
+            component: DisponibilityList,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],
         },
         {
-            path: '/disponibility/edit',
+            path: '/disponibility/edit/:id',
             component: EditInternship,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],

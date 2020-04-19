@@ -88,12 +88,12 @@ const DisponibilityAdd = () => {
                                     </UncontrolledAlert>}
 
                                     <AvGroup className="">
-                                        <Label for="hour">Créneau</Label>
+                                        <Label for="hour">Créneau horaire</Label>
                                         <Select
                                             className="react-select"
                                             classNamePrefix="react-select"
                                             isClearable="true"
-                                            placeholder="Créneau horaire"
+                                            placeholder="Choisissez un créneau"
                                             onChange={changeHour}
                                             options={hours}></Select>
 
@@ -106,11 +106,11 @@ const DisponibilityAdd = () => {
                                             className="react-select"
                                             classNamePrefix="react-select"
                                             isClearable="true"
-                                            placeholder="Jour de la semaine"
+                                            placeholder="Choisissez un jour de la semaine"
                                             onChange={changeDay}
                                             options={days}></Select>
 
-                                        <AvFeedback>Choisissez un créneau</AvFeedback>
+                                        <AvFeedback>Choisissez un jour de la semaine</AvFeedback>
                                     </AvGroup>
                                 </Col>
                             </Row>

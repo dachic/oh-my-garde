@@ -37,5 +37,15 @@ export default {
         }).then(function (data) {
             return Promise.resolve(data);
         }).catch(error => Promise.reject(error));
+    },
+    findAllUserDisponibilities() {
+        return fetch(uri(`/disponibilities?user.id=${loggedInUser.id}&properties[hour]=name&properties[]=id&properties[]=day&properties[]=createdAt&properties[]=updatedAt`), {
+            method: 'GET',
+            headers: headers,
+        }).then((response) => {
+            return response.json();
+        }).then(function (data) {
+            return Promise.resolve(data);
+        }).catch(error => Promise.reject(error));
     }
 };
