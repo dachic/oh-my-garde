@@ -6,6 +6,7 @@ const InternApp = React.lazy(() => import('../pages/apps/Intern/AddInternship'))
 const InternList = React.lazy(() => import('../pages/apps/Intern/AllInternships'));
 const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInternship'));
 const DisponibilityAdd = React.lazy(() => import('../pages/apps/Disponibility/Add'));
+const DisponibilityEdit = React.lazy(() => import('../pages/apps/Disponibility/Edit'));
 const DisponibilityList = React.lazy(() => import('../pages/apps/Disponibility/List'));
 
 const internship = {
@@ -59,7 +60,7 @@ const disponibility = {
         },
         {
             path: '/disponibility/edit/:id',
-            component: EditInternship,
+            component: DisponibilityEdit,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],
             hidden: true

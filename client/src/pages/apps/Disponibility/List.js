@@ -53,8 +53,8 @@ const columns = [
 
 const List = () => {
     const [results, setResults] = useState([]);
-    const [sizePerPage, setSizePerPage] = useState(20);
-    const [page, setPage] = useState(1);
+    const [sizePerPage] = useState(20);
+    const [page] = useState(1);
     const ref = useRef();
 
     useEffect(() => { // ComponentDidMount

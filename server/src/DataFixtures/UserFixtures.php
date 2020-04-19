@@ -98,7 +98,7 @@ class UserFixtures extends Fixture
         $manager->persist($userIntern);
 
         // DisponibilityHour
-        $hours = ["Jour", "Nuit"];
+        $hours = ["Jour", "Nuit", "Jour et Nuit"];
 
         for ($i = 0; $i < sizeof($hours); $i++) {
             $disponibilityHour = new DisponibilityHour();

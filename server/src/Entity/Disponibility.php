@@ -12,7 +12,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\DisponibilityRepository")
- * @ApiFilter(SearchFilter::class, properties={"user.id": "exact","day": "exact", "hour.id": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "user.id": "exact","day": "exact", "hour.id": "exact"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
  */
 class Disponibility
