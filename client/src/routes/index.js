@@ -29,7 +29,7 @@ if (loggedInUser !== null) {
         appRoutes = [pharmacyRoutes.pharmacyAppRoutes, pharmacyRoutes.guard];
     }
     else if (loggedInUser.role === 'ROLE_INTERN') {
-        appRoutes = [internRoutes.internship];
+        appRoutes = [internRoutes.internship, internRoutes.disponibility];
     }
     else if (loggedInUser.role === 'ROLE_ADMIN') {
         appRoutes = [adminRoutes.guard, adminRoutes.usersRoutes];
