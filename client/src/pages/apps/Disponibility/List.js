@@ -79,9 +79,9 @@ const List = () => {
                 <Col md={12}>
                     <PageTitle
                         breadCrumbItems={[
-                            { label: 'Tous les utilisateurs', path: '/users/all', active: true },
+                            { label: 'Toutes mes disponibilités', path: '/disponibility/all', active: true },
                         ]}
-                        title={'Tous les utilisateurs'}
+                        title={'Toutes mes disponibilités'}
                     />
                 </Col>
             </Row>
@@ -90,7 +90,7 @@ const List = () => {
                 <Col>
                     <Card>
                         <CardBody>
-                             <PaginatedList
+                            <PaginatedList
                                 page={page}
                                 data={results}
                                 totalSize={results.length}

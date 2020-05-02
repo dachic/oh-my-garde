@@ -118,7 +118,7 @@ class List extends Component {
                         this.state.guardsList.map((record, index) => {
                           return (
                             <tr key={index} className="text-center">
-                              <th scope="row">{record.id}feh</th>
+                              <th scope="row">{record.id}</th>
                               <td>{record.job.title}</td>
                               <td>{record.pharmacy.name}</td>
                               <td>{
