@@ -48,7 +48,7 @@ const Request = (props) => {
                 <Media className="border-bottom px-3 py-4">
                     <Media body>
                         <h5 className="mt-0 mb-1 font-weight-normal">Aggrements</h5>
-                        {guard.agrements.map(agrement => <span key={agrement.id} className="text-muted">{agrement.code}</span>
+                        {guard.agrements.map(agrement => <span key={agrement.id} className="text-muted">{agrement.code} </span>
                         )}
                     </Media>
                 </Media>

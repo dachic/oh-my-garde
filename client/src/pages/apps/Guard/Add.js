@@ -280,11 +280,10 @@ class Add extends Component {
                                         </div> :
                                         <Select
                                             name="agrements"
-                                            isMulti={true}
-                                            options={this.state.agrementsOptions ? this.state.agrementsOptions :
-                                                { value: 0, label: "Aucun agrément trouvé" }}
+                                            // isMulti={true}
+                                            options={this.state.agrementsOptions}
                                             className="react-select"
-                                            styles={this.state.errorSelect && { border: '1px solid red' }}
+                                            styles={this.state.errorSelect}
                                             placeholder="Choisir des agréments"
                                             value={this.state.selectedAgrements}
                                             onChange={this.handleChangeAggrements}
