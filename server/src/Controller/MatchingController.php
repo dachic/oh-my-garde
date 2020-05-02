@@ -40,6 +40,7 @@ class MatchingController
         return new Response($this->castJson($ranking), 200, ['Content-Type' => 'application/json']);
     }
 
+    // Slect the five best scores and order by best score
     public function sortByBestRanked($internsScore, $limit = 5)
     {
         $tempRanking = [];
@@ -65,6 +66,7 @@ class MatchingController
         $internsScore = [];
 
         foreach ($interns as $intern) {
+            // First check if intern is available then calculate his score
             if ($this->isAvailable($intern, $guard)) {
                 $score = $this->calculateScore($guard, $intern);
                 array_push($internsScore, ["intern" => $intern, "score" => $score]);
@@ -76,6 +78,7 @@ class MatchingController
 
     public function isAvailable($intern, $guard)
     {
+        // Check region than check schedule
         if ($guard->getPharmacy()->getHospital()->getRegion() == $intern->getRegion()) {
             foreach ($intern->getDisponibilities() as $disponibility) {
                 if (($disponibility->getHour() == $guard->getHour()) && ($disponibility->getDay() == $guard->getDay())) {
@@ -93,20 +96,16 @@ class MatchingController
 
         $skills = $this->getSkills($intern);
 
+        // Check if the intern has worked in the same hospital before
         if ($this->hasSkills($guard->getPharmacy()->getId(), $skills['pharmacyWhereWorked'])) {
             $score['total'] += Score::WORKED_AT_HOSPITAL;
             array_push($score['attribute'], 'WORKED_AT_HOSPITAL');
         }
 
+        // Check if the intern has the required agrements
         if ($this->hasAllAgrements($guard->getAgrements(), $skills['approvals'])) {
             $score['total'] += Score::HAS_REQUIRED_APPROVALS;
             array_push($score['attribute'], 'HAS_REQUIRED_APPROVALS');
-        }
-
-        // TODO: see if keep this field
-        if ($this->hasSkills($guard->getJob()->getTitle(), $skills['heldPosition'])) {
-            $score['total'] += Score::WORKED_IN_A_SAME_POSITION;
-            array_push($score['attribute'], 'WORKED_IN_A_SAME_POSITION');
         }
 
         $score['percent'] = round(($score['total'] * 100) / score::MAXIMUM_SCORE);
@@ -118,6 +117,7 @@ class MatchingController
         return in_array($request, $skills);
     }
 
+    // Check that intern has the required agrements
     public function hasAllAgrements($requests, $agrements)
     {
         foreach ($requests as $agrement) {
@@ -128,22 +128,22 @@ class MatchingController
         return true;
     }
 
+    // Store for each internship, pharmacy's id, agrements and position
     public function getSkills($intern)
     {
         $skills['pharmacyWhereWorked'] = [];
-        $skills['heldPosition'] = [];
-        $skills['approvals'] = [];
+        $skills['approvals'] = []; //Agrements
 
         foreach ($intern->getInterships() as $internship) {
             array_push($skills['pharmacyWhereWorked'], $internship->getHospital()->getPharmacy()->getId());
             foreach ($internship->getAgrements() as $agrement) {
                 array_push($skills['approvals'], $agrement->getCode());
             }
-            array_push($skills['heldPosition'], $internship->getPosition());
         }
         return $skills;
     }
 
+    // Send JSON response with all attributes
     public function castJson($ranking)
     {
         $encoders = array(new JsonEncoder());

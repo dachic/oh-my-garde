@@ -3,12 +3,17 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\DisponibilityRepository")
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "user.id": "exact","day": "exact", "hour.id": "exact"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
  */
 class Disponibility
 {

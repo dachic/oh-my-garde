@@ -1,5 +1,5 @@
 sf-env ?= dev
-sf-debug ?= 0
+sf-debug ?= 1
 
 up:
 	docker-compose up -d --force-recreate --build
@@ -104,3 +104,29 @@ rsync-deploy:
 
 rbuild-deploy:
 	chmod +x ./script/rsync_deploy_build.sh && ./script/rsync_deploy_build.sh
+
+init-data-2:
+	docker-compose exec apache php bin/console app:init-app-data
+
+init-data-2-test:
+	docker-compose exec apache php bin/console app:init-app-data --test
+
+init-data-1:
+	docker-compose exec apache php bin/console app:job:insert-all
+	docker-compose exec apache php bin/console app:region:add Auvergne-Rhône-Alpes
+	docker-compose exec apache php bin/console app:hospital:insert-all
+	# docker-compose exec apache php bin/console app:user:add kabaconde admin@admin.com --admin
+
+init-data:
+	make db-drop
+	make db-create
+	make migrate
+	make init-data-1
+	make init-data-2
+
+init-data-test:
+	make db-drop
+	make db-create
+	make migrate
+	make init-data-1
+	make init-data-2-test

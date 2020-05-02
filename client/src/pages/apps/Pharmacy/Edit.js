@@ -79,7 +79,7 @@ class Edit extends Component {
   }
 
   loadPharmacy() {
-    userApi.getPharmacy(this.state.pharmacyId).then(pharmacy => {
+    userApi.getPharmacyId(this.state.pharmacyId).then(pharmacy => {
       this.setState({
         pharmacyId: pharmacy.pharmacyId,
         isPharmacyLoaded: true

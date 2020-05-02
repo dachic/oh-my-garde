@@ -2,46 +2,30 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Button, Card, CardBody } from 'reactstrap';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import PageTitle from '../../../components/PageTitle';
-import { findAllUsersApi } from '../../../helpers/api/usersApi';
+import disponibilityApi from '../../../api/disponibility';
 import Loader from '../../../components/Loader';
 import PaginatedList from '../../../components/PaginatedList';
 import { Link } from 'react-router-dom';
 import { formatDateForTable } from '../../../helpers/dateUtils';
+import getDayMapping from '../../../helpers/dayMapping';
 
 const columns = [
-    // {
-    //     dataField: 'id',
-    //     text: 'ID',
-    //     sort: true,
-    // },
     {
-        dataField: 'firstname',
-        text: 'Prénom',
-        sort: true,
-    },
-    {
-        dataField: 'lastname',
-        text: 'Prénom',
-        sort: true,
-    },
-    {
-        dataField: 'email',
-        text: 'Email',
-        sort: true,
-    },
-    {
-        dataField: 'phoneNumber',
-        text: 'Numéro de téléphone',
+        dataField: 'day',
+        text: 'Jour de la semaine',
         sort: false,
+        formatter: (cell, row) => {
+            return getDayMapping(row.day)
+        }
     },
     {
-        dataField: 'roleAsString',
-        text: 'Rôle',
+        dataField: 'hour.name',
+        text: 'Créneau',
         sort: true,
     },
     {
         dataField: "createdAt",
-        text: "Date d'inscription",
+        text: "Date de création",
         sort: true,
         formatter: (cell, row) => {
             return formatDateForTable(row.createdAt)
@@ -60,7 +44,7 @@ const columns = [
         text: 'Modifier',
         sort: false,
         formatter: (cell, row) => {
-            return <Link to={{ pathname: `/users/edit/${row.id}` }}>
+            return <Link to={{ pathname: `/disponibility/edit/${row.id}` }}>
                 <Button color="primary">Modifier </Button>
             </Link>
         }
@@ -69,12 +53,12 @@ const columns = [
 
 const List = () => {
     const [results, setResults] = useState([]);
-    const [sizePerPage, setSizePerPage] = useState(10);
-    const [page, setPage] = useState(1);
+    const [sizePerPage] = useState(20);
+    const [page] = useState(1);
     const ref = useRef();
 
     useEffect(() => { // ComponentDidMount
-        findAllUsersApi(page, sizePerPage)
+        disponibilityApi.findAllUserDisponibilities()
             .then(results => {
                 setResults(results)
             })
@@ -86,17 +70,7 @@ const List = () => {
     }
 
     const onRefreshTableData = (newPage, newItemsPerPage) => {
-        setResults([])
-        // important to update (newPage, newItemsPerPage)
-        // before api call
-        setSizePerPage(newItemsPerPage)
-        setPage(newPage);
-
-        // api call to get paginated users data
-        findAllUsersApi(newPage, newItemsPerPage)
-            .then(newResults => {
-                setResults(newResults)
-            });
+        // not refresh needed
     }
 
     return (
@@ -105,9 +79,9 @@ const List = () => {
                 <Col md={12}>
                     <PageTitle
                         breadCrumbItems={[
-                            { label: 'Tous les utilisateurs', path: '/users/all', active: true },
+                            { label: 'Toutes mes disponibilités', path: '/disponibility/all', active: true },
                         ]}
-                        title={'Tous les utilisateurs'}
+                        title={'Toutes mes disponibilités'}
                     />
                 </Col>
             </Row>
@@ -118,8 +92,8 @@ const List = () => {
                         <CardBody>
                             <PaginatedList
                                 page={page}
-                                data={results['hydra:member']}
-                                totalSize={results['hydra:totalItems']}
+                                data={results}
+                                totalSize={results.length}
                                 columns={columns}
                                 sizePerPage={sizePerPage}
                                 onRefreshTableData={onRefreshTableData}

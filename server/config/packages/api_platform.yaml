@@ -9,6 +9,8 @@ api_platform:
             enabled: true
             client_enabled: true
             enabled_parameter_name: pagination # optional
+            client_items_per_page: true
+            items_per_page_parameter_name: itemsPerPage # Default value
 
     swagger:
         versions: [3]

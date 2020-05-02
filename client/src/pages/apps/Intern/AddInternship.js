@@ -83,7 +83,7 @@ class AddInternship extends Component {
       this.setState({ agrementsOptions: options, areAgrementsLoaded: true });
     }).catch((error) => {
       console.log(error);
-      this.setState({ pharmaciesOptions: { value: 0, label: "Aucun agrément trouvé" } });
+      this.setState({ agrementsOptions: { value: 0, label: "Aucun agrément trouvé" } });
     });
   }
 

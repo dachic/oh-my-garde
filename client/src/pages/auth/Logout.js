@@ -8,6 +8,7 @@ class Logout extends Component {
 
     componentDidMount() {
         this.props.logoutUser(this.props.history);
+        document.location.reload(true); // hack redux re-initialization
     }
 
     render() {

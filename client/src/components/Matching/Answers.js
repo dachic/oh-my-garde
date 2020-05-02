@@ -18,8 +18,8 @@ const Answers = props => {
         return skills.includes(aggrement) ? (
             <span className="badge badge-soft-success py-1">OK</span>
         ) : (
-            <span className="badge badge-soft-danger py-1">KO</span>
-        );
+                <span className="badge badge-soft-danger py-1">KO</span>
+            );
     }
 
     function displayInternDetails(index, e) {
@@ -51,82 +51,69 @@ const Answers = props => {
                                     title="Critère 2"
                                 />
                             </th>
-                            <th>
-                                <TooltipCriteria
-                                    id="thirdCriteria"
-                                    description="l'Interne a occupé un poste identique"
-                                    title="Critère 3"
-                                />
-                            </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {ranking == null ?
-                        <tr>
+                            <tr>
                                 <td colSpan="7" style={{ textAlign: "center" }}>
                                     En cours de chargement...
                                 </td>
                             </tr> : !ranking.length ? (
-                                    <tr>
-                                        <td colSpan="7" style={{ textAlign: "center" }}>
-                                                                Aucun interne à proposer
+                                <tr>
+                                    <td colSpan="7" style={{ textAlign: "center" }}>
+                                        Aucun interne à proposer
                                       </td>
-                                    </tr>
-                        ) : (
-                            ranking.map((rank, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>
-                                            <InternDetails
-                                                contact={rank.intern}
-                                                rank={index}
-                                            />
-                                            <a
-                                                href="#index"
-                                                onMouseOver={e =>displayInternDetails(index,e)}
-                                                onMouseOut={e => {
-                                                    displayInternDetails(
-                                                        index,
-                                                        e
-                                                    );
-                                                }}
-                                            >
-                                                {rank.intern.lastname.toUpperCase()}{" "}
-                                                {rank.intern.firstname}
-                                            </a>
-                                        </td>
-                                        <td>{rank.score.percent} %</td>
-                                        <td>
-                                            {getBadge(
-                                                rank.score.attribute,
-                                                "WORKED_AT_HOSPITAL"
-                                            )}
-                                        </td>
-                                        <td>
-                                            {getBadge(
-                                                rank.score.attribute,
-                                                "HAS_REQUIRED_APPROVALS"
-                                            )}
-                                        </td>
-                                        <td>
-                                            {getBadge(
-                                                rank.score.attribute,
-                                                "WORKED_IN_A_SAME_POSITION"
-                                            )}
-                                        </td>
-                                        <td>
-                                            <AffectButton
-                                                score={rank.score}
-                                                intern={rank.intern}
-                                                guard={props.guard}
-                                            />
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        )}
+                                </tr>
+                            ) : (
+                                    ranking.map((rank, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>
+                                                    <InternDetails
+                                                        contact={rank.intern}
+                                                        rank={index}
+                                                    />
+                                                    <a
+                                                        href="#index"
+                                                        onMouseOver={e => displayInternDetails(index, e)}
+                                                        onMouseOut={e => {
+                                                            displayInternDetails(
+                                                                index,
+                                                                e
+                                                            );
+                                                        }}
+                                                    >
+                                                        {rank.intern.lastname.toUpperCase()}{" "}
+                                                        {rank.intern.firstname}
+                                                    </a>
+                                                </td>
+                                                <td>{rank.score.percent} %</td>
+                                                <td>
+                                                    {getBadge(
+                                                        rank.score.attribute,
+                                                        "WORKED_AT_HOSPITAL"
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {getBadge(
+                                                        rank.score.attribute,
+                                                        "HAS_REQUIRED_APPROVALS"
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <AffectButton
+                                                        score={rank.score}
+                                                        intern={rank.intern}
+                                                        guard={props.guard}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                )}
                     </tbody>
                 </Table>
             </CardBody>
