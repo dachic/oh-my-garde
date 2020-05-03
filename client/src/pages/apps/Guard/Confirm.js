@@ -5,13 +5,12 @@ import userApi from '../../../api/user';
 class Confirm extends Component {
   constructor(props) {
     super(props);
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('id');
-    const guardId = urlParams.get('guard');
+
+    const { id, guard } = props.match.params;
 
     this.state = {
-      userId: userId,
-      guardId: guardId,
+      userId: id,
+      guardId: guard,
       isValid: '',
       isLoaded: false
     };

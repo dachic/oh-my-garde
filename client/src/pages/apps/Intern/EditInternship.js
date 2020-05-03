@@ -13,9 +13,7 @@ class EditInternship extends Component {
   constructor(props) {
     super(props);
     const loggedInUser = getLoggedInUser();
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+    const { id } = props.match.params;
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {

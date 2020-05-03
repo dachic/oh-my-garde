@@ -30,7 +30,7 @@ const internship = {
             roles: ['ROLE_INTERN'],
         },
         {
-            path: '/internship/edit',
+            path: '/internship/edit/:id(\\d+)',
             component: EditInternship,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],

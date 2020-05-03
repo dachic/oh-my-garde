@@ -280,7 +280,7 @@ class Add extends Component {
                                         </div> :
                                         <Select
                                             name="agrements"
-                                            // isMulti={true}
+                                            isMulti={true}
                                             options={this.state.agrementsOptions}
                                             className="react-select"
                                             styles={this.state.errorSelect}
