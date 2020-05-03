@@ -152,6 +152,9 @@
     "martin-georgiev/postgresql-for-doctrine": {
         "version": "v1.3.0"
     },
+    "mcaskill/php-array-group-by": {
+        "version": "1.0.0"
+    },
     "monolog/monolog": {
         "version": "1.25.3"
     },
