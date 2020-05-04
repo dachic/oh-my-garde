@@ -13,9 +13,7 @@ class EditInternship extends Component {
   constructor(props) {
     super(props);
     const loggedInUser = getLoggedInUser();
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+    const { id } = props.match.params;
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
@@ -142,10 +140,7 @@ class EditInternship extends Component {
       <Row className="page-title">
         <Col md={12}>
           <PageTitle
-            breadCrumbItems={[
-              { label: 'Forms', path: '/forms/validation' },
-              { label: 'Back', path: '/forms/validation', active: true },
-            ]}
+            breadCrumbItems={[]}
             title={'Modifier les données de mon stage'}
           />
         </Col>

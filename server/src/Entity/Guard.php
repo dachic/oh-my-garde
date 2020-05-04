@@ -16,7 +16,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\GuardRepository")
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
- * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact","user":"exact"})
  */
 class Guard
 {

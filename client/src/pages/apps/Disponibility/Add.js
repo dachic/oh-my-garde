@@ -69,10 +69,7 @@ const DisponibilityAdd = (props) => {
             <Row className="page-title">
                 <Col md={12}>
                     <PageTitle
-                        breadCrumbItems={[
-                            { label: 'Disponibilité', path: '/disponibility/all' },
-                            { label: "Ajouter une disponibilité", path: "/disponibility/add", active: true },
-                        ]}
+                        breadCrumbItems={[]}
                         title={"Ajouter une disponibilité"}
                     />
                 </Col>

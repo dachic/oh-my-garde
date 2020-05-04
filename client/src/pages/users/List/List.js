@@ -9,11 +9,6 @@ import { Link } from 'react-router-dom';
 import { formatDateForTable } from '../../../helpers/dateUtils';
 
 const columns = [
-    // {
-    //     dataField: 'id',
-    //     text: 'ID',
-    //     sort: true,
-    // },
     {
         dataField: 'firstname',
         text: 'Prénom',
@@ -104,9 +99,7 @@ const List = () => {
             <Row className="page-title">
                 <Col md={12}>
                     <PageTitle
-                        breadCrumbItems={[
-                            { label: 'Tous les utilisateurs', path: '/users/all', active: true },
-                        ]}
+                        breadCrumbItems={[]}
                         title={'Tous les utilisateurs'}
                     />
                 </Col>

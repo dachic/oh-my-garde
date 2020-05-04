@@ -33,10 +33,7 @@ class AllInternships extends Component {
       <Row className="page-title">
         <Col md={12}>
           <PageTitle
-            breadCrumbItems={[
-              { label: 'Forms', path: '/forms/validation' },
-              { label: 'Back', path: '/forms/validation', active: true },
-            ]}
+            breadCrumbItems={[]}
             title={'Liste de mes stages'}
           />
         </Col>
@@ -76,7 +73,7 @@ class AllInternships extends Component {
                             </td>
                             <td>{DateTime.fromISO(record.creation).toSQLDate().toString()}</td>
                             <td>
-                              <Button href={`/internship/edit?id=${record.id}`} color="outline-primary" key={index}>
+                              <Button href={`/internship/edit/${record.id}`} color="outline-primary" key={index}>
                                 Modifier
                             </Button>
                             </td>

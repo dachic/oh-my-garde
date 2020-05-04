@@ -104,10 +104,7 @@ const DisponibilityEdit = (props) => {
             <Row className="page-title">
                 <Col md={12}>
                     <PageTitle
-                        breadCrumbItems={[
-                            { label: 'Disponibilité', path: '/disponibility/all' },
-                            { label: "Modifier une disponibilité", path: `/disponibility/edit/${disponibility.id}`, active: true },
-                        ]}
+                        breadCrumbItems={[]}
                         title={"Modifier une disponibilité"}
                     />
                 </Col>

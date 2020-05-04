@@ -84,10 +84,7 @@ class Add extends Component {
             <Row className="page-title">
                 <Col md={12}>
                     <PageTitle
-                        breadCrumbItems={[
-                            { label: 'Forms', path: '/forms/validation' },
-                            { label: '', path: '/forms/validation', active: true },
-                        ]}
+                        breadCrumbItems={[]}
                         title={'Ajouter une nouvelle pharmacie'}
                     />
                 </Col>
@@ -155,7 +152,7 @@ class Add extends Component {
                                 </AvGroup>
                                 <Button color="primary" type="submit">
                                     Ajouter
-                </Button>
+                                </Button>
                             </AvForm>
                         </CardBody>
                     </Card>

@@ -120,10 +120,7 @@ class AddInternship extends Component {
       <Row className="page-title">
         <Col md={12}>
           <PageTitle
-            breadCrumbItems={[
-              { label: 'Forms', path: '/forms/validation' },
-              { label: '', path: '/forms/validation', active: true },
-            ]}
+            breadCrumbItems={[]}
             title={'Ajouter un stage'}
           />
         </Col>

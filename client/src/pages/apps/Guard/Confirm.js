@@ -1,17 +1,21 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Spinner } from 'reactstrap';
+
 import userApi from '../../../api/user';
+import { getLoggedInUser } from '../../../helpers/authUtils';
+import user from '../../../api/user';
 
 class Confirm extends Component {
   constructor(props) {
     super(props);
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('id');
-    const guardId = urlParams.get('guard');
+
+    const { id, guard } = props.match.params;
+    const user = getLoggedInUser();
 
     this.state = {
-      userId: userId,
-      guardId: guardId,
+      loggedInUser: user,
+      userId: id,
+      guardId: guard,
       isValid: '',
       isLoaded: false
     };
@@ -46,9 +50,13 @@ class Confirm extends Component {
                   <div className="alert alert-success" role="alert">
                     <p className="text-center">Votre acceptation de garde a bien été prise en compte !</p>
                     <div className="mt-3 d-flex justify-content-center">
-                      <Button href="/account/login" color="outline-secondary" key="1">
-                        Me connecter à mon espace
-                  </Button>
+                      {!this.state.loggedInUser ?
+                        <Button href="/account/login" color="outline-secondary" key="1">
+                          Me connecter à mon espace
+                      </Button> :
+                        <Button href="/guards/list" color="outline-secondary" key="1">
+                          Revenir à la liste des gardes
+                      </Button>}
                     </div>
                   </div> :
                   <div className="alert alert-danger" role="alert">
