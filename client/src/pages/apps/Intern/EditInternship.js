@@ -140,10 +140,7 @@ class EditInternship extends Component {
       <Row className="page-title">
         <Col md={12}>
           <PageTitle
-            breadCrumbItems={[
-              { label: 'Forms', path: '/forms/validation' },
-              { label: 'Back', path: '/forms/validation', active: true },
-            ]}
+            breadCrumbItems={[]}
             title={'Modifier les données de mon stage'}
           />
         </Col>

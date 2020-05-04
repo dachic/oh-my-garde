@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import { Row, Col, Card, CardBody, Table, Badge, Button, Spinner } from 'reactstrap';
 
+import { getLoggedInUser } from '../../../helpers/authUtils';
 import PageTitle from '../../../components/PageTitle';
 import guardApi from '../../../api/guard';
 
-class List extends Component {
+class GuardListPending extends Component {
   constructor(props) {
     super(props);
 
+    const loggedInUser = getLoggedInUser();
+
     this.state = {
+      user: loggedInUser,
       status: '',
       guardsList: [],
       isloaded: false,
@@ -17,8 +21,14 @@ class List extends Component {
   }
 
   loadGuards() {
-    guardApi.getAll().then(guards => {
-      this.setState({ guardsList: guards, isloaded: true });
+    guardApi.getAll('intern').then(guards => {
+      let options = []
+      guards.forEach(guard => {
+        if (guard.status === 'pending') {
+          options.push(guard)
+        }
+      });
+      this.setState({ guardsList: options, isloaded: true });
     }).catch((error) => {
       console.log(error);
       this.setState({ isloaded: true });
@@ -84,7 +94,7 @@ class List extends Component {
           <Col md={12}>
             <PageTitle
               breadCrumbItems={[]}
-              title={'Liste des gardes'}
+              title={'Liste de mes gardes en attente'}
             />
           </Col>
         </Row>
@@ -105,7 +115,6 @@ class List extends Component {
                         <th >Agréments</th>
                         <th className="text-center">Horaires</th>
                         <th className="text-center">Status</th>
-                        <th className="text-center">Affecté à</th>
                         <th className="text-center">Action</th>
                       </tr>
                     </thead>
@@ -125,25 +134,17 @@ class List extends Component {
                               </td>
                               <td>{this.formatDay(record.day)} / {record.hour.name}</td>
                               <td>{this.formatStatus(record.status)}</td>
-                              <td>{record.user ? record.user.firstname : 'Non affecté'}</td>
                               <td>
-                                {record.status === 'pending' && !record.user ?
-                                  <Button href={`./${record.id}/matching`} color="outline-primary" key="1">
-                                    Affecter
-                                </Button> :
-                                  <Button href={`./${record.id}/matching`} color="outline-primary" key="1" disabled={true}>
-                                    Affecter
-                                </Button>}
+                                <Button href={`/guard/confirm/${this.state.user.id}/${record.id}`} color="outline-primary" key="1">
+                                  Accepter
+                                </Button>
                               </td>
                             </tr>
                           );
                         })
                         : <tr>
                           <td colSpan="8" className="text-center">
-                            <strong><p>Vous n'avez pas encore ajouter de garde.</p></strong>
-                            <Button href={`/guards/add`} color="outline-primary" key="1">
-                              Ajouter une guarde
-                              </Button>
+                            <strong><p>Vous n'avez pas de gardes en attente.</p></strong>
                           </td>
                         </tr>}
                     </tbody>
@@ -156,4 +157,4 @@ class List extends Component {
     )
   }
 }
-export default List;
+export default GuardListPending;

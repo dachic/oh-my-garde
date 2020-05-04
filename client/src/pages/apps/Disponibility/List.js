@@ -78,9 +78,7 @@ const List = () => {
             <Row className="page-title">
                 <Col md={12}>
                     <PageTitle
-                        breadCrumbItems={[
-                            { label: 'Toutes mes disponibilités', path: '/disponibility/all', active: true },
-                        ]}
+                        breadCrumbItems={[]}
                         title={'Toutes mes disponibilités'}
                     />
                 </Col>
