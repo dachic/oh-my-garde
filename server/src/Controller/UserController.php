@@ -4,16 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Guard;
-use App\Entity\Pharmacy;
-use App\Entity\DisponibilityHour;
 use App\Repository\UserRepository;
 use App\Repository\GuardRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use App\Repository\DisponibilityHourRepository;
 
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -21,77 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/guard/count", name="user_index", methods={"GET","POST"})
-     */
-    public function index(/*Request $request*/ ): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $repository_guard = $this->getDoctrine()->getRepository(Guard::class);
-
-        $array = $repository_guard->findAllGroup();
-
-        $newArray = [];
-       foreach($array as $k => $value){
-           array_push($newArray,[
-               'id'         => $k+1,
-               'firstname' => $value['firstname'],
-               'IdUtilisateur' => $value['IdUtilisateur'],
-               'lastname'=> $value['lastname'],
-               'namePharmacy'=> $value['name'],
-               'horaire'=> $value['hour'],
-               'phoneNumber'=> $value['phoneNumber'],
-               'email'=> $value['email'],
-               'emailPharmacy'=> $value['emailPharmacy'],
-               'phoneNumberPharmacy'=> $value['phoneNumberPharmacy'],
-               'hospital'=> $value['hospital'],
-               'nbGarde'=> $value['nbJour'],
-               /*'limit'=> $limit ,
-               'page'=> $page,*/
-
-           ]);
-
-       }
-
-        return $this->json($newArray);
-
-    }
-     /**
-     * @Route("/guard/pending", name="user_pending", methods={"GET","POST"})
-     */
-    public function pending(): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-
-
-        $repository_guard = $this->getDoctrine()->getRepository(Guard::class);
-
-
-        $array = $repository_guard->findPending(/*$page,$limit*/);
-
-        $newArray = [];
-        foreach($array as $k => $value){
-            array_push($newArray,[
-                'id'         => $k+1,
-                'firstname' => $value['firstname'],
-                'IdUtilisateur' => $value['IdUtilisateur'],
-                'lastname'=> $value['lastname'],
-                'namePharmacy'=> $value['name'],
-                'horaire'=> $value['hour'],
-                'phoneNumber'=> $value['phoneNumber'],
-                'email'=> $value['email'],
-                'emailPharmacy'=> $value['emailPharmacy'],
-                'phoneNumberPharmacy'=> $value['phoneNumberPharmacy'],
-                'hospital'=> $value['hospital']
-            ]);
-
-        }
-
-        return $this->json($newArray);
-
-    }
-
     /**
      * @param User $user
      * @Route("/{id}/internships", name="user_internships", requirements={"id"="\d+"}, methods={"GET"})
@@ -102,17 +28,16 @@ class UserController extends AbstractController
         $infosAgr = [];
         $array = [];
         $agr = [];
-        $colors = ['primary','success', 'danger', 'warning', 'info'];
-        foreach ($user->getInterships() as $intership){
-            foreach($intership->getAgrements() as $agrement)
-            {
+        $colors = ['primary', 'success', 'danger', 'warning', 'info'];
+        foreach ($user->getInterships() as $intership) {
+            foreach ($intership->getAgrements() as $agrement) {
                 shuffle($colors);
                 $agr = [
                     "code" => $agrement->getCode(),
                     "name" => $agrement->getName(),
                     "color" => $colors[0]
                 ];
-                 array_push($infosAgr ,$agr);
+                array_push($infosAgr, $agr);
             }
             $infos = [
                 'id'  => $intership->getId(),
@@ -121,7 +46,7 @@ class UserController extends AbstractController
                 'agrement'  => $infosAgr,
                 'creation'  => $intership->getCreatedAt()
             ];
-            array_push($array ,$infos);
+            array_push($array, $infos);
             $infosAgr = [];
         }
         return $this->json([
@@ -136,14 +61,11 @@ class UserController extends AbstractController
     public function pharmacy(User $user): Response
     {
         $infos = [];
-        if($user->getPharmacy() != null)
-        {
+        if ($user->getPharmacy() != null) {
             $infos = [
                 'pharmacyId'  => $user->getPharmacy()->getId(),
             ];
-        }
-        else
-        {
+        } else {
             $infos = [
                 'pharmacyId'  => '',
             ];
@@ -154,26 +76,55 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/guard/allGuard", name="user_allguard", methods={"GET","POST"})
+     * Get data for export intern guards by period by hospital
+     *
+     * @Route("/guard/export", name="app_guard_export", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @return JsonResponse
      */
-    public function allGuard(): Response
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function exportGuardHours(
+        GuardRepository $guardRepository,
+        UserRepository $userRepository
+    ): JsonResponse {
+        $user = $userRepository->find(3);
 
-        $repository = $this->getDoctrine()->getRepository(Guard::class);
-
-        $array = $repository->findBy(['status' => 'accepted'],['user' => 'ASC','pharmacy' => 'ASC', 'hour' => 'ASC']);
-        $newArray = [];
-        foreach($array as $object){
-            array_push($newArray, $object->toString());
+        if (!($user instanceof User)) {
+            return $this->json([
+                'success' => false,
+                'message' => 'Aucun utilisateur trouvé'
+            ], Response::HTTP_NOT_FOUND);
         }
 
-        $response = new Response();
-        $response->setContent(json_encode(
-            $newArray
-        ));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        $groupedGuards = $guardRepository->findAllPerPeriodByUser($user);
 
+        $records = [];
+        foreach ($groupedGuards as $groupedGuard) {
+            foreach (Guard::$hoursMapping as $hour => $mapping) {
+                if (!array_key_exists('mapping', $groupedGuard)) {
+                    $groupedGuard['mapping'] = [];
+                }
+
+                if (!array_key_exists($hour, $groupedGuard['mapping'])) {
+                    $groupedGuard['mapping'][$hour] = 0;
+                }
+
+                if ($groupedGuard['periodId'] == 1) { // jour
+                    $groupedGuard['mapping'][$hour] += $mapping['day'] * $groupedGuard['guardCount'];
+                } elseif ($groupedGuard['periodId'] == 2) { // nuit
+                    $groupedGuard['mapping'][$hour] += $mapping['night'] * $groupedGuard['guardCount'];
+                } elseif ($groupedGuard['periodId'] == 3) { // jour et nuit
+                    $groupedGuard['mapping'][$hour] += $mapping['day'] * $groupedGuard['guardCount'] + $mapping['night'] * $groupedGuard['guardCount'];
+                }
+            }
+
+            $records[] = $groupedGuard;
+        }
+
+
+        $exports = array_group_by($records, "periodName", "hospitalName");
+        $ordereExports = array_merge(array_flip(['Jour', 'Nuit', 'Jour et Nuit']), $exports);
+
+        return $this->json($ordereExports);
     }
 }

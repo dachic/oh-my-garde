@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Button, Card, CardBody } from 'reactstrap';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import PageTitle from '../../../components/PageTitle';
-import { findAllUsersApi } from '../../../helpers/api/usersApi';
-import Loader from '../../../components/Loader';
-import PaginatedList from '../../../components/PaginatedList';
+import PageTitle from '../../../../components/PageTitle';
+import { findAllInternUsersApi } from '../../../../helpers/api/usersApi';
+import Loader from '../../../../components/Loader';
+import PaginatedList from '../../../../components/PaginatedList';
 import { Link } from 'react-router-dom';
-import { formatDateForTable } from '../../../helpers/dateUtils';
+import { formatDateForTable } from '../../../../helpers/dateUtils';
 
 const columns = [
     {
@@ -62,14 +62,14 @@ const columns = [
     }
 ];
 
-const List = () => {
+const ListIntern = () => {
     const [results, setResults] = useState([]);
     const [sizePerPage, setSizePerPage] = useState(10);
     const [page, setPage] = useState(1);
     const ref = useRef();
 
     useEffect(() => { // ComponentDidMount
-        findAllUsersApi(page, sizePerPage)
+        findAllInternUsersApi(page, sizePerPage)
             .then(results => {
                 setResults(results)
             })
@@ -88,7 +88,7 @@ const List = () => {
         setPage(newPage);
 
         // api call to get paginated users data
-        findAllUsersApi(newPage, newItemsPerPage)
+        findAllInternUsersApi(newPage, newItemsPerPage)
             .then(newResults => {
                 setResults(newResults)
             });
@@ -99,8 +99,10 @@ const List = () => {
             <Row className="page-title">
                 <Col md={12}>
                     <PageTitle
-                        breadCrumbItems={[]}
-                        title={'Tous les utilisateurs'}
+                        breadCrumbItems={[
+                            { label: 'Tous les internes', path: '/users/all-interns', active: true },
+                        ]}
+                        title={'Tous les internes'}
                     />
                 </Col>
             </Row>
@@ -125,4 +127,4 @@ const List = () => {
     );
 };
 
-export default List;
+export default ListIntern;

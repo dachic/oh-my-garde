@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import { Row, Col, Card, CardBody, Button, Label, FormGroup, InputGroup, UncontrolledAlert } from 'reactstrap';
 import Select from 'react-select';
-import { findAllUserByIdApi, saveUserInfoApi } from '../../../helpers/api/usersApi';
+import { findAllUserByIdApi, saveUserInfoApi } from '../../../../helpers/api/usersApi';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import PageTitle from '../../../components/PageTitle';
-import Loader from '../../../components/Loader';
-import Error404 from '../../../pages/other/Error404';
+import PageTitle from '../../../../components/PageTitle';
+import Loader from '../../../../components/Loader';
+import Error404 from '../../../other/Error404';
 
 const EditUser = (props) => {
     const statusLabels = {};
