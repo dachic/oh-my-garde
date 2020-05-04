@@ -12,9 +12,6 @@ const PageTitle = (props) => {
         <React.Fragment>
 
             <Breadcrumb className="float-right mt-1 font-size-14">
-                <BreadcrumbItem>
-                    <Link to="/">OhMyGarde</Link>
-                </BreadcrumbItem>
                 {items.map((item, index) => {
                     return item.active ? (
                         <BreadcrumbItem active key={index}>

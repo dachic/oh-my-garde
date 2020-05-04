@@ -114,10 +114,7 @@ class Edit extends Component {
       <Row className="page-title">
         <Col md={12}>
           <PageTitle
-            breadCrumbItems={[
-              { label: 'Forms', path: '/forms/validation' },
-              { label: '', path: '/forms/validation', active: true },
-            ]}
+            breadCrumbItems={[]}
             title={'Mettre à jour les inforlations de ma pharmacie'}
           />
         </Col>

@@ -51,21 +51,29 @@ export default {
         }).catch(error => console.log(error.response));
     },
 
-    getAll() {
+    getAll(entity) {
         const properties = "&properties[pharmacy]=hospital&properties[]=day&properties[]=status&properties[]=id&properties[agrements]=name&properties[hour]=name&properties[job]=title&properties[user]=firstname"
-        if (loggedInUser.pharmacy) {
-            return fetch(uri(`/guards?pharmacy=${loggedInUser.pharmacy}${properties}`), {
-                method: 'GET',
-                headers: headers
-            }).then((response) => {
-                // convert data from ReadableStream to JSON
-                return response.json();
-            }).then(function (data) {
-                return Promise.resolve(data);
-            }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement.' }));
+        let filterReq = ''
+        // Guards form specific pharmacy
+        if (loggedInUser.pharmacy && entity === 'pharmacy') {
+            filterReq = `/guards?pharmacy=${loggedInUser.pharmacy}${properties}`;
+        }
+        // Guards form specific user
+        else if (entity === 'intern') {
+            filterReq = `/guards?user=${loggedInUser.id}${properties}`;
         }
         else {
             return Promise.resolve([]);
+
         }
+        return fetch(uri(filterReq), {
+            method: 'GET',
+            headers: headers
+        }).then((response) => {
+            // convert data from ReadableStream to JSON
+            return response.json();
+        }).then(function (data) {
+            return Promise.resolve(data);
+        }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement des données.' }));
     },
 };

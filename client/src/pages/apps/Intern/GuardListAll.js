@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Row, Col, Card, CardBody, Table, Badge, Button, Spinner } from 'reactstrap';
+import { Row, Col, Card, CardBody, Table, Badge, Spinner } from 'reactstrap';
 
 import PageTitle from '../../../components/PageTitle';
 import guardApi from '../../../api/guard';
 
-class List extends Component {
+class GuardList extends Component {
   constructor(props) {
     super(props);
 
@@ -17,7 +17,7 @@ class List extends Component {
   }
 
   loadGuards() {
-    guardApi.getAll().then(guards => {
+    guardApi.getAll('intern').then(guards => {
       this.setState({ guardsList: guards, isloaded: true });
     }).catch((error) => {
       console.log(error);
@@ -84,7 +84,7 @@ class List extends Component {
           <Col md={12}>
             <PageTitle
               breadCrumbItems={[]}
-              title={'Liste des gardes'}
+              title={'Liste de mes gardes'}
             />
           </Col>
         </Row>
@@ -105,8 +105,6 @@ class List extends Component {
                         <th >Agréments</th>
                         <th className="text-center">Horaires</th>
                         <th className="text-center">Status</th>
-                        <th className="text-center">Affecté à</th>
-                        <th className="text-center">Action</th>
                       </tr>
                     </thead>
 
@@ -125,25 +123,12 @@ class List extends Component {
                               </td>
                               <td>{this.formatDay(record.day)} / {record.hour.name}</td>
                               <td>{this.formatStatus(record.status)}</td>
-                              <td>{record.user ? record.user.firstname : 'Non affecté'}</td>
-                              <td>
-                                {record.status === 'pending' && !record.user ?
-                                  <Button href={`./${record.id}/matching`} color="outline-primary" key="1">
-                                    Affecter
-                                </Button> :
-                                  <Button href={`./${record.id}/matching`} color="outline-primary" key="1" disabled={true}>
-                                    Affecter
-                                </Button>}
-                              </td>
                             </tr>
                           );
                         })
                         : <tr>
                           <td colSpan="8" className="text-center">
-                            <strong><p>Vous n'avez pas encore ajouter de garde.</p></strong>
-                            <Button href={`/guards/add`} color="outline-primary" key="1">
-                              Ajouter une guarde
-                              </Button>
+                            <strong><p>Vous n'avez pas encore effectué de gardes.</p></strong>
                           </td>
                         </tr>}
                     </tbody>
@@ -156,4 +141,4 @@ class List extends Component {
     )
   }
 }
-export default List;
+export default GuardList;

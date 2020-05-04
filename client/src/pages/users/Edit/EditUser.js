@@ -77,10 +77,7 @@ const EditUser = (props) => {
                 <Row className="page-title">
                     <Col md={12}>
                         <PageTitle
-                            breadCrumbItems={[
-                                { label: 'Utilisateurs', path: '/users/all' },
-                                { label: "Modification d'un utilisateur", path: "/user/", active: true },
-                            ]}
+                            breadCrumbItems={[]}
                             title={"Modification d'un utilisateur"}
                         />
                     </Col>

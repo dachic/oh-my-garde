@@ -8,6 +8,8 @@ const EditInternship = React.lazy(() => import('../pages/apps/Intern/EditInterns
 const DisponibilityAdd = React.lazy(() => import('../pages/apps/Disponibility/Add'));
 const DisponibilityEdit = React.lazy(() => import('../pages/apps/Disponibility/Edit'));
 const DisponibilityList = React.lazy(() => import('../pages/apps/Disponibility/List'));
+const GuardListAll = React.lazy(() => import('../pages/apps/Intern/GuardListAll'));
+const GuardListPending = React.lazy(() => import('../pages/apps/Intern/GuardListPending'));
 
 const internship = {
     path: 'internship',
@@ -30,7 +32,7 @@ const internship = {
             roles: ['ROLE_INTERN'],
         },
         {
-            path: '/internship/edit',
+            path: '/internship/edit/:id(\\d+)',
             component: EditInternship,
             route: PrivateRoute,
             roles: ['ROLE_INTERN'],
@@ -68,4 +70,26 @@ const disponibility = {
     ],
 };
 
-export default { internship, disponibility }
+const guard = {
+    path: 'guards',
+    name: 'Gardes',
+    icon: FeatherIcon.FileText,
+    children: [
+        {
+            path: '/guards/list/pending',
+            name: 'Mes gardes en attente',
+            component: GuardListPending,
+            route: PrivateRoute,
+            roles: ['ROLE_INTERN'],
+        },
+        {
+            path: '/guards/list',
+            name: 'Toutes mes gardes',
+            component: GuardListAll,
+            route: PrivateRoute,
+            roles: ['ROLE_INTERN'],
+        },
+    ]
+};
+
+export default { internship, disponibility, guard }

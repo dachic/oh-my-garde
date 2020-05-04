@@ -76,7 +76,7 @@ const AddUser = (props) => {
             user.email = values.email;
             user.phoneNumber = values.phoneNumber;
             user.roles = [user.role]
-            user.region = "/api/regions/"+user.region
+            user.region = "/api/regions/" + user.region
 
             userApi.registerUser(user).then(response => {
                 setAlertMessage("Les informations ont été correctement enregistrées")
@@ -103,10 +103,7 @@ const AddUser = (props) => {
                 <Row className="page-title">
                     <Col md={12}>
                         <PageTitle
-                            breadCrumbItems={[
-                                { label: 'Utilisateurs', path: '/users/all' },
-                                { label: "Ajouter un utilisateur", path: "/users/add", active: true },
-                            ]}
+                            breadCrumbItems={[]}
                             title={"Ajouter un utilisateur"}
                         />
                     </Col>

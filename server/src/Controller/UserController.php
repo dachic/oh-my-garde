@@ -28,14 +28,9 @@ class UserController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-
         $repository_guard = $this->getDoctrine()->getRepository(Guard::class);
 
-
-        //$page = $request->query->get('page',1);
-        //$limit = $request->query->get('limit',10);
-
-        $array = $repository_guard->findAllGroup(/*$page,$limit*/);
+        $array = $repository_guard->findAllGroup();
 
         $newArray = [];
        foreach($array as $k => $value){
