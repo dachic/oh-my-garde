@@ -33,7 +33,7 @@ const ExportUserGuard = (props) => {
                 setHasMessage(true)
                 setLoader(false)
             })
-    }, []);
+    }, [props]);
 
     if (loader) {
         return <PreLoaderWidget />;

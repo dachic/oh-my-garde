@@ -15,8 +15,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\GuardRepository")
+ * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact", "user":"exact", "status": "exact"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
- * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact","user":"exact"})
  */
 class Guard
 {
@@ -168,7 +168,7 @@ class Guard
             'phoneNumberPharmacy' => $this->pharmacy->getPhoneNumber(),
             'horaire' => $this->hour->getName(),
             'jour' => $this->day,
-            'date' =>$this->createdAt->format('Y-m-d h:i:s'),
+            'date' => $this->createdAt->format('Y-m-d h:i:s'),
         ];
     }
 
