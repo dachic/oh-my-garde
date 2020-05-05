@@ -35,8 +35,8 @@ const AddUser = (props) => {
     const [alertColor, setAlertColor] = useState();
     const [alertMessage, setAlertMessage] = useState();
     const [hasMessage, setHasMessage] = useState(false);
-    const [regions, setRegions] = useState(false);
     const [loader, setLoader] = useState(false);
+    const [regions, setRegions] = useState(false);
 
     useEffect(() => { // ComponentDidMount
         regionApi.getAllRegions()

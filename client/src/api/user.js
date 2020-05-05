@@ -57,5 +57,16 @@ export default {
         }).then(function (data) {
             return Promise.resolve(data);
         }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement.' }));
+    },
+    getExportUserGuards(id) {
+        return fetch(uri(`/user/${id}/guard/export`), {
+            method: 'GET',
+            headers: headers
+        }).then((response) => {
+            // convert data from ReadableStream to JSON
+            return response.json();
+        }).then(function (data) {
+            return Promise.resolve(data);
+        }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement.' }));
     }
 };

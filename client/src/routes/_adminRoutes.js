@@ -6,6 +6,7 @@ const ListAllUser = React.lazy(() => import('../pages/apps/User/List/List'));
 const ListAllInternUser = React.lazy(() => import('../pages/apps/User/List/ListIntern'));
 const EditUser = React.lazy(() => import('../pages/apps/User/Edit/EditUser'));
 const AddUser = React.lazy(() => import('../pages/apps/User/Edit/AddUser'));
+const ExportUserGuards = React.lazy(() => import('../pages/apps/User/Export/ExportUserGuard'));
 
 const ListAllGuard = React.lazy(() => import('../pages/apps/Guard/ListAll'));
 const ListAllPendingGuard = React.lazy(() => import('../pages/apps/Guard/ListPending'));
@@ -42,6 +43,13 @@ const usersRoutes = {
             path: '/users/interns-all',
             name: 'Tous les internes',
             component: ListAllInternUser,
+            roles: ['ROLE_ADMIN'],
+            route: PrivateRoute
+        },
+        {
+            path: '/users/guard/export/:id',
+            hidden: true,
+            component: ExportUserGuards,
             roles: ['ROLE_ADMIN'],
             route: PrivateRoute
         },

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Row, Col, Button, Card, CardBody } from 'reactstrap';
+import { Row, Col, Card, CardBody } from 'reactstrap';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import PageTitle from '../../../../components/PageTitle';
 import { findAllInternUsersApi } from '../../../../helpers/api/usersApi';
@@ -52,12 +52,20 @@ const columns = [
     },
     {
         dataField: 'id',
-        text: 'Modifier',
+        text: 'Actions',
         sort: false,
         formatter: (cell, row) => {
-            return <Link to={{ pathname: `/users/edit/${row.id}` }}>
-                <Button color="primary">Modifier </Button>
-            </Link>
+            return <React.Fragment>
+                <div className="d-flex flex-column">
+                    <Link to={{ pathname: `/users/edit/${row.id}` }}>
+                        <span>Modifier</span>
+                    </Link>
+                    <span className="mx-2"></span>
+                    <Link to={{ pathname: `/users/guard/export/${row.id}` }}>
+                        <span>Export des gardes</span>
+                    </Link>
+                </div>
+            </React.Fragment>
         }
     }
 ];

@@ -78,24 +78,15 @@ class UserController extends AbstractController
     /**
      * Get data for export intern guards by period by hospital
      *
-     * @Route("/guard/export", name="app_guard_export", methods={"GET"})
+     * @Route("/{id}/guard/export", name="app_guard_export", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      *
      * @return JsonResponse
      */
     public function exportGuardHours(
         GuardRepository $guardRepository,
-        UserRepository $userRepository
+        User $user
     ): JsonResponse {
-        $user = $userRepository->find(3);
-
-        if (!($user instanceof User)) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Aucun utilisateur trouvé'
-            ], Response::HTTP_NOT_FOUND);
-        }
-
         $groupedGuards = $guardRepository->findAllPerPeriodByUser($user);
 
         $records = [];
@@ -121,10 +112,16 @@ class UserController extends AbstractController
             $records[] = $groupedGuard;
         }
 
+        if (!empty($groupedGuards)) {
+            $exports = array_group_by($records, "periodName", "hospitalName");
+            $ordereExports = array_merge(array_flip(['Jour', 'Nuit', 'Jour et Nuit']), $exports);
 
-        $exports = array_group_by($records, "periodName", "hospitalName");
-        $ordereExports = array_merge(array_flip(['Jour', 'Nuit', 'Jour et Nuit']), $exports);
+            return $this->json([
+                'user' => $user,
+                'data' => $ordereExports
+            ]);
+        }
 
-        return $this->json($ordereExports);
+        return $this->json(null, Response::HTTP_NOT_FOUND);
     }
 }
