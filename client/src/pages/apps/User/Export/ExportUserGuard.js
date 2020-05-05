@@ -23,7 +23,7 @@ const ExportUserGuard = (props) => {
                 setRecords(data)
                 setLoader(false)
                 if (!data) {
-                    setAlertMessage("Aucun utilisateur trouvé")
+                    setAlertMessage("Aucune donnée à afficher")
                     setAlertColor('info')
                     setHasMessage(true)
                 }

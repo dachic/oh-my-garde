@@ -122,6 +122,6 @@ class UserController extends AbstractController
             ]);
         }
 
-        return $this->json(null, Response::HTTP_NOT_FOUND);
+        return $this->json(null, Response::HTTP_OK);
     }
 }
