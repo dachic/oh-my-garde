@@ -2,12 +2,15 @@ import React from 'react';
 import * as FeatherIcon from 'react-feather';
 import PrivateRoute from './PrivateRoute';
 
-const ListAllUser = React.lazy(() => import('../pages/users/List/List'));
-const EditUser = React.lazy(() => import('../pages/users/Edit/EditUser'));
-const AddUser = React.lazy(() => import('../pages/users/Edit/AddUser'));
-const InternExport = React.lazy(() => import('../pages/export/InternExport'));
-const InternPending = React.lazy(() => import('../pages/export/InternPending'));
-const InternAll = React.lazy(() => import('../pages/export/InternAll'));
+const ListAllUser = React.lazy(() => import('../pages/apps/User/List/List'));
+const ListAllInternUser = React.lazy(() => import('../pages/apps/User/List/ListIntern'));
+const EditUser = React.lazy(() => import('../pages/apps/User/Edit/EditUser'));
+const AddUser = React.lazy(() => import('../pages/apps/User/Edit/AddUser'));
+const ExportUserGuards = React.lazy(() => import('../pages/apps/User/Export/ExportUserGuard'));
+
+const ListAllGuard = React.lazy(() => import('../pages/apps/Guard/ListAll'));
+const ListAllPendingGuard = React.lazy(() => import('../pages/apps/Guard/ListPending'));
+
 
 // users
 const usersRoutes = {
@@ -31,11 +34,25 @@ const usersRoutes = {
         },
         {
             path: '/users/edit/:id',
-            hide: true,
+            hidden: true,
             component: EditUser,
             route: PrivateRoute,
             roles: ['ROLE_ADMIN'],
-        }
+        },
+        {
+            path: '/users/interns-all',
+            name: 'Tous les internes',
+            component: ListAllInternUser,
+            roles: ['ROLE_ADMIN'],
+            route: PrivateRoute
+        },
+        {
+            path: '/users/guard/export/:id',
+            hidden: true,
+            component: ExportUserGuards,
+            roles: ['ROLE_ADMIN'],
+            route: PrivateRoute
+        },
     ]
 };
 
@@ -46,23 +63,16 @@ const guard = {
     icon: FeatherIcon.FileText,
     children: [
         {
-            path: '/interns/export',
-            name: 'Export des gardes',
-            component: InternExport,
-            roles: ['ROLE_ADMIN'],
-            route: PrivateRoute
-        },
-        {
-            path: '/interns/pending',
-            name: 'Garde en attente',
-            component: InternPending,
-            roles: ['ROLE_ADMIN'],
-            route: PrivateRoute
-        },
-        {
-            path: '/interns/all',
+            path: '/guard/all',
             name: 'Tous les gardes',
-            component: InternAll,
+            component: ListAllGuard,
+            roles: ['ROLE_ADMIN'],
+            route: PrivateRoute
+        },
+        {
+            path: '/guard/pending',
+            name: 'Garde en attente',
+            component: ListAllPendingGuard,
             roles: ['ROLE_ADMIN'],
             route: PrivateRoute
         }

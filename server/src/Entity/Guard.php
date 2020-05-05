@@ -9,18 +9,37 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-
+use App\Constant\GuardStatus;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\GuardRepository")
+ * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact", "user":"exact", "status": "exact"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false})
- * @ApiFilter(SearchFilter::class, properties={"pharmacy": "exact","user":"exact"})
  */
 class Guard
 {
     use TimestampableEntity;
+
+    public static $hoursMapping = [
+        '6-8' => [
+            'day' => 0,
+            'night' => 2,
+        ],
+        '8-20' => [
+            'day' => 10,
+            'night' => 2
+        ],
+        '20-23' => [
+            'day' => 0,
+            'night' => 3
+        ],
+        '23-6' => [
+            'day' => 0,
+            'night' => 7
+        ],
+    ];
 
     /**
      * @ORM\Id()
@@ -67,7 +86,7 @@ class Guard
     public function __construct()
     {
         $this->agrements = new ArrayCollection();
-        $this->status = "pending";
+        $this->status = GuardStatus::STATUS_PENDING;
     }
 
     public function getId(): ?int
@@ -149,10 +168,10 @@ class Guard
             'phoneNumberPharmacy' => $this->pharmacy->getPhoneNumber(),
             'horaire' => $this->hour->getName(),
             'jour' => $this->day,
-            'date' =>$this->createdAt->format('Y-m-d h:i:s'),
+            'date' => $this->createdAt->format('Y-m-d h:i:s'),
         ];
     }
-    
+
     public function getJob(): ?Job
     {
         return $this->job;

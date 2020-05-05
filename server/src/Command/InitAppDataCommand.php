@@ -3,10 +3,15 @@
 namespace App\Command;
 
 use Faker;
+use App\Entity\Job;
 use App\Entity\User;
+use App\Entity\Guard;
 use App\Entity\Region;
 use App\Entity\Agrement;
+use App\Entity\Hospital;
+use App\Entity\Pharmacy;
 use App\Constant\UserRole;
+use App\Constant\GuardStatus;
 use App\Entity\DisponibilityHour;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -75,6 +80,8 @@ class InitAppDataCommand extends Command
                 ->setRoles([UserRole::ROLE_PHARMACY]);
             $this->em->persist($userPharmacy);
 
+            $userInterns = [];
+
             // interne user
             $userIntern = new User();
             $userIntern->setLastname($faker->lastName)
@@ -86,30 +93,52 @@ class InitAppDataCommand extends Command
                 ->setRegion($region)
                 ->setRoles([UserRole::ROLE_INTERN]);
             $this->em->persist($userIntern);
-        }
+            array_push($userInterns, $userIntern);
 
-        // DisponibilityHour
-        $hours = ['Jour', 'Nuit'];
+            $userIntern = new User();
+            $userIntern->setLastname($faker->lastName)
+                ->setFirstname($faker->firstName)
+                ->setPassword($this->passwordEncoder->encodePassword($userIntern, 'intern'))
+                ->setEmail('internx@ohmygarde.app')
+                ->setPhoneNumber($faker->phoneNumber)
+                ->setStatus('enabled')
+                ->setRegion($region)
+                ->setRoles([UserRole::ROLE_INTERN]);
+            $this->em->persist($userIntern);
+            array_push($userInterns, $userIntern);
 
-        foreach ($hours as $hour) {
-            $disponibilityHour = new DisponibilityHour();
-            $disponibilityHour->setName($hour);
-            $this->em->persist($disponibilityHour);
-        }
+            $pharmacies = [];
+            // Pharmacy
+            $hospital = $this->em->getRepository(Hospital::class)->find(1);
+            $pharmacy = new Pharmacy();
+            $pharmacy->setName('Pharmacie 1');
+            $pharmacy->setHospital($hospital);
+            $pharmacy->setEmail('uuuuuuuu@gmail.com');
+            $this->em->persist($pharmacy);
+            array_push($pharmacies, $pharmacy);
 
-        $agrements = [
-            '108' => 'Pharmacie Clinique',
-            '109' => 'Economie & Vigilance',
-            '110' => 'Préparation et contrôles',
-            '111' => 'Dispositifs médicaux stériles & stérilisation.'
-        ];
+            $hospital = $this->em->getRepository(Hospital::class)->find(2);
+            $pharmacy = new Pharmacy();
+            $pharmacy->setName('Pharmacie 2');
+            $pharmacy->setHospital($hospital);
+            $pharmacy->setEmail('uuuuuuuux@gmail.com');
+            $this->em->persist($pharmacy);
+            array_push($pharmacies, $pharmacy);
 
-        foreach ($agrements as $code => $name) {
-            $agrement = new Agrement();
-            $agrement->setCode($code);
-            $agrement->setName($name);
+            $disponibilityHours = $this->em->getRepository(DisponibilityHour::class)->findAll();
+            $jobs = $this->em->getRepository(Job::class)->findAll();
 
-            $this->em->persist($agrement);
+            // fake guards
+            for ($i = 0; $i < 100; $i++) {
+                $guard = new Guard();
+                $guard->setUser($userInterns[array_rand($userInterns)])
+                    ->setHour($disponibilityHours[array_rand($disponibilityHours)])
+                    ->setDay('monday')
+                    ->setJob($jobs[array_rand($jobs)])
+                    ->setPharmacy($pharmacies[array_rand($pharmacies)])
+                    ->setStatus(GuardStatus::STATUS_ACCEPTED);
+                $this->em->persist($guard);
+            }
         }
 
         $this->em->flush();

@@ -64,7 +64,7 @@ const FormValidation = () => {
                     <Card>
                         <CardBody>
                             <h4 className="header-title mt-0 mb-1">Bootstrap Validation (Tooltips)</h4>
-                            <p class="sub-header">Provide valuable, actionable feedback to your users with HTML5 form validation–available in all our supported browsers.</p>
+                            <p className="sub-header">Provide valuable, actionable feedback to your users with HTML5 form validation–available in all our supported browsers.</p>
                             <AvForm>
                                 <AvGroup className="position-relative">
                                     <Label for="firstname2">First Name</Label>

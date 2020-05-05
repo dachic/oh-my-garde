@@ -1,38 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Row, Col, Button, Card, CardBody } from 'reactstrap';
+import { Row, Col, Card, CardBody } from 'reactstrap';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import PageTitle from '../../../components/PageTitle';
-import { findAllUsersApi } from '../../../helpers/api/usersApi';
+import guardApi from '../../../api/guard';
 import Loader from '../../../components/Loader';
 import PaginatedList from '../../../components/PaginatedList';
-import { Link } from 'react-router-dom';
 import { formatDateForTable } from '../../../helpers/dateUtils';
+import getGuardStatusMapping from '../../../helpers/guardStatusMapping';
 
 const columns = [
     {
-        dataField: 'firstname',
-        text: 'Prénom',
+        dataField: 'user.fullname',
+        text: 'Interne',
         sort: true,
     },
     {
-        dataField: 'lastname',
-        text: 'Prénom',
+        dataField: 'pharmacy.name',
+        text: 'Nom de la pharmacie',
         sort: true,
     },
     {
-        dataField: 'email',
-        text: 'Email',
-        sort: true,
-    },
-    {
-        dataField: 'phoneNumber',
-        text: 'Numéro de téléphone',
+        dataField: 'hour.name',
+        text: 'Horaire',
         sort: false,
     },
     {
-        dataField: 'roleAsString',
-        text: 'Rôle',
-        sort: true,
+        dataField: 'status',
+        text: 'Horaire',
+        sort: false,
+        formatter: (cell, row) => {
+            return getGuardStatusMapping(row.status)
+        }
     },
     {
         dataField: "createdAt",
@@ -49,27 +47,17 @@ const columns = [
         formatter: (cell, row) => {
             return formatDateForTable(row.updatedAt)
         }
-    },
-    {
-        dataField: 'id',
-        text: 'Modifier',
-        sort: false,
-        formatter: (cell, row) => {
-            return <Link to={{ pathname: `/users/edit/${row.id}` }}>
-                <Button color="primary">Modifier </Button>
-            </Link>
-        }
     }
 ];
 
-const List = () => {
+const ListPending = () => {
     const [results, setResults] = useState([]);
     const [sizePerPage, setSizePerPage] = useState(10);
     const [page, setPage] = useState(1);
     const ref = useRef();
 
     useEffect(() => { // ComponentDidMount
-        findAllUsersApi(page, sizePerPage)
+        guardApi.findAllPendingGuardPaginated(page, sizePerPage)
             .then(results => {
                 setResults(results)
             })
@@ -88,7 +76,7 @@ const List = () => {
         setPage(newPage);
 
         // api call to get paginated users data
-        findAllUsersApi(newPage, newItemsPerPage)
+        guardApi.findAllGuardPaginated(newPage, newItemsPerPage)
             .then(newResults => {
                 setResults(newResults)
             });
@@ -100,7 +88,7 @@ const List = () => {
                 <Col md={12}>
                     <PageTitle
                         breadCrumbItems={[]}
-                        title={'Tous les utilisateurs'}
+                        title={'Toutes les gardes'}
                     />
                 </Col>
             </Row>
@@ -125,4 +113,4 @@ const List = () => {
     );
 };
 
-export default List;
+export default ListPending;

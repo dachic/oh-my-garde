@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import { Row, Col, Card, CardBody, Button, Label, FormGroup, InputGroup, UncontrolledAlert } from 'reactstrap';
 import Select from 'react-select';
-import userApi from '../../../api/user';
+import userApi from '../../../../api/user';
 
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import PageTitle from '../../../components/PageTitle';
-import Loader from '../../../components/Loader';
-import regionApi from '../../../api/region';
+import PageTitle from '../../../../components/PageTitle';
+import Loader from '../../../../components/Loader';
+import regionApi from '../../../../api/region';
 
 const AddUser = (props) => {
     const statusLabels = {};
@@ -35,8 +35,8 @@ const AddUser = (props) => {
     const [alertColor, setAlertColor] = useState();
     const [alertMessage, setAlertMessage] = useState();
     const [hasMessage, setHasMessage] = useState(false);
-    const [regions, setRegions] = useState(false);
     const [loader, setLoader] = useState(false);
+    const [regions, setRegions] = useState(false);
 
     useEffect(() => { // ComponentDidMount
         regionApi.getAllRegions()

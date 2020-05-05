@@ -19,6 +19,22 @@ const findAllUsersApi = (page = 1, itemsPerPage = 10) => {
     })
 }
 
+const findAllInternUsersApi = (page = 1, itemsPerPage = 10) => {
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + loggedInUser.token
+        },
+    };
+
+    return fetch(`${url}/users?pagination=true&page=${page}&itemsPerPage=${itemsPerPage}&roles=ROLE_INTERN`, options).then(response => {
+        return response.json()
+    }).then((users) => {
+        return users;
+    })
+}
+
 const findAllUserByIdApi = (id) => {
     const options = {
         method: 'GET',
@@ -39,7 +55,7 @@ const findAllUserByIdApi = (id) => {
     })
 }
 
-const saveUserInfoApi = ({id, firstname, lastname, status}) => {
+const saveUserInfoApi = ({ id, firstname, lastname, status }) => {
 
     const options = {
         method: 'PATCH',
@@ -58,4 +74,4 @@ const saveUserInfoApi = ({id, firstname, lastname, status}) => {
     })
 }
 
-export { findAllUsersApi, findAllUserByIdApi, saveUserInfoApi }
+export { findAllUsersApi, findAllUserByIdApi, saveUserInfoApi, findAllInternUsersApi }
