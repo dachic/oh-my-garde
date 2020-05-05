@@ -1,23 +1,14 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: jeromebueno
- * Date: 2020-04-02
- * Time: 15:17
- */
-
 namespace App\Controller;
 
-
-use App\Repository\GuardRepository;
-use App\Repository\UserRepository;
 use App\Service\MailerService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Repository\UserRepository;
+use App\Repository\GuardRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GuardController extends AbstractController
 {

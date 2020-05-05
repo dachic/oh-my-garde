@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "491cf9b4f578e4010f7dc33c1be41917",
+    "content-hash": "824eef3fa47425cb56b2c9f04f882e71",
     "packages": [
         {
             "name": "api-platform/core",
@@ -1837,6 +1837,45 @@
                 "tsvector"
             ],
             "time": "2020-03-09T17:13:06+00:00"
+        },
+        {
+            "name": "mcaskill/php-array-group-by",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://gist.github.com/mcaskill/baaee44487653e1afc0d",
+                "reference": "20aa76bbc63c0a83448db7d7b93af8006a5bb56f"
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Function.Array-Group-By.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chauncey McAskill",
+                    "email": "chauncey@mcaskill.ca",
+                    "homepage": "https://github.com/mcaskill"
+                }
+            ],
+            "description": "Groups an array by a given key.",
+            "keywords": [
+                "function"
+            ],
+            "time": "2017-11-24T13:45:55+00:00"
         },
         {
             "name": "monolog/monolog",

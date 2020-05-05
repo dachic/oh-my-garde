@@ -76,4 +76,36 @@ export default {
             return Promise.resolve(data);
         }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement des données.' }));
     },
+    findAllGuardPaginated(page = 1, itemsPerPage = 10) {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser.token
+            },
+        };
+
+        const properties = 'properties[user][]=fullname&properties[pharmacy][]=name&properties[hour][]=name&properties[]=createdAt&properties[]=updatedAt&properties[]=status'
+        return fetch(`${url}/guards?pagination=true&page=${page}&itemsPerPage=${itemsPerPage}&${properties}`, options).then(response => {
+            return response.json()
+        }).then((users) => {
+            return users;
+        })
+    },
+    findAllPendingGuardPaginated(page = 1, itemsPerPage = 10) {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + loggedInUser.token
+            },
+        };
+
+        const properties = 'properties[user][]=fullname&properties[pharmacy][]=name&properties[hour][]=name&properties[]=createdAt&properties[]=updatedAt&properties[]=status&status=pending'
+        return fetch(`${url}/guards?pagination=true&page=${page}&itemsPerPage=${itemsPerPage}&${properties}`, options).then(response => {
+            return response.json()
+        }).then((users) => {
+            return users;
+        })
+    }
 };

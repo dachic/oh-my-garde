@@ -3,7 +3,6 @@ import { Row, Col, Button, Spinner } from 'reactstrap';
 
 import userApi from '../../../api/user';
 import { getLoggedInUser } from '../../../helpers/authUtils';
-import user from '../../../api/user';
 
 class Confirm extends Component {
   constructor(props) {

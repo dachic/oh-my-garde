@@ -115,6 +115,8 @@ init-data-1:
 	docker-compose exec apache php bin/console app:job:insert-all
 	docker-compose exec apache php bin/console app:region:add Auvergne-Rhône-Alpes
 	docker-compose exec apache php bin/console app:hospital:insert-all
+	docker-compose exec apache php bin/console app:agrement:insert-all
+	docker-compose exec apache php bin/console app:disponibility-hour:insert-all
 	# docker-compose exec apache php bin/console app:user:add kabaconde admin@admin.com --admin
 
 init-data:
@@ -122,7 +124,6 @@ init-data:
 	make db-create
 	make migrate
 	make init-data-1
-	make init-data-2
 
 init-data-test:
 	make db-drop

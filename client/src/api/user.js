@@ -1,6 +1,4 @@
-
 import { getLoggedInUser } from '../helpers/authUtils';
-import { fetchJSON } from '../helpers/api'
 
 const url = process.env.REACT_APP_API_URL;
 let uri = (path) => { return url + path };
@@ -14,27 +12,6 @@ const headers = {
 }
 
 export default {
-    async export() {
-        const res = fetchJSON(url + '/user/guard/count', {
-            method: 'GET',
-            headers: headers
-        })
-        return await res
-    },
-    async pending() {
-        const res = fetchJSON(url + '/user/guard/pending', {
-            method: 'GET',
-            headers: headers
-        })
-        return await res
-    },
-    async allGuard() {
-        const res = fetchJSON(url + '/user/guard/allGuard', {
-            method: 'GET',
-            headers: headers
-        })
-        return await res
-    },
     getPharmacyId() {
         return fetch(uri(`/user/${loggedInUser.id}/pharmacy`), {
             method: 'GET',
@@ -72,6 +49,17 @@ export default {
     getPharmacy() {
         const properties = "?properties[pharmacy]=name"
         return fetch(uri(`/users/${loggedInUser.id}/${properties}`), {
+            method: 'GET',
+            headers: headers
+        }).then((response) => {
+            // convert data from ReadableStream to JSON
+            return response.json();
+        }).then(function (data) {
+            return Promise.resolve(data);
+        }).catch(error => Promise.reject({ error: 'Une erreur est survenue lors du chargement.' }));
+    },
+    getExportUserGuards(id) {
+        return fetch(uri(`/user/${id}/guard/export`), {
             method: 'GET',
             headers: headers
         }).then((response) => {
