@@ -17,7 +17,8 @@ class List extends Component {
   }
 
   loadGuards() {
-    guardApi.getAll().then(guards => {
+    guardApi.getAll('pharmacy').then(guards => {
+      console.log(guards)
       this.setState({ guardsList: guards, isloaded: true });
     }).catch((error) => {
       console.log(error);
