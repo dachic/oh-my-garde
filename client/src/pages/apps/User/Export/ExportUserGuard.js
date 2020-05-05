@@ -35,6 +35,26 @@ const ExportUserGuard = (props) => {
             })
     }, [props]);
 
+    const getCurrentDateAndTime = () => {
+        var today = new Date();
+        var date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+        var time = today.getHours() + "-" + today.getMinutes() + "-" + today.getSeconds();
+        var dateTime = date + '-' + time;
+
+        return dateTime;
+    }
+
+    const calculateTotalHourPerDayType = (day) => {
+        let sum = 0
+        for (let hospital in records.data[day]) {
+            for (let guard in records.data[day][hospital]) {
+                sum += records.data[day][hospital][guard].guardCount
+            }
+        }
+
+        return sum;
+    }
+
     if (loader) {
         return <PreLoaderWidget />;
     }
@@ -70,7 +90,7 @@ const ExportUserGuard = (props) => {
                                 </Col>
 
                                 <Col md={4} className="d-flex">
-                                    <Pdf targetRef={ref} filename="code-example.pdf">
+                                    <Pdf targetRef={ref} filename={`${records.user.firstname}-${records.user.lastname}-${getCurrentDateAndTime()}-details-gardes.pdf`}>
                                         {({ toPdf }) => <Button color="primary" className="ml-auto" onClick={toPdf}>Export PDF</Button>}
                                     </Pdf>
                                 </Col>
@@ -78,12 +98,17 @@ const ExportUserGuard = (props) => {
 
                             <ul>
                                 {Object.keys(records.data).map(day => (
-                                    <li key={day}>
-                                        <span>{day}</span>
+                                    <li key={day} className="GuardDay">
+                                        <span>{day} : {calculateTotalHourPerDayType(day)}</span>
                                         {<ul>
                                             {Object.keys(records.data[day]).map(hospital => (
-                                                <li key={hospital}>
+                                                <li key={hospital} className="hospital">
                                                     <span>{hospital} : {records.data[day][hospital][0].guardCount}</span>
+                                                    <ul>
+                                                        {Object.keys(records.data[day][hospital][0].mapping).map((interval) => (
+                                                            <li key={`${hospital}-${interval}-${day}`}>{interval} : {records.data[day][hospital][0].mapping[interval]}</li>
+                                                        ))}
+                                                    </ul>
                                                 </li>
                                             ))}
                                         </ul>}

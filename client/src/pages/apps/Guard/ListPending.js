@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Row, Col, Button, Card, CardBody } from 'reactstrap';
+import { Row, Col, Card, CardBody } from 'reactstrap';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import PageTitle from '../../../components/PageTitle';
 import guardApi from '../../../api/guard';
 import Loader from '../../../components/Loader';
 import PaginatedList from '../../../components/PaginatedList';
-import { Link } from 'react-router-dom';
 import { formatDateForTable } from '../../../helpers/dateUtils';
 import getGuardStatusMapping from '../../../helpers/guardStatusMapping';
 
