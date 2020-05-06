@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Guard;
 use App\Entity\Pharmacy;
+use App\Constant\GuardDay;
+use App\Service\MailerService;
 use App\Entity\DisponibilityHour;
 use App\Repository\UserRepository;
 use App\Repository\GuardRepository;
@@ -14,7 +16,6 @@ use App\Repository\DisponibilityHourRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Service\MailerService;
 
 /**
  * @Route("/api/user")
@@ -44,9 +45,11 @@ class ConfirmController extends AbstractController
                     $pharmacyEmail = $foundGuard->getPharmacy()->getRepresentative()->getEmail();
 
                     // Send mail
+                    $convertedDay = GuardDay::getDays()[$foundGuard->getDay()];
                     $mailerService->sendWithCC($user->getEmail(), "Demande de garde acceptée !", $this->render('emails/confirm_guard_validation.html.twig', [
                         'user' => $user,
-                        'guard' => $foundGuard
+                        'guard' => $foundGuard,
+                        'day' => $convertedDay
                     ]), $pharmacyEmail);
 
                     return $this->json([

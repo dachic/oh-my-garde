@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Constant\GuardDay;
 use App\Service\MailerService;
 use App\Repository\UserRepository;
 use App\Repository\GuardRepository;
@@ -28,12 +29,14 @@ class GuardController extends AbstractController
             $guard->setUser($intern);
             $em->flush();
 
+            $convertedDay = GuardDay::getDays()[$guard->getDay()];
             $mailerService->send(
                 $intern->getEmail(),
                 "Demande d'attribution de garde",
                 $this->render('emails/confirm_guard.html.twig', [
                     'user' => $intern,
-                    'guard' => $guard
+                    'guard' => $guard,
+                    'day' => $convertedDay
                 ])
             );
 
