@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Row, Col, Card, CardBody } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button } from 'reactstrap';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import PageTitle from '../../../../components/PageTitle';
 import { findAllInternUsersApi } from '../../../../helpers/api/usersApi';
@@ -58,11 +58,11 @@ const columns = [
             return <React.Fragment>
                 <div className="d-flex flex-column">
                     <Link to={{ pathname: `/users/edit/${row.id}` }}>
-                        <span>Modifier</span>
+                        <Button color="primary">Modifier</Button>
                     </Link>
-                    <span className="mx-2"></span>
+                    <span className="my-2 mx-2"></span>
                     <Link to={{ pathname: `/users/guard/export/${row.id}` }}>
-                        <span>Export des gardes</span>
+                        <Button color="secondary">Gardes</Button>
                     </Link>
                 </div>
             </React.Fragment>
