@@ -30,6 +30,7 @@ class AuthenticationSuccessListener
         $payload['role'] = $user->getRoles()[0];
         $payload['roleAsString'] = $user->getRoleAsString();
         $payload['status'] = $user->getStatus();
+        $payload['phoneNumber'] = $user->getPhoneNumber();
         $payload['region'] = [
             'id' => $user->getRegion()->getId(),
             'name' => $user->getRegion()->getName()

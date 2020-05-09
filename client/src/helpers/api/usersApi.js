@@ -74,4 +74,29 @@ const saveUserInfoApi = ({ id, firstname, lastname, status }) => {
     })
 }
 
-export { findAllUsersApi, findAllUserByIdApi, saveUserInfoApi, findAllInternUsersApi }
+const saveAccountInformation = ({ id, firstname, lastname, email, phoneNumber }) => {
+
+    const options = {
+        method: 'PATCH',
+        body: JSON.stringify({ firstname, lastname, email, phoneNumber }),
+        headers: {
+            'Content-Type': 'application/merge-patch+json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + loggedInUser.token
+        }
+    };
+
+    return fetch(`${url}/users/${id}`, options).then(response => {
+        return response.json()
+    }).then((user) => {
+        return user;
+    })
+}
+
+export {
+    findAllUsersApi,
+    findAllUserByIdApi,
+    saveUserInfoApi,
+    findAllInternUsersApi,
+    saveAccountInformation
+}
