@@ -33,7 +33,7 @@ export default {
                         }
                     });
             }
-            Promise.resolve(response);
+            return Promise.resolve(response);
         }).catch(function (errors) {
             return Promise.reject({ error: "Une erreur est survenue, veuillez réessayer." })
         });

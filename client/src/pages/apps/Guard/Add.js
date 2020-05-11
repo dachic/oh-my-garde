@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, Label, FormGroup, Spinner, UncontrolledAlert } from 'reactstrap';
-import { AvForm, AvGroup } from 'availity-reactstrap-validation';
+import { Row, Col, Card, CardBody, Button, Label, FormGroup, Spinner, UncontrolledAlert, Alert } from 'reactstrap';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import PageTitle from '../../../components/PageTitle';
 import guardApi from '../../../api/guard';
@@ -28,6 +28,7 @@ class Add extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             status: '',
+            errorApi: '',
             pharmacy: [],
             hours: [],
             errorSelect: {},
@@ -48,7 +49,15 @@ class Add extends Component {
 
         // API Call
         if (!errors.length) {
-            if (this.state.job === '') {
+            if (this.state.day === null) {
+                this.setState({ errorSelect: { day: "Vous devez sélectionner le jour de garde" } });
+                return;
+            }
+            else if (this.state.hour === null) {
+                this.setState({ errorSelect: { hour: "Vous devez sélectionner un créneau horaire" } });
+                return;
+            }
+            else if (this.state.job === '') {
                 this.setState({ errorSelect: { job: "Vous devez sélectionner un poste" } });
                 return;
             }
@@ -56,6 +65,8 @@ class Add extends Component {
                 this.setState({ errorSelect: { agrement: "Vous devez sélectionner au moins un agrément" } });
                 return;
             }
+
+
             else {
                 let form = JSON.stringify(
                     {
@@ -66,11 +77,12 @@ class Add extends Component {
                         'day': this.state.day.value,
                         'hour': 'api/disponibility_hours/' + this.state.hour.value
                     }, null, 2);
+                console.log(form);
                 guardApi.add(form).then(guard => {
                     this.setState({ status: 'La garde a bien été ajoutée' });
                     this.props.history.push(`/guards/${guard.id}/matching/`);
                 }).catch((error) => {
-                    console.log(error);
+                    this.setState({ errorApi: error.error });
                 });
             }
         }
@@ -103,6 +115,15 @@ class Add extends Component {
         }
     };
 
+    loadPharmacyFromServer() {
+        userApi.getPharmacy().then((pharmacy) => {
+            this.setState({
+                pharmacy: pharmacy.pharmacy
+            })
+        }).catch(error => {
+            console.log(error);
+        })
+    };
     loadAgrementsFromServer() {
         agrementApi.getAll().then(agrements => {
             let options = [];
@@ -135,16 +156,6 @@ class Add extends Component {
             console.log(error);
             this.setState({ jobsOptions: { value: 0, label: "Aucun agrément trouvé" } });
         });
-    };
-
-    loadPharmacyFromServer() {
-        userApi.getPharmacy().then((pharmacy) => {
-            this.setState({
-                pharmacy: pharmacy.pharmacy
-            })
-        }).catch(error => {
-            console.log(error);
-        })
     };
 
     componentDidMount() {
@@ -197,13 +208,19 @@ class Add extends Component {
                     </Col>}
                 {!this.state.pharmacy &&
                     <Col md={12} className='mt-3'>
-                        <UncontrolledAlert color="secondary" key="1">
+                        <Alert color="secondary" key="1">
                             Vous devez ajouter une pharmacie avant de créer une demande de garde.
                             <div className="mt-3">
-                                <Button href={`/pharmacy/add`} color="outline-success" key="1">
+                                <Button href={`/pharmacy/add`} color="outline-info" key="1">
                                     Ajouter une pharmacie
                                 </Button>
                             </div>
+                        </Alert>
+                    </Col>}
+                {this.state.errorApi &&
+                    <Col md={12}>
+                        <UncontrolledAlert color="danger" key="1">
+                            <strong>{this.state.errorApi} </strong>
                         </UncontrolledAlert>
                     </Col>}
             </Row>
@@ -232,7 +249,17 @@ class Add extends Component {
                                             options={options}
                                             required
                                         />
+                                        {this.state.errorSelect.day &&
+                                            <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.day}</p>}
                                     </FormGroup>
+                                </AvGroup>
+
+                                <AvGroup className="mb-3">
+                                    <Label for="date">Date exacte *</Label>
+                                    <div className="input-group">
+                                        <AvInput type="date" name="date" required />
+                                        <AvFeedback>Champ incorrect/requis.</AvFeedback>
+                                    </div>
                                 </AvGroup>
 
                                 <AvGroup className="mb-3">
@@ -247,6 +274,8 @@ class Add extends Component {
                                             options={this.state.hours}
                                             required
                                         />
+                                        {this.state.errorSelect.hour &&
+                                            <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.hour}</p>}
                                     </FormGroup>
                                 </AvGroup>
 
@@ -265,7 +294,7 @@ class Add extends Component {
                                             onChange={this.handleChangeJob}
                                             classNamePrefix="react-select"
                                         />}
-                                    {this.state.errorSelect &&
+                                    {this.state.errorSelect.job &&
                                         <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.job}</p>}
                                 </div>
 
@@ -285,7 +314,7 @@ class Add extends Component {
                                             value={this.state.selectedAgrements}
                                             onChange={this.handleChangeAggrements}
                                             classNamePrefix="react-select"></Select>}
-                                    {this.state.errorSelect &&
+                                    {this.state.errorSelect.agrement &&
                                         <p className="is-invalid" style={{ color: 'red' }}>{this.state.errorSelect.agrement}</p>}
                                 </div>
                                 {this.state.pharmacy ?

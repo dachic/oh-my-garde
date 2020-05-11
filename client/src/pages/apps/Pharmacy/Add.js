@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label, UncontrolledAlert, Spinner } from 'reactstrap';
+import { Row, Col, Card, CardBody, Button, InputGroupAddon, Label, UncontrolledAlert, Spinner, Alert } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import { getLoggedInUser, setLoggedInUser } from '../../../helpers/authUtils';
 
 import PageTitle from '../../../components/PageTitle';
 import Api from '../../../api/hospital';
+import userApi from '../../../api/user';
 
 class Add extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class Add extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             status: '',
+            pharmacy: [],
             hospitalsOptions: {},
             selectedHospital: '',
             errorSelect: {},
@@ -63,11 +65,11 @@ class Add extends Component {
         }
     }
 
-    loadPharmaciesFromServer() {
-        Api.getAll().then(pharmacyList => {
+    loadHospitalsFromServer() {
+        Api.getAll().then(hospitals => {
             let options = [];
-            Object.keys(pharmacyList).forEach(function (key) {
-                options.push({ value: pharmacyList[key]['id'], label: pharmacyList[key]['name'] });
+            Object.keys(hospitals).forEach(function (key) {
+                options.push({ value: hospitals[key]['id'], label: hospitals[key]['name'] });
             });
             this.setState({ hospitalsOptions: options, areHospitalsLoaded: true });
         }).catch((error) => {
@@ -75,8 +77,19 @@ class Add extends Component {
         });
     }
 
+    loadPharmacyFromServer() {
+        userApi.getPharmacy().then((pharmacy) => {
+            this.setState({
+                pharmacy: pharmacy.pharmacy
+            })
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
     componentDidMount() {
-        this.loadPharmaciesFromServer();
+        this.loadPharmacyFromServer();
+        this.loadHospitalsFromServer();
     }
 
     render() {
@@ -99,6 +112,12 @@ class Add extends Component {
                         <UncontrolledAlert color="danger" key="1">
                             <strong>{this.state.errorApi} </strong>
                         </UncontrolledAlert>
+                    </Col>}
+                {this.state.pharmacy &&
+                    <Col md={12} className='mt-3'>
+                        <Alert color="success" key="1">
+                            Il existe déjà une pharmacie relié à ce compte
+                        </Alert>
                     </Col>}
             </Row>
 
@@ -135,7 +154,7 @@ class Add extends Component {
                                 </div>
 
                                 <AvGroup>
-                                    <Label for="email">Adresse email (si défférente de celle du représent)</Label>
+                                    <Label for="email">Adresse email (si défférente de celle du chef de service)</Label>
                                     <div className="input-group">
                                         <InputGroupAddon addonType="prepend">@</InputGroupAddon>
                                         <AvInput type="email" placeholder="Email" name="email" />
@@ -144,15 +163,19 @@ class Add extends Component {
                                 </AvGroup>
 
                                 <AvGroup>
-                                    <Label for="phoneNumber">Numéro de téléphone (si défférent de celui du représent)</Label>
+                                    <Label for="phoneNumber">Numéro de téléphone (si défférent de celui du chef de service)</Label>
                                     <div className="input-group">
                                         <AvInput type="text" name="phoneNumber" />
                                         <AvFeedback>Champ incorrect/requis.</AvFeedback>
                                     </div>
                                 </AvGroup>
-                                <Button color="primary" type="submit">
-                                    Ajouter
-                                </Button>
+                                {!this.state.pharmacy ?
+                                    <Button color="primary" type="submit">
+                                        Ajouter
+                                </Button> :
+                                    <Button color="primary" type="submit" disabled={true}>
+                                        Ajouter
+                                </Button>}
                             </AvForm>
                         </CardBody>
                     </Card>

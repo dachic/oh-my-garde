@@ -154,6 +154,7 @@ class UserFixtures extends Fixture
         $guard->addAgrement($agrement);
         $guard->setPharmacy($pharmacy);
         $guard->setJob($job);
+        $guard->setDate(new \DateTime('06/04/2014'));
         $manager->persist($guard);
 
         // Internship

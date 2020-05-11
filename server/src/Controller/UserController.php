@@ -18,6 +18,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class UserController extends AbstractController
 {
+    public $hoursMapping = [
+        '6-8' => [
+            'day' => 0,
+            'night' => 2,
+        ],
+        '8-20' => [
+            'day' => 10,
+            'night' => 2
+        ],
+        '20-23' => [
+            'day' => 0,
+            'night' => 3
+        ],
+        '23-6' => [
+            'day' => 0,
+            'night' => 7
+        ],
+    ];
+
     /**
      * @param User $user
      * @Route("/{id}/internships", name="user_internships", requirements={"id"="\d+"}, methods={"GET"})
@@ -91,7 +110,7 @@ class UserController extends AbstractController
 
         $records = [];
         foreach ($groupedGuards as $groupedGuard) {
-            foreach (Guard::$hoursMapping as $hour => $mapping) {
+            foreach ($hoursMapping as $hour => $mapping) {
                 if (!array_key_exists('mapping', $groupedGuard)) {
                     $groupedGuard['mapping'] = [];
                 }

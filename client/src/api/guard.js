@@ -20,7 +20,6 @@ export default {
         })
         return await res
     },
-
     async getInternsRankingForGuard(guard) {
         const res = fetchJSON(url + '/guard/matching/' + guard, {
             method: 'GET',
@@ -28,7 +27,6 @@ export default {
         })
         return await res
     },
-
     async assignInternToGuard(guard, intern) {
         const res = fetchJSON(url + '/guard/assign/', {
             method: 'POST',
@@ -37,7 +35,6 @@ export default {
         })
         return await res
     },
-
     add(guard) {
         return fetch(uri('/guards'), {
             method: 'POST',
@@ -47,12 +44,15 @@ export default {
             // convert data from ReadableStream to JSON
             return response.json();
         }).then((response) => {
+            if (response.status === 500 || response.status === 401) {
+                // Couldn't parse the JSON
+                return Promise.reject({ error: "Une erreur inattendue s'est produite lors de la lectuer des données. Ré-essayez !" });
+            }
             return Promise.resolve(response);
         }).catch(error => console.log(error.response));
     },
-
     getAll(entity) {
-        const properties = "&properties[pharmacy]=hospital&properties[]=day&properties[]=status&properties[]=id&properties[agrements]=name&properties[hour]=name&properties[job]=title&properties[user]=firstname"
+        const properties = "&properties[pharmacy]=hospital&properties[]=day&properties[]=status&properties[]=date&properties[]=id&properties[agrements]=name&properties[hour]=name&properties[job]=title&properties[user]=firstname"
         let filterReq = ''
         // Guards form specific pharmacy
         if (loggedInUser.pharmacy && entity === 'pharmacy') {

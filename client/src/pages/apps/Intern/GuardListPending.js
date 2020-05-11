@@ -4,6 +4,7 @@ import { Row, Col, Card, CardBody, Table, Badge, Button, Spinner } from 'reactst
 import { getLoggedInUser } from '../../../helpers/authUtils';
 import PageTitle from '../../../components/PageTitle';
 import guardApi from '../../../api/guard';
+import { formatDateForTable } from '../../../helpers/dateUtils';
 
 class GuardListPending extends Component {
   constructor(props) {
@@ -54,6 +55,10 @@ class GuardListPending extends Component {
       default:
         return '';
     }
+  }
+
+  dateToFr(date) {
+    return formatDateForTable(date);
   }
 
   formatStatus(day) {
@@ -132,7 +137,7 @@ class GuardListPending extends Component {
                                   return <Badge color={`soft-${this.state.colors[2]}`} key={index} className="mr-1">{agr.name}</Badge>
                                 })}
                               </td>
-                              <td>{this.formatDay(record.day)} / {record.hour.name}</td>
+                              <td>{this.formatDay(record.day)} {this.dateToFr(record.date)} / {record.hour.name}</td>
                               <td>{this.formatStatus(record.status)}</td>
                               <td>
                                 <Button href={`/guard/confirm/${this.state.user.id}/${record.id}`} color="outline-primary" key="1">

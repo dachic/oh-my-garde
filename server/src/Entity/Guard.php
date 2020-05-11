@@ -22,25 +22,6 @@ class Guard
 {
     use TimestampableEntity;
 
-    public static $hoursMapping = [
-        '6-8' => [
-            'day' => 0,
-            'night' => 2,
-        ],
-        '8-20' => [
-            'day' => 10,
-            'night' => 2
-        ],
-        '20-23' => [
-            'day' => 0,
-            'night' => 3
-        ],
-        '23-6' => [
-            'day' => 0,
-            'night' => 7
-        ],
-    ];
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -82,6 +63,11 @@ class Guard
      * @ORM\ManyToMany(targetEntity="App\Entity\Agrement", inversedBy="guards")
      */
     private $agrements;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
 
     public function __construct()
     {
@@ -206,6 +192,18 @@ class Guard
         if ($this->agrements->contains($agrement)) {
             $this->agrements->removeElement($agrement);
         }
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

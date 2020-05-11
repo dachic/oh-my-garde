@@ -3,6 +3,7 @@ import { Row, Col, Card, CardBody, Table, Badge, Spinner } from 'reactstrap';
 
 import PageTitle from '../../../components/PageTitle';
 import guardApi from '../../../api/guard';
+import { formatDateForTable } from '../../../helpers/dateUtils';
 
 class GuardList extends Component {
   constructor(props) {
@@ -44,6 +45,10 @@ class GuardList extends Component {
       default:
         return '';
     }
+  }
+
+  dateToFr(date) {
+    return formatDateForTable(date);
   }
 
   formatStatus(day) {
@@ -121,7 +126,7 @@ class GuardList extends Component {
                                   return <Badge color={`soft-${this.state.colors[2]}`} key={index} className="mr-1">{agr.name}</Badge>
                                 })}
                               </td>
-                              <td>{this.formatDay(record.day)} / {record.hour.name}</td>
+                              <td>{this.formatDay(record.day)} {this.dateToFr(record.date)} / {record.hour.name}</td>
                               <td>{this.formatStatus(record.status)}</td>
                             </tr>
                           );
