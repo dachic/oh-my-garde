@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Table, Card, CardBody, Spinner, Badge, Button } from 'reactstrap';
+import { DateTime } from "luxon";
 
 import guardApi from '../../api/guard';
 import { getLoggedInUser } from '../../helpers/authUtils';
@@ -76,7 +77,6 @@ export default class InternDashboard extends Component {
 
   loadGuards() {
     guardApi.getAll('intern').then(guards => {
-      console.log(guards)
       let optionsPending = []
       let optionsUpcoming = []
       guards.forEach(guard => {
@@ -85,7 +85,9 @@ export default class InternDashboard extends Component {
             optionsPending.push(guard);
             break;
           case 'accepted':
-            optionsUpcoming.push(guard);
+            let duration = DateTime.fromISO(guard.date).diffNow()
+            if (duration > 0)
+              optionsUpcoming.push(guard);
             break;
           default:
             break;
